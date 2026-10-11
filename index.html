@@ -1,346 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Huma Clinic - Record Editable</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Northstar Workspace</title>
 <style>
-:root{--line:#e2e8f0;--bg:#f1f5f9;--muted:#64748b}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Inter,'Segoe UI',Arial,sans-serif;color:#1e293b}
-.topbar{position:sticky;top:0;z-index:99;background:#fff;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;white-space:nowrap}
-.btn-main{background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff}
-.btn-light{background:#fff;color:#020024;border:1px solid #020024}
-.btn-save{background:#059669;color:#fff;border:0}
-.btn-record{background:#fff;color:#020024;border:1px solid #020024;display:flex;align-items:center;gap:6px;position:relative}
-.btn-record b{position:absolute;top:-6px;right:-6px;background:#020024;color:#fff;border-radius:50%;min-width:18px;height:18px;font-size:10px;display:grid;place-items:center;padding:2px}
-.letters-dropdown{position:absolute;left:0;top:44px;width:250px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.15);padding:8px;display:none;z-index:100}
-.letters-dropdown.open{display:block}
-.letters-dropdown button{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#f8fafc;margin-bottom:6px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between}
-.letters-dropdown button.active{background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff;border:0}
-.record-panel{position:fixed;right:12px;top:62px;width:460px;max-width:94vw;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 25px 60px rgba(0,0,0,.25);padding:0;display:none;z-index:200;max-height:78vh;overflow:hidden;flex-direction:column}
-.record-panel.open{display:flex!important}
-.record-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-radius:14px 14px 0 0}
-.record-body{padding:10px;overflow:auto;flex:1}
-.record-filter{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.record-filter input{padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:11px}
-.record-table{width:100%;border-collapse:collapse;font-size:11px}
-.record-table th,.record-table td{border:1px solid #e2e8f0;padding:5px 6px;text-align:left}
-.record-table td.editable{cursor:text;background:#fffff0}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.2);display:none;z-index:150}
-.overlay.open{display:block!important}
-.inputs{max-width:1080px;margin:14px auto;background:#fff;border-radius:14px;border:1px solid var(--line);padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.inputs label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:3px}
-.inputs input,.inputs textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#f8fafc;outline:none}
-.field.hidden{display:none}
-.full{grid-column:1/-1}.span2{grid-column:span 2}.area{min-height:60px}.big{min-height:80px}
-.auto{background:#e0f2fe!important;font-weight:800;color:#020024}
-.sheet-wrap{max-width:1080px;margin:18px auto;padding:0 14px}
-.sheet-wrap.hidden{display:none}
-.sheet-title{font-size:12px;font-weight:800;color:#020024;margin:18px 0 8px 0;display:flex;align-items:center;justify-content:space-between}
-.stage{display:flex;justify-content:center;padding:6px}
-.holder{position:relative}
-.sheet{width:210mm;min-height:270mm;background:#fff;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12);-webkit-print-color-adjust:exact;print-color-adjust:exact;transform-origin:top left;border-radius:3mm;padding-bottom:0}
-.top-accent{position:absolute;left:0;right:0;top:0;height:4mm;background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%)}
-.header{position:absolute;left:12mm;right:12mm;top:8mm;height:24mm;display:flex;justify-content:space-between;align-items:center;z-index:2;border-bottom:2.5px solid #090979;padding-bottom:3mm}
-.brand{display:flex;gap:4mm;align-items:center}
-.logo{width:14mm;height:14mm;background:linear-gradient(135deg,#020024 0%,#090979 35%,#00D4FF 100%);border-radius:50%;display:grid;place-items:center}
-.logo svg{width:10mm;height:10mm}
-.brand h1{margin:0;color:#020024;font-size:14pt;font-weight:900;line-height:1}
-.contacts{text-align:right;line-height:1.45}
-.contacts div{font-size:7pt;font-weight:600}
-.patient-bar{position:absolute;left:12mm;right:12mm;top:35mm;height:10mm;background:#e0f2fe;border:1px solid #7dd3fc;border-radius:3mm;display:flex;align-items:center;gap:4mm;padding:0 4mm;z-index:2}
-.pb{flex:1;display:flex;align-items:center;gap:1.5mm;font-size:8pt;font-weight:700;min-width:0}
-.pb b{color:#090979;white-space:nowrap;font-size:7pt}
-.pb.v{flex:1;border-bottom:1px dotted #0ea5e9;min-height:4mm;font-weight:400;font-size:9pt;padding:0 1mm;overflow:hidden;white-space:nowrap}
-.fitness-banner{position:absolute;left:6mm;right:6mm;top:6mm;height:30mm;background:linear-gradient(90deg,#012840 0%,#023e7d 22%,#0077b6 58%,#0096c7 82%,#0a9396 100%);border-radius:4mm;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 6mm;color:#fff}
-.fitness-left h1{margin:0;font-size:18pt;letter-spacing:1px;font-weight:900}
-.fitness-left h1 span:first-child{color:#5ee1ff}
-.fitness-pill{margin-top:2mm;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:1mm 3mm;font-size:6.5pt;font-weight:600;display:flex;gap:2mm}
-.fitness-right{text-align:right;line-height:1.4}
-.fitness-right div{font-size:6.8pt;font-weight:600}
-.fitness-title{position:absolute;left:12mm;right:12mm;top:39mm;text-align:center;z-index:2;color:#2a5a7a;font-size:13pt;font-weight:800}
-.content-area{position:absolute;left:12mm;right:12mm;top:46mm;bottom:14mm;z-index:2}
-.content-area.fit{top:48mm;bottom:14mm}
-.presc-main{display:flex;gap:4mm;height:100%}
-.left{width:52mm;display:flex;flex-direction:column;gap:3mm}
-.card{border:1px solid var(--line);border-radius:3mm;overflow:hidden;background:#fff}
-.card h4{margin:0;background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff;font-size:7.5pt;padding:1.5mm 3mm;text-transform:uppercase}
-.card.detail h4{background:#020024}
-.kv{display:flex;justify-content:space-between;font-size:8pt;padding:1.2mm 3mm;border-bottom:.3mm dashed #e5e7eb}
-.kv b{color:var(--muted);font-size:6.8pt;text-transform:uppercase}
-.kv span{font-weight:700;max-width:26mm;overflow:hidden;white-space:nowrap;text-align:right}
-.lines{font-size:8pt;line-height:6mm;min-height:16mm;white-space:pre-wrap;padding:0 3mm}
-.right{flex:1;border:1px solid var(--line);border-radius:3mm;display:flex;flex-direction:column;background:#fff;overflow:hidden;position:relative}
-.right h4{margin:0;background:#020024;color:#fff;font-size:8pt;padding:2mm 4mm;display:flex;justify-content:space-between}
-.rx-big{font-family:Georgia,serif;font-size:28pt;font-weight:900;color:#020024;font-style:italic;line-height:1;margin:2mm 0 1mm 4mm}
-.rx-write{flex:1;padding:1mm 4mm;font-size:10pt;line-height:6.5mm;white-space:pre-wrap}
-.letter-body{padding:4mm;font-size:10pt;line-height:6.5mm;white-space:pre-wrap}
-.sig{position:absolute;right:12mm;bottom:12mm;text-align:center;min-width:50mm;z-index:3}
-.sig-name{color:#000!important;font-weight:900;font-size:10.5pt}
-.sig-dash{font-size:8pt;letter-spacing:2px;color:#000;margin-top:1mm}
-.footer-wrap{position:absolute;left:12mm;right:12mm;bottom:1.5mm;z-index:4;text-align:center;height:6mm;display:flex;flex-direction:column;justify-content:flex-end}
-.footer-text{font-size:5.4pt;color:var(--muted);font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:0.8mm}
-.footer-line{border-top:1px solid var(--line);width:100%}
-.date-bar{position:absolute;left:12mm;right:12mm;top:47mm;font-size:7pt;font-weight:600;color:#475569;display:flex;justify-content:space-between;z-index:2}
-@media print{@page{size:A4;margin:0}.topbar,.inputs,.sheet-title,.letters-dropdown,.record-panel,.overlay,.record-filter{display:none!important}.sheet-wrap{display:block!important}.sheet-wrap.hidden{display:none!important}.sheet{transform:none!important;box-shadow:none!important;width:210mm!important;height:287mm!important;min-height:287mm!important;max-height:287mm!important;border-radius:0;margin:0 auto!important;overflow:hidden!important;page-break-after:always;page-break-inside:avoid}.content-area{bottom:10mm!important}.footer-wrap{bottom:1mm!important;display:flex!important}}
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#17243b;background:#f4f6fb}*{box-sizing:border-box}body{margin:0}header{height:68px;background:#fff;border-bottom:1px solid #e3e9f2;display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 1180px)/2))}.brand{font-weight:800;font-size:19px}.logo{display:inline-grid;place-items:center;background:#5667ee;color:#fff;border-radius:11px;width:34px;height:34px;margin-right:9px}.muted{color:#697891}.wrap{max-width:1180px;margin:auto;padding:28px 18px 60px}.hero{margin:12px 0 24px}.hero h1{margin:5px 0;font-size:clamp(27px,4vw,36px);letter-spacing:-.04em}.eyebrow{color:#5667ee;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.panel,.stat,.login{background:#fff;border:1px solid #e3e9f2;border-radius:16px;padding:20px;box-shadow:0 10px 28px #1826460d}.login{width:min(440px,100%);margin:7vh auto}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.stat small{color:#697891;font-weight:700}.num{font-size:28px;font-weight:800;margin-top:8px}.panel{margin-bottom:16px}.panel h2{font-size:17px;margin:0 0 5px}.desc{color:#697891;font-size:13px;margin:0 0 18px}.tabs{display:flex;gap:7px;margin-bottom:18px;background:#eaf0fa;padding:5px;border-radius:12px;width:max-content;max-width:100%;overflow:auto}.tabs button{border:0;background:transparent;padding:10px 15px;border-radius:8px;color:#697891;font-weight:700;white-space:nowrap}.tabs button.active{background:white;color:#17243b}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}.field label{font-size:12px;color:#697891;font-weight:700}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #dbe3f0;border-radius:9px;font:inherit;color:#17243b;background:#fff}textarea{min-height:90px;resize:vertical}.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.full{grid-column:1/-1}.btn{border:1px solid #dbe3f0;background:#fff;color:#17243b;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:#5667ee;border-color:#5667ee;color:white}.danger{color:#bd3448}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{background:#f0f2ff;border:1px solid #dfe3ff;color:#414da7;border-radius:11px;padding:12px 14px;font-size:12px;margin-bottom:16px}.status{display:inline-block;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:800}.active{background:#e2f7ef;color:#16865f}.off{background:#ffeaed;color:#bd3448}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e8edf5;font-size:13px;vertical-align:top}th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#697891}tr:last-child td{border-bottom:0}.hidden{display:none!important}.error{color:#bd3448;font-size:13px;margin-top:10px}.success{color:#16865f;font-size:13px;margin-top:10px}.topright{display:flex;align-items:center;gap:10px}.pill{font-size:12px;color:#697891}.empty{text-align:center;padding:25px;color:#697891}.small{font-size:11px;color:#697891;margin-top:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:540px){.fields{grid-template-columns:1fr}.full{grid-column:auto}.wrap{padding:20px 12px}.panel{padding:15px}header{padding:0 12px}.tabs button{padding:9px 11px}}
 </style>
 </head>
 <body>
+<header><div class="brand"><span class="logo">N</span>Northstar <span class="muted" style="font-weight:400">Workspace</span></div><div class="topright"><span id="who" class="pill"></span><button id="logout" class="btn hidden">Log out</button></div></header>
+<main id="app"><div class="login"><div class="eyebrow">Secure workspace</div><h1 style="font-size:26px">Loading portal…</h1><p class="muted">Connecting to Firebase.</p></div></main>
+<div id="toast" style="position:fixed;bottom:18px;right:18px;background:#17243b;color:white;padding:12px 16px;border-radius:10px;display:none;max-width:90vw"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, addDoc, setDoc, updateDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js";
 
-<div class="overlay" id="overlay" onclick="closeAll()"></div>
+// 1) Replace this object with your Firebase project's web app configuration.
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_FIREBASE_APP_ID"
+};
 
-<div class="topbar">
-  <div style="display:flex;gap:8px;position:relative">
-    <div style="position:relative">
-      <button class="btn btn-main" onclick="toggleLetters(event)">Letters ▼ <span id="curType" style="font-weight:400;margin-left:4px">RX</span></button>
-      <div class="letters-dropdown" id="lettersDrop">
-        <button onclick="openLetter('all',this)">All Letters <span>↕</span></button>
-        <button class="active" onclick="openLetter('presc',this)">Prescription - RX <span>℞</span></button>
-        <button onclick="openLetter('fitness',this)">Fitness - FIT <span>★</span></button>
-        <button onclick="openLetter('medical',this)">Medical - MED <span>📄</span></button>
-        <button onclick="openLetter('referral',this)">Referral - REF <span>↗</span></button>
-      </div>
-    </div>
-    <button class="btn btn-record" onclick="toggleRecord(event)">Record 📋 <b id="recBadge">0</b></button>
-    <div class="record-panel" id="recordPanel">
-      <div class="record-head"><div><b>Record Editable</b> - Total: <span id="totalRec">0</span> | Today: <span id="todayRec">0</span></div><div style="display:flex;gap:6px"><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="clearRecord()">Clear All</button><button class="btn btn-main" style="padding:5px 8px;font-size:10px" onclick="closeAll()">X</button></div></div>
-      <div class="record-filter"><input type="date" id="recDateFilter"><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="filterByDate()">Filter</button><button class="btn btn-main" style="padding:5px 8px;font-size:10px" onclick="printByDate()">Print Date Wise</button><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="showAllRecord()">All</button></div>
-      <div class="record-body"><table class="record-table" id="recTable"><thead><tr><th>#</th><th>Type</th><th>Name</th><th>Ref</th><th>Date</th><th>Action</th></tr></thead><tbody></tbody></table><div style="font-size:9px;color:#64748b;margin-top:6px">Tip: Name par double-click karke edit kar sakte hain - har row par Print / Delete</div></div>
-    </div>
-  </div>
-  <div style="display:flex;gap:6px">
-    <button class="btn btn-save" onclick="savePrint()">SavePrint</button>
-    <button class="btn btn-light" onclick="printCurrent()">Print Current</button>
-    <button class="btn btn-main" onclick="printAll()">Print All</button>
-  </div>
-</div>
-
-<div class="inputs" id="inputGrid">
-  <div class="field" data-for="all presc fitness medical referral"><label>Name</label><input id="i_name" oninput="sync()"></div>
-  <div class="field" data-for="all presc fitness medical referral"><label>Age / Sex</label><input id="i_age" oninput="sync()"></div>
-  <div class="field" data-for="all presc fitness medical referral"><label>Date</label><input id="i_date" type="date" oninput="sync()"></div>
-  <div class="field" data-for="presc"><label>OPD No (Auto)</label><input id="i_opd" class="auto" readonly></div>
-  <div class="field" data-for="presc"><label>Contact</label><input id="i_phone" value="0300-0000000" oninput="sync()"></div>
-  <div class="field" data-for="presc"><label>Weight (kg)</label><input id="i_weight" placeholder="70 kg" oninput="sync()"></div>
-  <div class="field" data-for="presc"><label>BP</label><input id="i_bp" placeholder="120/80" oninput="sync()"></div>
-  <div class="field" data-for="presc"><label>Temp</label><input id="i_temp" placeholder="98.6 F" oninput="sync()"></div>
-  <div class="field" data-for="presc"><label>Pulse</label><input id="i_pulse" placeholder="78 /min" oninput="sync()"></div>
-  <div class="field" data-for="all presc fitness medical referral"><label>Ref No (Auto)</label><input id="i_ref" class="auto" readonly></div>
-  <div class="field" data-for="referral"><label>Referred To</label><input id="i_refer" value="Consultant Physician, DHQ Hospital" oninput="sync()"></div>
-  <div class="field span2" data-for="presc referral"><label>History</label><textarea id="i_hist" class="area" oninput="sync()"></textarea></div>
-  <div class="field span2" data-for="presc medical"><label>Diagnosis / Advice</label><textarea id="i_adv" class="area" oninput="sync()"></textarea></div>
-  <div class="field span2" data-for="fitness"><label>Clinical Findings</label><textarea id="i_hist_fit" class="area" oninput="sync()"></textarea></div>
-  <div class="field full" data-for="presc"><label>Prescription</label><textarea id="i_desc" class="big" oninput="sync()"></textarea></div>
-  <div class="field full" data-for="fitness"><label>Fitness Opinion</label><textarea id="i_fitness" class="big" oninput="sync()"></textarea></div>
-  <div class="field full" data-for="medical referral"><label>Details / Opinion</label><textarea id="i_medical" class="big" oninput="sync()"></textarea></div>
-  <div class="field" data-for="all presc fitness medical referral"><label>Doctor Name</label><input id="i_doc" value="Dr. Huma" oninput="sync()"></div>
-</div>
-
-<div class="sheet-wrap" data-type="presc" id="wrap-presc">
-  <div class="sheet-title"><div>Prescription - RX</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('presc')">Print</button></div>
-  <div class="stage"><div class="holder"><div class="sheet">
-    <div class="top-accent"></div>
-    <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M14,9 C14,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M38,9 C38,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M27,41 C27,60 52,60 52,38" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><rect x="9.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><rect x="33.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><circle cx="52" cy="31" r="7.6" fill="#fff"/><circle cx="52" cy="31" r="3.6" fill="#020024"/></svg></div><div><h1>HUMA CLINIC</h1><p>Caring for Community</p></div></div><div class="contacts"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
-    <div class="patient-bar"><div class="pb"><b>NAME</b><span class="v" id="v_name"></span></div><div class="pb" style="flex:.4"><b>AGE/SEX</b><span class="v" id="v_age"></span></div><div class="pb" style="flex:.6"><b>REF</b><span class="v" id="v_ref_presc"></span></div></div>
-    <div class="date-bar"><span>Date: <b id="v_date_show">-</b></span><span>OPD: <b id="v_date_opd">-</b></span></div>
-    <div class="content-area"><div class="presc-main">
-      <div class="left">
-        <div class="card detail"><h4>PATIENT DETAIL</h4>
-          <div class="kv"><b>OPD No</b><span id="v_opd">-</span></div>
-          <div class="kv"><b>Contact</b><span id="v_contact">-</span></div>
-          <div class="kv"><b>Weight</b><span id="v_weight">-</span></div>
-          <div class="kv"><b>BP</b><span id="v_bp">-</span></div>
-          <div class="kv"><b>Temp</b><span id="v_temp">-</span></div>
-          <div class="kv"><b>Pulse</b><span id="v_pulse">-</span></div>
-        </div>
-        <div class="card" style="flex:1"><h4>History</h4><div class="lines" id="v_hist"></div></div>
-        <div class="card" style="flex:1"><h4>Advice</h4><div class="lines" id="v_adv"></div></div>
-      </div>
-      <div class="right"><h4><span>Prescription</span></h4><div class="rx-big">R<sub>x</sub></div><div class="rx-write" id="v_desc"></div></div>
-    </div></div>
-    <div class="sig"><div class="sig-name" id="v_doc1">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
-    <div class="footer-wrap"><div class="footer-text">Date: <span id="v_footer_date">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
-  </div></div></div>
-</div>
-
-<div class="sheet-wrap hidden" data-type="fitness" id="wrap-fitness">
-  <div class="sheet-title"><div>Fitness</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('fitness')">Print</button></div>
-  <div class="stage"><div class="holder"><div class="sheet">
-    <div class="fitness-banner"><div class="fitness-left"><h1><span>HUMA</span> CLINIC</h1><div class="sub">Caring for Community</div><div class="fitness-pill"><span>Ref: <span id="fb_ref">FIT-0001</span></span> | <span>Date: <span id="fb_date"></span></span></div></div><div class="fitness-right"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
-    <div class="fitness-title">FITNESS CERTIFICATE</div>
-    <div class="content-area fit"><div class="letter-body"><p>This is to certify that Mr/Ms <b id="f_name"></b> Age <span id="f_age"></span> was examined on <span id="f_date2"></span> Ref: <b id="f_ref"></b></p><p><b>Clinical Findings:</b></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:18mm" id="f_hist"></div><p><b>Opinion:</b></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:4mm;min-height:30mm" id="f_desc"></div></div></div>
-    <div class="sig"><div class="sig-name" id="f_doc">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
-    <div class="footer-wrap"><div class="footer-text">Date: <span class="fb_date_footer">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
-  </div></div></div>
-</div>
-
-<div class="sheet-wrap hidden" data-type="medical" id="wrap-medical">
-  <div class="sheet-title"><div>Medical</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('medical')">Print</button></div>
-  <div class="stage"><div class="holder"><div class="sheet">
-    <div class="fitness-banner"><div class="fitness-left"><h1><span>HUMA</span> CLINIC</h1><div class="sub">Medical Certificate</div><div class="fitness-pill"><span>Ref: <span class="fb_ref_med">MED-0001</span></span> | <span>Date: <span class="fb_date_med"></span></span></div></div><div class="fitness-right"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
-    <div class="fitness-title">MEDICAL CERTIFICATE</div>
-    <div class="content-area fit"><div class="letter-body"><p>This is to certify that <b id="m_name"></b> Age <span id="m_age"></span> was examined on <span id="m_date"></span> Ref: <b id="m_ref"></b></p><p><b>Diagnosis:</b> <span id="m_adv"></span></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:4mm;min-height:35mm" id="m_desc"></div></div></div>
-    <div class="sig"><div class="sig-name" id="v_doc3">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
-    <div class="footer-wrap"><div class="footer-text">Date: <span class="fb_date_footer2">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
-  </div></div></div>
-</div>
-
-<div class="sheet-wrap hidden" data-type="referral" id="wrap-referral">
-  <div class="sheet-title"><div>Referral</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('referral')">Print</button></div>
-  <div class="stage"><div class="holder"><div class="sheet">
-    <div class="top-accent"></div>
-    <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M14,9 C14,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M38,9 C38,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M27,41 C27,60 52,60 52,38" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><rect x="9.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><rect x="33.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><circle cx="52" cy="31" r="7.6" fill="#fff"/><circle cx="52" cy="31" r="3.6" fill="#020024"/></svg></div><div><h1>HUMA CLINIC</h1><p>Referral Letter</p></div></div><div class="contacts"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
-    <div class="content-area"><div class="letter-body"><h2 style="text-align:center;color:#020024">REFERRAL LETTER - <span id="r_ref">REF-0001</span></h2><p>Date: <b id="r_date_show">-</b></p><p>To, <b id="r_refer"></b></p><p><b>Name:</b> <span id="r_name"></span> | <b>Age:</b> <span id="r_age"></span></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:25mm" id="r_hist"></div><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:30mm;margin-top:3mm" id="r_desc"></div></div></div>
-    <div class="sig"><div class="sig-name" id="v_doc2">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
-    <div class="footer-wrap"><div class="footer-text">Date: <span id="r_footer_date">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp</div><div class="footer-line"></div></div>
-  </div></div></div>
-</div>
-
-<script>
-let currentFilter='presc';
-let counters = JSON.parse(localStorage.getItem('huma_ref_counters')||'{"RX":0,"FIT":0,"MED":0,"REF":0,"OPD":0}');
-let currentRefs = JSON.parse(localStorage.getItem('huma_current_refs')||'{"presc":"","fitness":"","medical":"","referral":"","opd":""}');
-function genRef(type){
- let map={presc:'RX',fitness:'FIT',medical:'MED',referral:'REF',opd:'OPD'};
- let pre=map[type]||'GEN';
- counters[pre]=(counters[pre]||0)+1;
- localStorage.setItem('huma_ref_counters',JSON.stringify(counters));
- let d=new Date(); let y=String(d.getFullYear()).slice(-2); let m=String(d.getMonth()+1).padStart(2,'0');
- return `${pre}-${y}${m}-${String(counters[pre]).padStart(4,'0')}`;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const functions = getFunctions(app);
+const $ = (s) => document.querySelector(s);
+let currentProfile = null, usersCache = [], entriesCache = [], activeTab = "overview";
+let stopUsers = null, stopEntries = null;
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dateText = (v) => { const d = v?.toDate ? v.toDate() : (v ? new Date(v) : null); return d && !isNaN(d) ? d.toLocaleString() : "—"; };
+const showToast = (s) => { const t=$("#toast"); t.textContent=s; t.style.display="block"; setTimeout(()=>t.style.display="none",2600); };
+const safeError = (e) => {
+  const code = e?.code || "";
+  if (code.includes("auth/invalid-credential") || code.includes("auth/wrong-password") || code.includes("auth/user-not-found")) return "Login ID or password is incorrect.";
+  if (code.includes("permission-denied")) return "Permission denied. Check your account role and Firestore rules.";
+  return e?.message || "Something went wrong. Please try again.";
+};
+const aliasEmail = (loginId) => `${String(loginId).trim().toLowerCase()}@login.northstar.invalid`;
+function stopListeners(){ if(stopUsers) stopUsers(); if(stopEntries) stopEntries(); stopUsers=stopEntries=null; }
+function header(title, sub){return `<div class="hero"><div class="eyebrow">Workspace control center</div><h1>${title}</h1><p class="muted">${sub}</p></div>`;}
+function setApp(html){$("#app").innerHTML=html;}
+function renderLogin(error=""){
+  $("#who").textContent=""; $("#logout").classList.add("hidden");
+  setApp(`<section class="login"><div class="eyebrow">Secure workspace</div><h1 style="font-size:27px;margin:8px 0">Welcome back</h1><p class="muted">Sign in using your login ID and password.</p><form id="loginForm"><div class="field"><label>LOGIN ID</label><input name="loginId" autocomplete="username" required placeholder="Your login ID"></div><div class="field"><label>PASSWORD</label><input name="password" type="password" autocomplete="current-password" required placeholder="Your password"></div><div class="error">${esc(error)}</div><button class="btn primary" style="width:100%;margin-top:8px">Sign in</button></form><p class="small">Accounts are created by your administrator. Login IDs are converted to an internal Firebase sign-in alias; add real email support before enabling password resets.</p></section>`);
+  $("#loginForm").onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{await signInWithEmailAndPassword(auth,aliasEmail(f.get("loginId")),String(f.get("password")));}catch(err){renderLogin(safeError(err));}};
 }
-function ensureRefs(){
- if(!currentRefs.presc) currentRefs.presc=genRef('presc');
- if(!currentRefs.fitness) currentRefs.fitness=genRef('fitness');
- if(!currentRefs.medical) currentRefs.medical=genRef('medical');
- if(!currentRefs.referral) currentRefs.referral=genRef('referral');
- if(!currentRefs.opd) currentRefs.opd=genRef('opd');
- localStorage.setItem('huma_current_refs',JSON.stringify(currentRefs));
+function render(){
+  stopListeners();
+  if(!currentProfile){renderLogin();return;}
+  $("#who").textContent=`${currentProfile.name} · ${currentProfile.role}`;
+  $("#logout").classList.remove("hidden");
+  if(currentProfile.role==="admin") renderAdmin(); else renderUser();
 }
-ensureRefs();
-function toggleLetters(e){if(e) e.stopPropagation();document.getElementById('lettersDrop').classList.toggle('open');document.getElementById('recordPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
-function toggleRecord(e){if(e) e.stopPropagation();let p=document.getElementById('recordPanel');let o=document.getElementById('overlay');let isOpen=p.classList.contains('open');if(isOpen){p.classList.remove('open');o.classList.remove('open');} else {document.getElementById('lettersDrop').classList.remove('open');p.classList.add('open');o.classList.add('open');renderRecord();}}
-function closeAll(){document.getElementById('lettersDrop').classList.remove('open');document.getElementById('recordPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
-function openLetter(type,btn){
- currentFilter=type;
- document.querySelectorAll('.letters-dropdown button').forEach(b=>b.classList.remove('active'));
- if(btn) btn.classList.add('active');
- document.getElementById('lettersDrop').classList.remove('open');
- document.getElementById('curType').innerText= type==='all'?'ALL':type.toUpperCase();
- document.querySelectorAll('#inputGrid.field').forEach(f=>{let fors=f.getAttribute('data-for').split(' ');if(type==='all' || fors.includes('all') || fors.includes(type)){f.classList.remove('hidden')} else {f.classList.add('hidden')}});
- if(type!=='all'){let refMap={presc:currentRefs.presc,fitness:currentRefs.fitness,medical:currentRefs.medical,referral:currentRefs.referral};document.getElementById('i_ref').value=refMap[type]||'';}
- document.getElementById('i_opd').value=currentRefs.opd;
- if(type==='all'){document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'))}
- else {document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===type) w.classList.remove('hidden'); else w.classList.add('hidden')})}
- fitAll(); sync(); closeAll();
- if(type!=='all') document.getElementById('wrap-'+type).scrollIntoView({behavior:'smooth'});
+$("#logout").onclick=()=>signOut(auth);
+onAuthStateChanged(auth, async user=>{
+  stopListeners();
+  if(!user){currentProfile=null;renderLogin();return;}
+  try{
+    const snap=await getDoc(doc(db,"users",user.uid));
+    if(!snap.exists() || snap.data().status!=="Active"){await signOut(auth);renderLogin("This account is not active. Contact your administrator.");return;}
+    currentProfile={uid:user.uid,...snap.data()};
+    listenData();
+    render();
+  }catch(e){currentProfile=null;renderLogin(safeError(e));}
+});
+function listenData(){
+  stopListeners();
+  stopUsers=onSnapshot(query(collection(db,"users"),orderBy("createdAt","desc")),s=>{usersCache=s.docs.map(d=>({uid:d.id,...d.data()}));if(currentProfile?.role==="admin")renderAdmin();},e=>showToast(safeError(e)));
+  stopEntries=onSnapshot(query(collection(db,"entries"),orderBy("createdAt","desc")),s=>{entriesCache=s.docs.map(d=>({id:d.id,...d.data()}));if(currentProfile)currentProfile.role==="admin"?renderAdmin():renderUser();},e=>showToast(safeError(e)));
 }
-function getDateShow(){let date=i_date.value;let dshow=date; if(date){let p=date.split('-');dshow=p[2]+'-'+p[1]+'-'+p[0]} else {let now=new Date();dshow=String(now.getDate()).padStart(2,'0')+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+now.getFullYear()} return dshow;}
-function sync(){
- let name=i_name.value, age=i_age.value, hist=i_hist.value, hist_fit=i_hist_fit.value, adv=i_adv.value, desc=i_desc.value, fitness=i_fitness.value, medical=i_medical.value, doc=i_doc.value||'Dr. Huma', refer=i_refer.value, phone=i_phone.value||'0300-0000000', opd=currentRefs.opd, weight=i_weight.value, bp=i_bp.value, temp=i_temp.value, pulse=i_pulse.value;
- let dshow=getDateShow();
- document.querySelectorAll('.c_phone').forEach(e=>e.innerText=phone);
- fb_ref.innerText=currentRefs.fitness; fb_date.innerText=dshow; document.querySelectorAll('.fb_date_med').forEach(e=>e.innerText=dshow); document.querySelectorAll('.fb_ref_med').forEach(e=>e.innerText=currentRefs.medical);
- document.querySelectorAll('.fb_date_footer').forEach(e=>e.innerText=dshow); document.querySelectorAll('.fb_date_footer2').forEach(e=>e.innerText=dshow);
- v_name.innerText=name; v_age.innerText=age; v_ref_presc.innerText=currentRefs.presc;
- v_opd.innerText=opd||'-'; v_contact.innerText=phone||'-'; v_weight.innerText=weight||'-'; v_bp.innerText=bp||'-'; v_temp.innerText=temp||'-'; v_pulse.innerText=pulse||'-';
- v_hist.innerText=hist; v_adv.innerText=adv; v_desc.innerText=desc; v_doc1.innerText=doc;
- v_date_show.innerText=dshow; v_date_opd.innerText=opd; v_footer_date.innerText=dshow;
- f_name.innerText=name; f_age.innerText=age; f_date2.innerText=dshow; f_ref.innerText=currentRefs.fitness; f_hist.innerText=hist_fit||hist; f_desc.innerText=fitness||medical||desc; f_doc.innerText=doc;
- m_name.innerText=name; m_age.innerText=age; m_date.innerText=dshow; m_ref.innerText=currentRefs.medical; m_adv.innerText=adv; m_desc.innerText=medical||fitness||desc; v_doc3.innerText=doc;
- r_name.innerText=name; r_age.innerText=age; r_ref.innerText=currentRefs.referral; r_hist.innerText=hist; r_desc.innerText=medical||desc; r_refer.innerText=refer; v_doc2.innerText=doc; r_date_show.innerText=dshow; r_footer_date.innerText=dshow;
+function renderAdmin(){
+  const active=usersCache.filter(u=>u.status==="Active").length;
+  const ownEntries=entriesCache.filter(e=>e.userId===currentProfile.uid);
+  const recent=entriesCache.slice(0,5);
+  setApp(`<div class="wrap">${header("Admin dashboard","Manage accounts and view user submissions across connected devices.")}<div class="notice"><b>Live Firebase mode:</b> user accounts and submissions are read from Cloud Firestore in real time. Protect your Firebase project and deploy the included security rules and Cloud Function.</div><nav class="tabs"><button data-tab="overview" class="${activeTab==="overview"?"active":""}">Overview</button><button data-tab="users" class="${activeTab==="users"?"active":""}">User accounts</button><button data-tab="entries" class="${activeTab==="entries"?"active":""}">Entry records</button></nav>${activeTab==="overview"?`<div class="grid"><div class="stat"><small>TOTAL USERS</small><div class="num">${usersCache.length}</div></div><div class="stat"><small>ACTIVE USERS</small><div class="num">${active}</div></div><div class="stat"><small>TOTAL ENTRIES</small><div class="num">${entriesCache.length}</div></div><div class="stat"><small>MY ENTRIES</small><div class="num">${ownEntries.length}</div></div></div><section class="panel"><h2>Recent submissions</h2><p class="desc">New entries appear automatically on this page.</p>${entryTable(recent)}</section><section class="panel"><h2>Quick actions</h2><div class="actions"><button class="btn primary" id="goCreate">＋ Create user</button><button class="btn" id="goEntries">View all entries</button></div></section>`:activeTab==="users"?usersView():entriesView()}</div>`);
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;renderAdmin();});
+  const goCreate=$("#goCreate");if(goCreate)goCreate.onclick=()=>{activeTab="users";renderAdmin();};
+  const goEntries=$("#goEntries");if(goEntries)goEntries.onclick=()=>{activeTab="entries";renderAdmin();};
+  const form=$("#createUser");if(form)form.onsubmit=createUser;
+  document.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>toggleUser(b.dataset.toggle));
+  const search=$("#userSearch");if(search)search.oninput=()=>$("#userTable").innerHTML=userTable(usersCache.filter(u=>(u.name+" "+u.loginId+" "+u.userCode).toLowerCase().includes(search.value.toLowerCase())));
+  const es=$("#entrySearch");if(es)es.oninput=()=>$("#entryTable").innerHTML=entryTable(entriesCache.filter(e=>(e.title+" "+e.userName+" "+e.category+" "+e.details+" "+e.userCode).toLowerCase().includes(es.value.toLowerCase())));
+  const csv=$("#exportCsv");if(csv)csv.onclick=exportCsv;
 }
-const sheets=document.querySelectorAll('.sheet');
-function fitAll(){sheets.forEach(s=>{let holder=s.closest('.holder');if(!holder||holder.closest('.hidden')) return;let w=s.offsetWidth;let avail=Math.min(document.documentElement.clientWidth-28,800);let sc=Math.min(1,avail/w);s.style.transform='scale('+sc+')';holder.style.width=(w*sc)+'px';holder.style.height=(s.offsetHeight*sc)+'px';});}
-addEventListener('resize',fitAll);
-openLetter('presc',null);document.querySelectorAll('.letters-dropdown button')[1].classList.add('active');fitAll();sync();
-let records=JSON.parse(localStorage.getItem('huma_letters_records')||'[]');
-function renderRecord(list){
- let data=list||records;
- recBadge.innerText=records.length;totalRec.innerText=records.length;let today=new Date().toISOString().slice(0,10);todayRec.innerText=records.filter(r=>r.dateISO===today).length;
- let tbody=document.querySelector('#recTable tbody');tbody.innerHTML='';
- data.slice().reverse().forEach((r)=>{
-   let origIdx=records.indexOf(r);
-   let tr=document.createElement('tr');
-   // EDITABLE + PRINT + DELETE
-   tr.innerHTML=`<td>${data.length - data.indexOf(r)}</td><td>${r.type}</td><td class="editable" contenteditable="true" onblur="editRecord(${origIdx},'name',this.innerText)" ondblclick="this.focus()">${r.name||'-'}</td><td>${r.ref}</td><td>${r.datetime}</td><td style="display:flex;gap:3px"><button class="btn btn-light" style="padding:3px 6px;font-size:10px" onclick="reprintRecord(${origIdx})">Print</button><button class="btn" style="padding:3px 6px;font-size:10px;background:#dc2626;color:#fff;border:0" onclick="deleteRecord(${origIdx})">Del</button></td>`;
-   tbody.appendChild(tr);
- });
+function usersView(){return `<div class="two"><section class="panel"><h2>Create user account</h2><p class="desc">Generate a user ID and login credentials.</p><form id="createUser"><div class="fields"><div class="field full"><label>FULL NAME</label><input name="name" required maxlength="80" placeholder="e.g. Ali Raza"></div><div class="field"><label>LOGIN ID</label><input name="loginId" required pattern="[A-Za-z0-9._-]{3,30}" minlength="3" maxlength="30" placeholder="ali.raza"></div><div class="field"><label>TEMPORARY PASSWORD</label><input name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div></div><button class="btn primary">Create account</button><div id="createMessage" class="small"></div></form><p class="small">Give credentials to the user securely. The password is managed by Firebase Authentication and is not stored in Firestore.</p></section><section class="panel"><h2>Account controls</h2><p class="desc">Disable an account to prevent further access.</p><p class="muted">Every account gets a generated ID. Users can only see their own submissions; admins can see all entries.</p></section></div><section class="panel"><h2>All users</h2><p class="desc">Live account list</p><input id="userSearch" placeholder="Search users…"><div id="userTable" style="margin-top:14px">${userTable(usersCache)}</div></section>`;}
+function userTable(list){if(!list.length)return '<div class="empty">No users found.</div>';return `<div class="table-wrap"><table><thead><tr><th>Name</th><th>Login ID</th><th>User ID</th><th>Status</th><th>Action</th></tr></thead><tbody>${list.map(u=>`<tr><td><b>${esc(u.name)}</b></td><td>${esc(u.loginId||"—")}</td><td>${esc(u.userCode||"—")}</td><td><span class="status ${u.status==="Active"?"active":"off"}">${esc(u.status)}</span></td><td>${u.role==="admin"?"Admin":`<button class="btn ${u.status==="Active"?"danger":""}" data-toggle="${esc(u.uid)}">${u.status==="Active"?"Disable":"Enable"}</button>`}</td></tr>`).join("")}</tbody></table></div>`;}
+function entriesView(){return `<section class="panel"><h2>All entry records</h2><p class="desc">Every new submission is synchronized live.</p><div class="fields"><div class="field"><input id="entrySearch" placeholder="Search entries…"></div><div class="field"><button class="btn" id="exportCsv">Export CSV</button></div></div><div id="entryTable">${entryTable(entriesCache)}</div></section>`;}
+function entryTable(list){if(!list.length)return '<div class="empty">No submissions yet.</div>';return `<div class="table-wrap"><table><thead><tr><th>Title / Record</th><th>Submitted by</th><th>Category</th><th>Details</th><th>Date</th></tr></thead><tbody>${list.map(e=>`<tr><td><b>${esc(e.title)}</b><div class="muted">${esc(e.id)}</div></td><td>${esc(e.userName)}<div class="muted">${esc(e.userCode)}</div></td><td>${esc(e.category)}</td><td style="white-space:normal;min-width:170px">${esc(e.details||"—")}</td><td>${dateText(e.createdAt)}</td></tr>`).join("")}</tbody></table></div>`;}
+async function createUser(e){
+  e.preventDefault();const form=e.currentTarget, f=new FormData(form), msg=$("#createMessage");
+  msg.textContent="Creating account…";
+  try{
+    const create= httpsCallable(functions,"adminCreateUser");
+    const result=await create({name:String(f.get("name")).trim(),loginId:String(f.get("loginId")).trim(),password:String(f.get("password"))});
+    msg.textContent=`Created ${result.data.userCode} · Login ID: ${result.data.loginId}`;
+    msg.className="success";form.reset();showToast("User account created");
+  }catch(err){msg.textContent=safeError(err);msg.className="error";}
 }
-function editRecord(idx,field,value){
- if(records[idx]){records[idx][field]=value;localStorage.setItem('huma_letters_records',JSON.stringify(records));}
+async function toggleUser(uid){
+  const u=usersCache.find(x=>x.uid===uid);if(!u)return;
+  try{await updateDoc(doc(db,"users",uid),{status:u.status==="Active"?"Disabled":"Active"});showToast("Account status updated");}
+  catch(e){showToast(safeError(e));}
 }
-function deleteRecord(idx){
- if(confirm('Is record ko delete karna hai?')){
-   records.splice(idx,1);
-   localStorage.setItem('huma_letters_records',JSON.stringify(records));
-   renderRecord();
- }
+async function renderUserPageSubmit(e){
+  e.preventDefault();const f=new FormData(e.currentTarget);
+  try{await addDoc(collection(db,"entries"),{userId:currentProfile.uid,userCode:currentProfile.userCode,userName:currentProfile.name,title:String(f.get("title")).trim(),category:String(f.get("category")),details:String(f.get("details")||"").trim(),createdAt:serverTimestamp()});e.currentTarget.reset();showToast("Entry submitted");}
+  catch(err){showToast(safeError(err));}
 }
-function filterByDate(){let d=document.getElementById('recDateFilter').value;if(!d){alert('Date select karen');return;}let f=records.filter(r=>r.dateISO===d);renderRecord(f);}
-function showAllRecord(){document.getElementById('recDateFilter').value='';renderRecord();}
-function printByDate(){
- let d=document.getElementById('recDateFilter').value;
- if(!d){alert('Pehle date select karen');return;}
- let list=records.filter(r=>r.dateISO===d);
- if(list.length===0){alert('Is date ka koi record nahi');return;}
- closeAll();
- document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'));
- setTimeout(()=>{window.print();},300);
+function renderUser(){
+  const own=entriesCache.filter(e=>e.userId===currentProfile.uid);
+  setApp(`<div class="wrap">${header("Hello, "+esc(currentProfile.name.split(" ")[0]),"Submit a new entry. Your submission will appear on the admin dashboard in real time.")}<div class="grid"><div class="stat"><small>YOUR RECORDS</small><div class="num">${own.length}</div></div><div class="stat"><small>ACCOUNT STATUS</small><div class="num" style="font-size:22px;color:#16865f">${esc(currentProfile.status)}</div></div><div class="stat"><small>YOUR USER ID</small><div class="num" style="font-size:21px">${esc(currentProfile.userCode)}</div></div><div class="stat"><small>SYNC</small><div class="num" style="font-size:22px">Live</div></div></div><div class="two"><section class="panel"><h2>Create new entry</h2><p class="desc">Your records are securely linked to your account.</p><form id="entryForm"><div class="field"><label>ENTRY TITLE</label><input name="title" required maxlength="120" placeholder="What is this entry about?"></div><div class="field"><label>CATEGORY</label><select name="category"><option>General</option><option>Operations</option><option>Sales</option><option>Inventory</option><option>Attendance</option><option>Support</option><option>Other</option></select></div><div class="field"><label>DETAILS</label><textarea name="details" maxlength="3000" placeholder="Add relevant information…"></textarea></div><button class="btn primary">Submit entry</button></form></section><section class="panel"><h2>Submission guide</h2><p class="muted">Use a clear title, select the closest category, and include relevant details. Only you and workspace admins can access your entry records.</p></section></div><section class="panel"><h2>Your recent entries</h2><p class="desc">Only your own submissions are shown.</p>${entryTable(own)}</section></div>`);
+  $("#entryForm").onsubmit=renderUserPageSubmit;
 }
-function saveRecord(type){
- let refMap={presc:currentRefs.presc,fitness:currentRefs.fitness,medical:currentRefs.medical,referral:currentRefs.referral,all:'ALL'};
- let ref=refMap[type]||document.getElementById('i_ref').value;
- let dshow=getDateShow();
- records.push({type:type.toUpperCase(),name:i_name.value,ref:ref,datetime:dshow+' '+new Date().toLocaleTimeString(),dateISO:i_date.value||new Date().toISOString().slice(0,10)});
- localStorage.setItem('huma_letters_records',JSON.stringify(records)); renderRecord();
- if(type!=='all'){
-   let newRef=genRef(type);
-   currentRefs[type]=newRef;
-   if(type==='presc'){let newOPD=genRef('opd');currentRefs.opd=newOPD;document.getElementById('i_opd').value=newOPD;}
-   localStorage.setItem('huma_current_refs',JSON.stringify(currentRefs));
-   if(currentFilter===type) document.getElementById('i_ref').value=newRef;
-   sync();
- }
-}
-function savePrint(){
- sync();
- saveRecord(currentFilter);
- closeAll();
- document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===currentFilter) w.classList.remove('hidden'); else w.classList.add('hidden')});
- setTimeout(()=>{window.print(); setTimeout(()=>openLetter(currentFilter),400);},300);
-}
-function printSingle(type){
- sync();
- saveRecord(type);
- closeAll();
- document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===type) w.classList.remove('hidden'); else w.classList.add('hidden')});
- setTimeout(()=>{window.print(); setTimeout(()=>openLetter(type),400);},300);
-}
-function printCurrent(){
- if(currentFilter==='all') {printAll(); return;}
- printSingle(currentFilter);
-}
-function printAll(){
- sync();
- records.push({type:'ALL',name:i_name.value,ref:'ALL',datetime:getDateShow()+' '+new Date().toLocaleTimeString(),dateISO:i_date.value||new Date().toISOString().slice(0,10)});
- localStorage.setItem('huma_letters_records',JSON.stringify(records));renderRecord();
- closeAll();
- document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'));
- setTimeout(()=>{window.print();},300);
-}
-function reprintRecord(idx){
- let r=records[idx];
- let map={PRESC:'presc',FITNESS:'fitness',MEDICAL:'medical',REFERRAL:'referral',RX:'presc',FIT:'fitness',MED:'medical',REF:'referral',ALL:'all'};
- let t=map[r.type]||'presc';
- closeAll();
- if(t==='all'){document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'))}
- else {document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===t) w.classList.remove('hidden'); else w.classList.add('hidden')})}
- setTimeout(()=>{window.print();},300);
-}
-function clearRecord(){if(confirm('Clear all records?')){records=[];localStorage.removeItem('huma_letters_records');renderRecord();}}
-renderRecord();
+function exportCsv(){const rows=[["Record ID","User ID","User name","Title","Category","Details","Created"],...entriesCache.map(e=>[e.id,e.userCode,e.userName,e.title,e.category,e.details,dateText(e.createdAt)])];const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="northstar-entries.csv";a.click();URL.revokeObjectURL(a.href);}
 </script>
 </body>
 </html>
