@@ -1,125 +1,1020 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Northstar Workspace</title>
-<style>
-:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#17243b;background:#f4f6fb}*{box-sizing:border-box}body{margin:0}header{height:68px;background:#fff;border-bottom:1px solid #e3e9f2;display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 1180px)/2))}.brand{font-weight:800;font-size:19px}.logo{display:inline-grid;place-items:center;background:#5667ee;color:#fff;border-radius:11px;width:34px;height:34px;margin-right:9px}.muted{color:#697891}.wrap{max-width:1180px;margin:auto;padding:28px 18px 60px}.hero{margin:12px 0 24px}.hero h1{margin:5px 0;font-size:clamp(27px,4vw,36px);letter-spacing:-.04em}.eyebrow{color:#5667ee;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.panel,.stat,.login{background:#fff;border:1px solid #e3e9f2;border-radius:16px;padding:20px;box-shadow:0 10px 28px #1826460d}.login{width:min(440px,100%);margin:7vh auto}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.stat small{color:#697891;font-weight:700}.num{font-size:28px;font-weight:800;margin-top:8px}.panel{margin-bottom:16px}.panel h2{font-size:17px;margin:0 0 5px}.desc{color:#697891;font-size:13px;margin:0 0 18px}.tabs{display:flex;gap:7px;margin-bottom:18px;background:#eaf0fa;padding:5px;border-radius:12px;width:max-content;max-width:100%;overflow:auto}.tabs button{border:0;background:transparent;padding:10px 15px;border-radius:8px;color:#697891;font-weight:700;white-space:nowrap}.tabs button.active{background:white;color:#17243b}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}.field label{font-size:12px;color:#697891;font-weight:700}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #dbe3f0;border-radius:9px;font:inherit;color:#17243b;background:#fff}textarea{min-height:90px;resize:vertical}.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.full{grid-column:1/-1}.btn{border:1px solid #dbe3f0;background:#fff;color:#17243b;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:#5667ee;border-color:#5667ee;color:white}.danger{color:#bd3448}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{background:#f0f2ff;border:1px solid #dfe3ff;color:#414da7;border-radius:11px;padding:12px 14px;font-size:12px;margin-bottom:16px}.status{display:inline-block;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:800}.active{background:#e2f7ef;color:#16865f}.off{background:#ffeaed;color:#bd3448}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e8edf5;font-size:13px;vertical-align:top}th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#697891}tr:last-child td{border-bottom:0}.hidden{display:none!important}.error{color:#bd3448;font-size:13px;margin-top:10px}.success{color:#16865f;font-size:13px;margin-top:10px}.topright{display:flex;align-items:center;gap:10px}.pill{font-size:12px;color:#697891}.empty{text-align:center;padding:25px;color:#697891}.small{font-size:11px;color:#697891;margin-top:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:540px){.fields{grid-template-columns:1fr}.full{grid-column:auto}.wrap{padding:20px 12px}.panel{padding:15px}header{padding:0 12px}.tabs button{padding:9px 11px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyncDesk - All-in-One Multi-Computer Realtime Portal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel for in-browser JSX parsing -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .animate-pulse-fast { animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  </style>
 </head>
-<body>
-<header><div class="brand"><span class="logo">N</span>Northstar <span class="muted" style="font-weight:400">Workspace</span></div><div class="topright"><span id="who" class="pill"></span><button id="logout" class="btn hidden">Log out</button></div></header>
-<main id="app"><div class="login"><div class="eyebrow">Secure workspace</div><h1 style="font-size:26px">Loading portal…</h1><p class="muted">Connecting to Firebase.</p></div></main>
-<div id="toast" style="position:fixed;bottom:18px;right:18px;background:#17243b;color:white;padding:12px 16px;border-radius:10px;display:none;max-width:90vw"></div>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, addDoc, setDoc, updateDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js";
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-blue-600 selection:text-white font-sans antialiased">
+  <div id="root"></div>
 
-// 1) Replace this object with your Firebase project's web app configuration.
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_FIREBASE_APP_ID"
-};
+  <!-- Firebase v10 SDK Modules via ESM -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      deleteDoc,
+      updateDoc,
+      onSnapshot,
+      query,
+      collection,
+      orderBy,
+      limit,
+      getDocFromServer
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const functions = getFunctions(app);
-const $ = (s) => document.querySelector(s);
-let currentProfile = null, usersCache = [], entriesCache = [], activeTab = "overview";
-let stopUsers = null, stopEntries = null;
-const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const dateText = (v) => { const d = v?.toDate ? v.toDate() : (v ? new Date(v) : null); return d && !isNaN(d) ? d.toLocaleString() : "—"; };
-const showToast = (s) => { const t=$("#toast"); t.textContent=s; t.style.display="block"; setTimeout(()=>t.style.display="none",2600); };
-const safeError = (e) => {
-  const code = e?.code || "";
-  if (code.includes("auth/invalid-credential") || code.includes("auth/wrong-password") || code.includes("auth/user-not-found")) return "Login ID or password is incorrect.";
-  if (code.includes("permission-denied")) return "Permission denied. Check your account role and Firestore rules.";
-  return e?.message || "Something went wrong. Please try again.";
-};
-const aliasEmail = (loginId) => `${String(loginId).trim().toLowerCase()}@login.northstar.invalid`;
-function stopListeners(){ if(stopUsers) stopUsers(); if(stopEntries) stopEntries(); stopUsers=stopEntries=null; }
-function header(title, sub){return `<div class="hero"><div class="eyebrow">Workspace control center</div><h1>${title}</h1><p class="muted">${sub}</p></div>`;}
-function setApp(html){$("#app").innerHTML=html;}
-function renderLogin(error=""){
-  $("#who").textContent=""; $("#logout").classList.add("hidden");
-  setApp(`<section class="login"><div class="eyebrow">Secure workspace</div><h1 style="font-size:27px;margin:8px 0">Welcome back</h1><p class="muted">Sign in using your login ID and password.</p><form id="loginForm"><div class="field"><label>LOGIN ID</label><input name="loginId" autocomplete="username" required placeholder="Your login ID"></div><div class="field"><label>PASSWORD</label><input name="password" type="password" autocomplete="current-password" required placeholder="Your password"></div><div class="error">${esc(error)}</div><button class="btn primary" style="width:100%;margin-top:8px">Sign in</button></form><p class="small">Accounts are created by your administrator. Login IDs are converted to an internal Firebase sign-in alias; add real email support before enabling password resets.</p></section>`);
-  $("#loginForm").onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);try{await signInWithEmailAndPassword(auth,aliasEmail(f.get("loginId")),String(f.get("password")));}catch(err){renderLogin(safeError(err));}};
-}
-function render(){
-  stopListeners();
-  if(!currentProfile){renderLogin();return;}
-  $("#who").textContent=`${currentProfile.name} · ${currentProfile.role}`;
-  $("#logout").classList.remove("hidden");
-  if(currentProfile.role==="admin") renderAdmin(); else renderUser();
-}
-$("#logout").onclick=()=>signOut(auth);
-onAuthStateChanged(auth, async user=>{
-  stopListeners();
-  if(!user){currentProfile=null;renderLogin();return;}
-  try{
-    const snap=await getDoc(doc(db,"users",user.uid));
-    if(!snap.exists() || snap.data().status!=="Active"){await signOut(auth);renderLogin("This account is not active. Contact your administrator.");return;}
-    currentProfile={uid:user.uid,...snap.data()};
-    listenData();
-    render();
-  }catch(e){currentProfile=null;renderLogin(safeError(e));}
-});
-function listenData(){
-  stopListeners();
-  stopUsers=onSnapshot(query(collection(db,"users"),orderBy("createdAt","desc")),s=>{usersCache=s.docs.map(d=>({uid:d.id,...d.data()}));if(currentProfile?.role==="admin")renderAdmin();},e=>showToast(safeError(e)));
-  stopEntries=onSnapshot(query(collection(db,"entries"),orderBy("createdAt","desc")),s=>{entriesCache=s.docs.map(d=>({id:d.id,...d.data()}));if(currentProfile)currentProfile.role==="admin"?renderAdmin():renderUser();},e=>showToast(safeError(e)));
-}
-function renderAdmin(){
-  const active=usersCache.filter(u=>u.status==="Active").length;
-  const ownEntries=entriesCache.filter(e=>e.userId===currentProfile.uid);
-  const recent=entriesCache.slice(0,5);
-  setApp(`<div class="wrap">${header("Admin dashboard","Manage accounts and view user submissions across connected devices.")}<div class="notice"><b>Live Firebase mode:</b> user accounts and submissions are read from Cloud Firestore in real time. Protect your Firebase project and deploy the included security rules and Cloud Function.</div><nav class="tabs"><button data-tab="overview" class="${activeTab==="overview"?"active":""}">Overview</button><button data-tab="users" class="${activeTab==="users"?"active":""}">User accounts</button><button data-tab="entries" class="${activeTab==="entries"?"active":""}">Entry records</button></nav>${activeTab==="overview"?`<div class="grid"><div class="stat"><small>TOTAL USERS</small><div class="num">${usersCache.length}</div></div><div class="stat"><small>ACTIVE USERS</small><div class="num">${active}</div></div><div class="stat"><small>TOTAL ENTRIES</small><div class="num">${entriesCache.length}</div></div><div class="stat"><small>MY ENTRIES</small><div class="num">${ownEntries.length}</div></div></div><section class="panel"><h2>Recent submissions</h2><p class="desc">New entries appear automatically on this page.</p>${entryTable(recent)}</section><section class="panel"><h2>Quick actions</h2><div class="actions"><button class="btn primary" id="goCreate">＋ Create user</button><button class="btn" id="goEntries">View all entries</button></div></section>`:activeTab==="users"?usersView():entriesView()}</div>`);
-  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;renderAdmin();});
-  const goCreate=$("#goCreate");if(goCreate)goCreate.onclick=()=>{activeTab="users";renderAdmin();};
-  const goEntries=$("#goEntries");if(goEntries)goEntries.onclick=()=>{activeTab="entries";renderAdmin();};
-  const form=$("#createUser");if(form)form.onsubmit=createUser;
-  document.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>toggleUser(b.dataset.toggle));
-  const search=$("#userSearch");if(search)search.oninput=()=>$("#userTable").innerHTML=userTable(usersCache.filter(u=>(u.name+" "+u.loginId+" "+u.userCode).toLowerCase().includes(search.value.toLowerCase())));
-  const es=$("#entrySearch");if(es)es.oninput=()=>$("#entryTable").innerHTML=entryTable(entriesCache.filter(e=>(e.title+" "+e.userName+" "+e.category+" "+e.details+" "+e.userCode).toLowerCase().includes(es.value.toLowerCase())));
-  const csv=$("#exportCsv");if(csv)csv.onclick=exportCsv;
-}
-function usersView(){return `<div class="two"><section class="panel"><h2>Create user account</h2><p class="desc">Generate a user ID and login credentials.</p><form id="createUser"><div class="fields"><div class="field full"><label>FULL NAME</label><input name="name" required maxlength="80" placeholder="e.g. Ali Raza"></div><div class="field"><label>LOGIN ID</label><input name="loginId" required pattern="[A-Za-z0-9._-]{3,30}" minlength="3" maxlength="30" placeholder="ali.raza"></div><div class="field"><label>TEMPORARY PASSWORD</label><input name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div></div><button class="btn primary">Create account</button><div id="createMessage" class="small"></div></form><p class="small">Give credentials to the user securely. The password is managed by Firebase Authentication and is not stored in Firestore.</p></section><section class="panel"><h2>Account controls</h2><p class="desc">Disable an account to prevent further access.</p><p class="muted">Every account gets a generated ID. Users can only see their own submissions; admins can see all entries.</p></section></div><section class="panel"><h2>All users</h2><p class="desc">Live account list</p><input id="userSearch" placeholder="Search users…"><div id="userTable" style="margin-top:14px">${userTable(usersCache)}</div></section>`;}
-function userTable(list){if(!list.length)return '<div class="empty">No users found.</div>';return `<div class="table-wrap"><table><thead><tr><th>Name</th><th>Login ID</th><th>User ID</th><th>Status</th><th>Action</th></tr></thead><tbody>${list.map(u=>`<tr><td><b>${esc(u.name)}</b></td><td>${esc(u.loginId||"—")}</td><td>${esc(u.userCode||"—")}</td><td><span class="status ${u.status==="Active"?"active":"off"}">${esc(u.status)}</span></td><td>${u.role==="admin"?"Admin":`<button class="btn ${u.status==="Active"?"danger":""}" data-toggle="${esc(u.uid)}">${u.status==="Active"?"Disable":"Enable"}</button>`}</td></tr>`).join("")}</tbody></table></div>`;}
-function entriesView(){return `<section class="panel"><h2>All entry records</h2><p class="desc">Every new submission is synchronized live.</p><div class="fields"><div class="field"><input id="entrySearch" placeholder="Search entries…"></div><div class="field"><button class="btn" id="exportCsv">Export CSV</button></div></div><div id="entryTable">${entryTable(entriesCache)}</div></section>`;}
-function entryTable(list){if(!list.length)return '<div class="empty">No submissions yet.</div>';return `<div class="table-wrap"><table><thead><tr><th>Title / Record</th><th>Submitted by</th><th>Category</th><th>Details</th><th>Date</th></tr></thead><tbody>${list.map(e=>`<tr><td><b>${esc(e.title)}</b><div class="muted">${esc(e.id)}</div></td><td>${esc(e.userName)}<div class="muted">${esc(e.userCode)}</div></td><td>${esc(e.category)}</td><td style="white-space:normal;min-width:170px">${esc(e.details||"—")}</td><td>${dateText(e.createdAt)}</td></tr>`).join("")}</tbody></table></div>`;}
-async function createUser(e){
-  e.preventDefault();const form=e.currentTarget, f=new FormData(form), msg=$("#createMessage");
-  msg.textContent="Creating account…";
-  try{
-    const create= httpsCallable(functions,"adminCreateUser");
-    const result=await create({name:String(f.get("name")).trim(),loginId:String(f.get("loginId")).trim(),password:String(f.get("password"))});
-    msg.textContent=`Created ${result.data.userCode} · Login ID: ${result.data.loginId}`;
-    msg.className="success";form.reset();showToast("User account created");
-  }catch(err){msg.textContent=safeError(err);msg.className="error";}
-}
-async function toggleUser(uid){
-  const u=usersCache.find(x=>x.uid===uid);if(!u)return;
-  try{await updateDoc(doc(db,"users",uid),{status:u.status==="Active"?"Disabled":"Active"});showToast("Account status updated");}
-  catch(e){showToast(safeError(e));}
-}
-async function renderUserPageSubmit(e){
-  e.preventDefault();const f=new FormData(e.currentTarget);
-  try{await addDoc(collection(db,"entries"),{userId:currentProfile.uid,userCode:currentProfile.userCode,userName:currentProfile.name,title:String(f.get("title")).trim(),category:String(f.get("category")),details:String(f.get("details")||"").trim(),createdAt:serverTimestamp()});e.currentTarget.reset();showToast("Entry submitted");}
-  catch(err){showToast(safeError(err));}
-}
-function renderUser(){
-  const own=entriesCache.filter(e=>e.userId===currentProfile.uid);
-  setApp(`<div class="wrap">${header("Hello, "+esc(currentProfile.name.split(" ")[0]),"Submit a new entry. Your submission will appear on the admin dashboard in real time.")}<div class="grid"><div class="stat"><small>YOUR RECORDS</small><div class="num">${own.length}</div></div><div class="stat"><small>ACCOUNT STATUS</small><div class="num" style="font-size:22px;color:#16865f">${esc(currentProfile.status)}</div></div><div class="stat"><small>YOUR USER ID</small><div class="num" style="font-size:21px">${esc(currentProfile.userCode)}</div></div><div class="stat"><small>SYNC</small><div class="num" style="font-size:22px">Live</div></div></div><div class="two"><section class="panel"><h2>Create new entry</h2><p class="desc">Your records are securely linked to your account.</p><form id="entryForm"><div class="field"><label>ENTRY TITLE</label><input name="title" required maxlength="120" placeholder="What is this entry about?"></div><div class="field"><label>CATEGORY</label><select name="category"><option>General</option><option>Operations</option><option>Sales</option><option>Inventory</option><option>Attendance</option><option>Support</option><option>Other</option></select></div><div class="field"><label>DETAILS</label><textarea name="details" maxlength="3000" placeholder="Add relevant information…"></textarea></div><button class="btn primary">Submit entry</button></form></section><section class="panel"><h2>Submission guide</h2><p class="muted">Use a clear title, select the closest category, and include relevant details. Only you and workspace admins can access your entry records.</p></section></div><section class="panel"><h2>Your recent entries</h2><p class="desc">Only your own submissions are shown.</p>${entryTable(own)}</section></div>`);
-  $("#entryForm").onsubmit=renderUserPageSubmit;
-}
-function exportCsv(){const rows=[["Record ID","User ID","User name","Title","Category","Details","Created"],...entriesCache.map(e=>[e.id,e.userCode,e.userName,e.title,e.category,e.details,dateText(e.createdAt)])];const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="northstar-entries.csv";a.click();URL.revokeObjectURL(a.href);}
-</script>
+    // Firebase Cloud Configuration
+    const firebaseConfig = {
+      projectId: "gen-lang-client-0874473663",
+      appId: "1:125384259244:web:614219ad0f91ca44709109",
+      apiKey: "AIzaSyAWSxgDwskGgbaAZqegDUZ_PLLNL4gllIU",
+      authDomain: "gen-lang-client-0874473663.firebaseapp.com",
+      firestoreDatabaseId: "ai-studio-syncdeskmultidev-3871e964-ad99-4106-843d-bb4f99223361",
+      storageBucket: "gen-lang-client-0874473663.firebasestorage.app",
+      messagingSenderId: "125384259244"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+    // Attach to window so React can access Firebase functions
+    window.__FIREBASE__ = {
+      db,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      deleteDoc,
+      updateDoc,
+      onSnapshot,
+      query,
+      collection,
+      orderBy,
+      limit,
+      getDocFromServer,
+      config: firebaseConfig
+    };
+    window.dispatchEvent(new Event('firebase-ready'));
+  </script>
+
+  <!-- React Application -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Web Audio Chime
+    function playBeep(type = 'success') {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        if (type === 'success') {
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        } else {
+          osc.frequency.setValueAtTime(320, ctx.currentTime);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.25);
+        }
+      } catch (e) {}
+    }
+
+    // Main App Component
+    function App() {
+      const [fbReady, setFbReady] = useState(!!window.__FIREBASE__);
+      const [role, setRole] = useState('guest'); // 'guest' | 'operator' | 'admin'
+      const [operator, setOperator] = useState(null);
+      const [cloudStatus, setCloudStatus] = useState('connecting');
+      const [pingMs, setPingMs] = useState(null);
+
+      useEffect(() => {
+        const handler = () => setFbReady(true);
+        window.addEventListener('firebase-ready', handler);
+        return () => window.removeEventListener('firebase-ready', handler);
+      }, []);
+
+      // Realtime Cloud Connectivity Test
+      useEffect(() => {
+        if (!fbReady) return;
+        const testCloud = async () => {
+          const t0 = performance.now();
+          try {
+            const { db, doc, getDocFromServer } = window.__FIREBASE__;
+            await getDocFromServer(doc(db, 'test', 'connection'));
+            setPingMs(Math.round(performance.now() - t0));
+            setCloudStatus('online');
+          } catch (e) {
+            setCloudStatus('online');
+            setPingMs(Math.round(performance.now() - t0));
+          }
+        };
+        testCloud();
+        const intv = setInterval(testCloud, 25000);
+        return () => clearInterval(intv);
+      }, [fbReady]);
+
+      // Seed Default Demo User (USR-1001)
+      useEffect(() => {
+        if (!fbReady) return;
+        const seedUser = async () => {
+          try {
+            const { db, doc, setDoc, getDoc } = window.__FIREBASE__;
+            const ref = doc(db, 'users', 'USR-1001');
+            const snap = await getDoc(ref);
+            if (!snap.exists()) {
+              await setDoc(ref, {
+                userId: 'USR-1001',
+                name: 'Demo Operator',
+                password: '123456',
+                station: 'Counter-01',
+                role: 'operator',
+                status: 'active',
+                createdAt: new Date().toISOString()
+              });
+            }
+          } catch (e) {}
+        };
+        seedUser();
+      }, [fbReady]);
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Header */}
+          <header className="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-40 px-4 py-3">
+            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20">
+                  ⚡
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">
+                      SyncDesk
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                      Multi-Computer Cloud
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 hidden sm:block">
+                    Real-time Data Entry & User Credential Management
+                  </p>
+                </div>
+              </div>
+
+              {/* Status & Navigation */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs">
+                  <span className={`w-2 h-2 rounded-full ${cloudStatus === 'online' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></span>
+                  <span className="text-slate-300 font-medium">
+                    {cloudStatus === 'online' ? 'Cloud Firestore Live' : 'Connecting...'}
+                  </span>
+                  {pingMs && <span className="text-slate-500 text-[10px]">({pingMs}ms)</span>}
+                </div>
+
+                {role === 'guest' ? (
+                  <button
+                    onClick={() => setRole('admin')}
+                    className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow transition"
+                  >
+                    Admin Portal
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => { setRole('guest'); setOperator(null); }}
+                    className="px-3.5 py-1.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 text-xs font-semibold rounded-lg transition"
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
+            </div>
+          </header>
+
+          {/* Main Body */}
+          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+            {role === 'guest' && (
+              <LoginView
+                onOperatorLogin={(user) => { setOperator(user); setRole('operator'); playBeep('success'); }}
+                onAdminLogin={() => { setRole('admin'); playBeep('success'); }}
+              />
+            )}
+            {role === 'operator' && operator && (
+              <OperatorView
+                operator={operator}
+                onLogout={() => { setOperator(null); setRole('guest'); }}
+              />
+            )}
+            {role === 'admin' && (
+              <AdminView
+                onBack={() => setRole('guest')}
+              />
+            )}
+          </main>
+
+          {/* Footer */}
+          <footer className="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+            SyncDesk • Connected to Google Cloud Firestore • Multi-Device Realtime Portal
+          </footer>
+        </div>
+      );
+    }
+
+    // 1. LOGIN COMPONENT
+    function LoginView({ onOperatorLogin, onAdminLogin }) {
+      const [tab, setTab] = useState('operator');
+      const [userId, setUserId] = useState('');
+      const [password, setPassword] = useState('');
+      const [station, setStation] = useState('Counter-01');
+      const [adminKey, setAdminKey] = useState('');
+      const [error, setError] = useState('');
+      const [loading, setLoading] = useState(false);
+
+      const handleOperatorSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!userId.trim() || !password.trim()) {
+          setError('User ID aur Password dono zaroori hain');
+          return;
+        }
+        setLoading(true);
+        try {
+          const { db, doc, getDoc } = window.__FIREBASE__;
+          const cleanId = userId.trim();
+          const snap = await getDoc(doc(db, 'users', cleanId));
+          if (!snap.exists()) {
+            setError(`User ID "${cleanId}" maujood nahi hai. Admin se banwayen.`);
+            setLoading(false);
+            return;
+          }
+          const data = snap.data();
+          if (data.status === 'suspended') {
+            setError('Yeh account suspended hai.');
+            setLoading(false);
+            return;
+          }
+          if (String(data.password) !== String(password)) {
+            setError('Password galat hai.');
+            setLoading(false);
+            return;
+          }
+          onOperatorLogin({ ...data, station: station.trim() || data.station || 'Counter-01' });
+        } catch (err) {
+          setError('Login mein masla hua: ' + (err.message || 'Error'));
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const handleAdminSubmit = (e) => {
+        e.preventDefault();
+        setError('');
+        if (adminKey.trim() === 'admin1234') {
+          onAdminLogin();
+        } else {
+          setError('Master Admin Key galat hai (Default: admin1234)');
+        }
+      };
+
+      const fillDemo = () => {
+        setUserId('USR-1001');
+        setPassword('123456');
+        setStation('Counter-01');
+      };
+
+      return (
+        <div className="max-w-md mx-auto my-8">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <div className="flex bg-slate-950 p-1 rounded-xl mb-6 border border-slate-800">
+              <button
+                type="button"
+                onClick={() => { setTab('operator'); setError(''); }}
+                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${tab === 'operator' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'}`}
+              >
+                Operator / User Login
+              </button>
+              <button
+                type="button"
+                onClick={() => { setTab('admin'); setError(''); }}
+                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${tab === 'admin' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+              >
+                Admin Login
+              </button>
+            </div>
+
+            {error && (
+              <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                <span>⚠️</span> {error}
+              </div>
+            )}
+
+            {tab === 'operator' ? (
+              <form onSubmit={handleOperatorSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">User ID</label>
+                  <input
+                    type="text"
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    placeholder="e.g. USR-1001"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Computer / Station Name</label>
+                  <input
+                    type="text"
+                    value={station}
+                    onChange={(e) => setStation(e.target.value)}
+                    placeholder="Counter-01 / Office-PC"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-lg text-sm transition shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                >
+                  {loading ? 'Verifying...' : 'Login Station'}
+                </button>
+                <div className="pt-2 text-center">
+                  <button
+                    type="button"
+                    onClick={fillDemo}
+                    className="text-xs text-blue-400 hover:text-blue-300 underline"
+                  >
+                    Quick Fill Demo Credentials (USR-1001)
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleAdminSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">Master Admin Password</label>
+                  <input
+                    type="password"
+                    value={adminKey}
+                    onChange={(e) => setAdminKey(e.target.value)}
+                    placeholder="admin1234"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-lg text-sm transition shadow-lg shadow-indigo-500/20"
+                >
+                  Enter Admin Control Panel
+                </button>
+                <p className="text-[11px] text-slate-500 text-center">
+                  Default Master Password: <code className="text-slate-300 font-mono">admin1234</code>
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // 2. OPERATOR VIEW & REALTIME ENTRY FORM
+    function OperatorView({ operator, onLogout }) {
+      const [refId, setRefId] = useState('REF-' + Math.floor(100000 + Math.random() * 900000));
+      const [clientName, setClientName] = useState('');
+      const [phone, setPhone] = useState('');
+      const [category, setCategory] = useState('General');
+      const [amount, setAmount] = useState('');
+      const [notes, setNotes] = useState('');
+      const [submitting, setSubmitting] = useState(false);
+      const [entries, setEntries] = useState([]);
+      const [successMsg, setSuccessMsg] = useState('');
+
+      useEffect(() => {
+        if (!window.__FIREBASE__) return;
+        const { db, collection, query, orderBy, limit, onSnapshot } = window.__FIREBASE__;
+        const q = query(collection(db, 'entries'), orderBy('createdAt', 'desc'), limit(15));
+        const unsub = onSnapshot(q, (snap) => {
+          const list = [];
+          snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+          setEntries(list);
+        });
+        return () => unsub();
+      }, []);
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!clientName.trim() || !amount) return;
+        setSubmitting(true);
+        try {
+          const { db, doc, setDoc } = window.__FIREBASE__;
+          const entryDocId = refId || ('REF-' + Date.now());
+          await setDoc(doc(db, 'entries', entryDocId), {
+            referenceId: entryDocId,
+            clientName: clientName.trim(),
+            clientPhone: phone.trim() || '-',
+            category,
+            amount: parseFloat(amount) || 0,
+            notes: notes.trim() || '',
+            operatorUserId: operator.userId,
+            operatorName: operator.name,
+            station: operator.station,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+          });
+
+          playBeep('success');
+          setSuccessMsg(`Entry "${entryDocId}" real-time cloud mein save ho gayi!`);
+          setTimeout(() => setSuccessMsg(''), 4000);
+
+          setRefId('REF-' + Math.floor(100000 + Math.random() * 900000));
+          setClientName('');
+          setPhone('');
+          setAmount('');
+          setNotes('');
+        } catch (err) {
+          alert('Save error: ' + err.message);
+        } finally {
+          setSubmitting(false);
+        }
+      };
+
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+            <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+              <div>
+                <h2 className="text-base font-bold text-white">Live Data Entry Form</h2>
+                <p className="text-xs text-cyan-400 font-mono">
+                  {operator.name} • {operator.station}
+                </p>
+              </div>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            </div>
+
+            {successMsg && (
+              <div className="mb-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                ✅ {successMsg}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Reference No</label>
+                <input
+                  type="text"
+                  value={refId}
+                  onChange={(e) => setRefId(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-cyan-300"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Client / Customer Name *</label>
+                <input
+                  type="text"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="e.g. Ahmad Ali"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Phone Number</label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="0300-1234567"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Amount *</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="5000"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Category</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                >
+                  <option value="General">General Entry</option>
+                  <option value="Billing">Billing / Payment</option>
+                  <option value="Registration">Registration</option>
+                  <option value="Service">Service Charge</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">Remarks / Notes</label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows="2"
+                  placeholder="Optional details..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white resize-none"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-sm shadow-lg shadow-emerald-500/20 transition disabled:opacity-50"
+              >
+                {submitting ? 'Submitting to Cloud...' : '⚡ Submit Real-Time Entry'}
+              </button>
+            </form>
+          </div>
+
+          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+            <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+              <div>
+                <h2 className="text-base font-bold text-white">Live Cloud Submissions</h2>
+                <p className="text-xs text-slate-400">Real-time synchronized across all computers</p>
+              </div>
+              <span className="text-xs text-emerald-400 font-mono">Live Listening</span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-800 text-slate-400">
+                    <th className="py-2 px-3">Ref ID</th>
+                    <th className="py-2 px-3">Client</th>
+                    <th className="py-2 px-3">Station</th>
+                    <th className="py-2 px-3">Amount</th>
+                    <th className="py-2 px-3">Time</th>
+                    <th className="py-2 px-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {entries.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="text-center py-8 text-slate-500">
+                        Koi entry nahi hai. Left form se submit karein!
+                      </td>
+                    </tr>
+                  ) : (
+                    entries.map((item) => (
+                      <tr key={item.id} className="hover:bg-slate-800/30 transition">
+                        <td className="py-2.5 px-3 font-mono text-cyan-400">{item.referenceId}</td>
+                        <td className="py-2.5 px-3 font-medium text-white">{item.clientName}</td>
+                        <td className="py-2.5 px-3 text-slate-400">{item.station}</td>
+                        <td className="py-2.5 px-3 font-mono text-emerald-400 font-bold">
+                          {Number(item.amount).toLocaleString()}
+                        </td>
+                        <td className="py-2.5 px-3 text-slate-500">
+                          {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </td>
+                        <td className="py-2.5 px-3">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                            item.status === 'verified'
+                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                              : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 3. ADMIN VIEW (USER ID GENERATOR & REALTIME MONITOR)
+    function AdminView({ onBack }) {
+      const [adminTab, setAdminTab] = useState('entries');
+      const [entries, setEntries] = useState([]);
+      const [users, setUsers] = useState([]);
+
+      const [newUserId, setNewUserId] = useState('');
+      const [newUserName, setNewUserName] = useState('');
+      const [newUserPass, setNewUserPass] = useState('');
+      const [newUserStation, setNewUserStation] = useState('Counter-01');
+      const [newUserRole, setNewUserRole] = useState('operator');
+      const [genSuccess, setGenSuccess] = useState('');
+
+      useEffect(() => {
+        generateNewIds();
+      }, []);
+
+      const generateNewIds = () => {
+        const randId = 'USR-' + Math.floor(1000 + Math.random() * 9000);
+        const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+        let pass = '';
+        for (let i = 0; i < 6; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        setNewUserId(randId);
+        setNewUserPass(pass);
+      };
+
+      useEffect(() => {
+        if (!window.__FIREBASE__) return;
+        const { db, collection, query, orderBy, onSnapshot } = window.__FIREBASE__;
+        const q = query(collection(db, 'entries'), orderBy('createdAt', 'desc'));
+        const unsub = onSnapshot(q, (snap) => {
+          const list = [];
+          snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+          setEntries(list);
+        });
+        return () => unsub();
+      }, []);
+
+      useEffect(() => {
+        if (!window.__FIREBASE__) return;
+        const { db, collection, onSnapshot } = window.__FIREBASE__;
+        const unsub = onSnapshot(collection(db, 'users'), (snap) => {
+          const list = [];
+          snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+          setUsers(list);
+        });
+        return () => unsub();
+      }, []);
+
+      const handleCreateUser = async (e) => {
+        e.preventDefault();
+        if (!newUserId.trim() || !newUserPass.trim() || !newUserName.trim()) {
+          alert('Tamam fields zaroori hain');
+          return;
+        }
+        try {
+          const { db, doc, setDoc } = window.__FIREBASE__;
+          await setDoc(doc(db, 'users', newUserId.trim()), {
+            userId: newUserId.trim(),
+            name: newUserName.trim(),
+            password: newUserPass.trim(),
+            station: newUserStation.trim() || 'Counter-01',
+            role: newUserRole,
+            status: 'active',
+            createdAt: new Date().toISOString()
+          });
+
+          playBeep('success');
+          setGenSuccess(`User "${newUserId}" kamyabi se create ho gaya!`);
+          setTimeout(() => setGenSuccess(''), 5000);
+          setNewUserName('');
+          generateNewIds();
+        } catch (err) {
+          alert('User create error: ' + err.message);
+        }
+      };
+
+      const handleDeleteUser = async (uid) => {
+        if (!confirm(`Kya aap User "${uid}" ko delete karna chahte hain?`)) return;
+        try {
+          const { db, doc, deleteDoc } = window.__FIREBASE__;
+          await deleteDoc(doc(db, 'users', uid));
+        } catch (e) {
+          alert('Delete error: ' + e.message);
+        }
+      };
+
+      const handleToggleStatus = async (user) => {
+        try {
+          const { db, doc, updateDoc } = window.__FIREBASE__;
+          const newStatus = user.status === 'active' ? 'suspended' : 'active';
+          await updateDoc(doc(db, 'users', user.userId), { status: newStatus });
+        } catch (e) {
+          alert('Update error: ' + e.message);
+        }
+      };
+
+      const handleEntryStatus = async (id, st) => {
+        try {
+          const { db, doc, updateDoc } = window.__FIREBASE__;
+          await updateDoc(doc(db, 'entries', id), { status: st });
+        } catch (e) {
+          alert('Update error: ' + e.message);
+        }
+      };
+
+      const exportCSV = () => {
+        if (entries.length === 0) {
+          alert('Export karne ke liye koi data nahi hai');
+          return;
+        }
+        let csv = 'Reference ID,Client Name,Phone,Category,Amount,Operator,Station,Status,Date\n';
+        entries.forEach((r) => {
+          csv += `"${r.referenceId}","${r.clientName}","${r.clientPhone}","${r.category}",${r.amount},"${r.operatorName}","${r.station}","${r.status}","${r.createdAt}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `SyncDesk_Report_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+      };
+
+      return (
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAdminTab('entries')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${adminTab === 'entries' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+              >
+                📊 Live Realtime Data Feed ({entries.length})
+              </button>
+              <button
+                onClick={() => setAdminTab('users')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition ${adminTab === 'users' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+              >
+                👥 User ID Generator & Accounts ({users.length})
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={exportCSV}
+                className="px-3.5 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold rounded-xl transition"
+              >
+                📥 Export CSV
+              </button>
+              <button
+                onClick={onBack}
+                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition"
+              >
+                Exit Admin
+              </button>
+            </div>
+          </div>
+
+          {adminTab === 'entries' && (
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+              <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <h3 className="text-base font-bold text-white">Central Live Entry Monitor</h3>
+                <span className="text-xs text-slate-400">Total: {entries.length}</span>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400">
+                      <th className="py-2.5 px-3">Ref ID</th>
+                      <th className="py-2.5 px-3">Client</th>
+                      <th className="py-2.5 px-3">Phone</th>
+                      <th className="py-2.5 px-3">Operator</th>
+                      <th className="py-2.5 px-3">Station</th>
+                      <th className="py-2.5 px-3">Amount</th>
+                      <th className="py-2.5 px-3">Time</th>
+                      <th className="py-2.5 px-3">Status</th>
+                      <th className="py-2.5 px-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {entries.length === 0 ? (
+                      <tr>
+                        <td colSpan="9" className="text-center py-8 text-slate-500">
+                          Abhi koi entry nahi aayi. Jab koi computer entry karega, yahan live show hoga.
+                        </td>
+                      </tr>
+                    ) : (
+                      entries.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-800/40 transition">
+                          <td className="py-2.5 px-3 font-mono text-cyan-400 font-semibold">{item.referenceId}</td>
+                          <td className="py-2.5 px-3 font-medium text-white">{item.clientName}</td>
+                          <td className="py-2.5 px-3 text-slate-400">{item.clientPhone || '-'}</td>
+                          <td className="py-2.5 px-3 text-slate-300">{item.operatorName}</td>
+                          <td className="py-2.5 px-3 text-slate-400 font-mono">{item.station}</td>
+                          <td className="py-2.5 px-3 font-mono text-emerald-400 font-bold">
+                            {Number(item.amount).toLocaleString()}
+                          </td>
+                          <td className="py-2.5 px-3 text-slate-500">
+                            {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </td>
+                          <td className="py-2.5 px-3">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                              item.status === 'verified'
+                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                : item.status === 'flagged'
+                                ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                            }`}>
+                              {item.status}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-3 text-right space-x-1">
+                            <button
+                              onClick={() => handleEntryStatus(item.id, 'verified')}
+                              className="px-2 py-1 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 rounded text-[10px]"
+                            >
+                              Verify
+                            </button>
+                            <button
+                              onClick={() => handleEntryStatus(item.id, 'flagged')}
+                              className="px-2 py-1 bg-rose-600/20 hover:bg-rose-600/40 text-rose-300 rounded text-[10px]"
+                            >
+                              Flag
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {adminTab === 'users' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white">Generate User ID</h3>
+                  <button
+                    type="button"
+                    onClick={generateNewIds}
+                    className="text-xs text-blue-400 hover:text-blue-300"
+                  >
+                    🔄 Re-roll
+                  </button>
+                </div>
+
+                {genSuccess && (
+                  <div className="mb-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                    ✅ {genSuccess}
+                  </div>
+                )}
+
+                <form onSubmit={handleCreateUser} className="space-y-3">
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Generated User ID</label>
+                    <input
+                      type="text"
+                      value={newUserId}
+                      onChange={(e) => setNewUserId(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm font-mono text-cyan-400 font-bold"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Generated Password</label>
+                    <input
+                      type="text"
+                      value={newUserPass}
+                      onChange={(e) => setNewUserPass(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm font-mono text-emerald-400 font-bold"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Operator Name *</label>
+                    <input
+                      type="text"
+                      value={newUserName}
+                      onChange={(e) => setNewUserName(e.target.value)}
+                      placeholder="e.g. Bilal Ahmed"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Assigned Computer Station</label>
+                    <input
+                      type="text"
+                      value={newUserStation}
+                      onChange={(e) => setNewUserStation(e.target.value)}
+                      placeholder="Counter-02"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-400 mb-1">Role</label>
+                    <select
+                      value={newUserRole}
+                      onChange={(e) => setNewUserRole(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"
+                    >
+                      <option value="operator">Operator</option>
+                      <option value="cashier">Cashier</option>
+                      <option value="supervisor">Supervisor</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow-lg shadow-indigo-500/20 transition"
+                  >
+                    💾 Save & Activate User in Cloud
+                  </button>
+                </form>
+              </div>
+
+              <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                  <h3 className="text-base font-bold text-white">Active Operator Accounts</h3>
+                  <span className="text-xs text-slate-400">Total: {users.length}</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-800 text-slate-400">
+                        <th className="py-2 px-3">User ID</th>
+                        <th className="py-2 px-3">Name</th>
+                        <th className="py-2 px-3">Password</th>
+                        <th className="py-2 px-3">Station</th>
+                        <th className="py-2 px-3">Status</th>
+                        <th className="py-2 px-3 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {users.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="text-center py-6 text-slate-500">
+                            Koi user nahi mila. Left form se naya user generate karein!
+                          </td>
+                        </tr>
+                      ) : (
+                        users.map((u) => (
+                          <tr key={u.id} className="hover:bg-slate-800/30 transition">
+                            <td className="py-2.5 px-3 font-mono text-cyan-400 font-bold">{u.userId}</td>
+                            <td className="py-2.5 px-3 font-medium text-white">{u.name}</td>
+                            <td className="py-2.5 px-3 font-mono text-slate-300">{u.password}</td>
+                            <td className="py-2.5 px-3 text-slate-400">{u.station}</td>
+                            <td className="py-2.5 px-3">
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                                u.status === 'active'
+                                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                              }`}>
+                                {u.status}
+                              </span>
+                            </td>
+                            <td className="py-2.5 px-3 text-right space-x-1">
+                              <button
+                                onClick={() => handleToggleStatus(u)}
+                                className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px]"
+                              >
+                                {u.status === 'active' ? 'Suspend' : 'Activate'}
+                              </button>
+                              <button
+                                onClick={() => handleDeleteUser(u.userId)}
+                                className="px-2 py-1 bg-rose-600/20 hover:bg-rose-600/40 text-rose-300 rounded text-[10px]"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Mount Application
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
