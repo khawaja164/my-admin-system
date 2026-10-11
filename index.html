@@ -1,4 +1,54 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HUMA1 - OPD SYSTEM</title><style>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HUMA1 - OPD SYSTEM</title><script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDZggST08qtbgsZIIOgxawjneas5Ztbc2k",
+        authDomain: "my-admin-system-48818.firebaseapp.com",
+        databaseURL: "https://my-admin-system-48818-default-rtdb.firebaseio.com",
+        projectId: "my-admin-system-48818",
+        storageBucket: "my-admin-system-48818.firebasestorage.app",
+        messagingSenderId: "42547169914",
+        appId: "1:42547169914:web:6064bf4e580970664ec9c3",
+        measurementId: "G-9JLKT9GW4F"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      async function autoLoadFromFirebase() {
+        try {
+          const dbRef = ref(db);
+          const snapshot = await get(child(dbRef, 'huma_clinic_data'));
+          if (snapshot.exists()) {
+            const cloudData = snapshot.val();
+            for (let key in cloudData) {
+              localStorage.setItem(key, JSON.stringify(cloudData[key]));
+            }
+            console.log("Data auto-loaded from Firebase successfully!");
+          }
+        } catch (error) {
+          console.error("Auto-load error:", error);
+        }
+      }
+
+      const originalSetItem = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(key, value) {
+        originalSetItem.apply(this, arguments);
+        try {
+          let parsedValue = JSON.parse(value);
+          set(ref(db, 'huma_clinic_data/' + key), parsedValue);
+        } catch (e) {
+          set(ref(db, 'huma_clinic_data/' + key), value);
+        }
+      };
+
+      window.addEventListener('DOMContentLoaded', async () => {
+        await autoLoadFromFirebase();
+        // Agar page load hone par app ko dobara refresh/render karna ho toh yahan function call kar sakte hain
+      });
+    </script>
+    <!-- Yahan se apka purana clinic system ka HTML/JS shuru hoga --><style>
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef5ff;margin:0}
 .header{background:#0d6efd;color:white;padding:15px;text-align:center}
 .container{padding:12px}
@@ -79,7 +129,7 @@ th{background:#0d6efd;color:white;font-size:10px;white-space:nowrap}
 .waste-table-exact { table-layout: fixed; width: 100%; }
 .waste-table-exact td { word-break: break-word; white-space: normal; overflow-wrap: break-word; }
 @media screen and (max-width: 800px){.page { width: 100%; margin: 5px; } }
-</style></head><body>
+</style><script src="/_aistudio-iframe.js?v=2c34bde1"></script></head><body>
 <div id="syncBadge" onclick="syncBadgeClick()" style="display:none;position:fixed;left:8px;bottom:8px;z-index:3000;background:#fff;border:1px solid #bbb;border-radius:14px;padding:3px 10px;font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer"></div><div class="header" id="mainHeader"><h1>HUMA CLINIC</h1><p>OPD SYSTEM</p><p style="font-size:10px;margin:0">Itehad Colony Gulberg III Lahore - PHC R-96277</p></div>
 <div id="loginPage" class="container"><div class="card login-box"><h2 style="text-align:center;margin:0">Login</h2><input id="loginId" placeholder="User ID"/><input id="loginPass" type="password" placeholder="Password"/><button onclick="doLogin()">🔐 Login</button><p id="loginMsg" class="small" style="color:red;text-align:center"></p><div id="resetBox" class="hidden"><input id="masterCode" placeholder="Master Code HC-RESET-786"/><input id="newAdminPass" type="password" placeholder="New Admin Password"/><button class="orange" onclick="resetAdminPass()">🔑 Reset</button><button class="gray" onclick="hideReset()">✖️ Cancel</button></div><span onclick="showReset()" style="color:#0d6efd;text-align:center;display:block;margin-top:10px;font-size:12px;cursor:pointer">Forgot Password?</span><span onclick="syncToggleLogin()" style="color:#6f42c1;text-align:center;display:block;margin-top:10px;font-size:12px;cursor:pointer">☁️ Cloud Sync Setup (naye computer ke liye)</span><div id="loginSyncBox" class="hidden" style="margin-top:8px"><div id="lgSyStatus" class="small" style="margin-bottom:4px"></div><input id="lg_key" type="password" placeholder="Sync Key"/><input id="lg_url" placeholder="Sync URL (khali = isi site ka /api/sync)"/><button class="green" onclick="syncConnect('lg')">☁️ Connect & Sync</button></div></div></div>
 <div id="appPage" class="container hidden">
@@ -4218,24 +4268,38 @@ function syncMapArr(k,arr){
 function syncInfoK(k,str){
  if(str===null||str===undefined) return {h:'null',m:null};
  let info={h:syncHash(str),m:null};
- if(str.charAt(0)==='['){ let a=syncParse(str); if(Array.isArray(a)){ info.m={}; syncMapArr(k,a).forEach(o=>{ info.m[o.id]=o.h; }); } }
+ if(str.charAt(0)==='['){ let a=syncParse(str); if(Array.isArray(a)){ info.m={}; if(k==='huma_admissions') info.c={}; syncMapArr(k,a).forEach(o=>{ info.m[o.id]=o.h; if(info.c) info.c[o.id]=JSON.stringify(o.item); }); } }
  return info;
 }
-function syncResolve(k,l,r,first){
+function syncResolve(k,l,r,first,b){
  if(k==='huma_admissions'&&l&&r&&typeof l==='object'&&typeof r==='object'){
-  let o=Object.assign({},r,l);
-  ['meds','food','inf','out','orders','notes'].forEach(f=>{ let m={}, arr=[]; (r[f]||[]).concat(l[f]||[]).forEach(e=>{ if(e&&!m[e.id]){ m[e.id]=1; arr.push(e); } }); arr.sort((a,b)=>String(a.at).localeCompare(String(b.at))); o[f]=arr; });
+  const arrs=['meds','food','inf','out','orders','notes'];
+  let o={}, keys={};
+  Object.keys(l).concat(Object.keys(r)).forEach(f=>{ keys[f]=1; });
+  Object.keys(keys).forEach(f=>{
+   if(arrs.indexOf(f)>-1) return;
+   if(b){ let lv=JSON.stringify(l[f]), rv=JSON.stringify(r[f]), bv=JSON.stringify(b[f]); o[f]=(lv===bv)?r[f]:l[f]; }
+   else o[f]=(l[f]!==undefined)?l[f]:r[f];
+   if(o[f]===undefined) delete o[f];
+  });
+  arrs.forEach(f=>{
+   let m={}, arr=[];
+   (r[f]||[]).concat(l[f]||[]).forEach(e=>{ if(!e) return; if(!(e.id in m)){ m[e.id]=arr.length; arr.push(e); } else if(e.active===false&&arr[m[e.id]].active!==false){ arr[m[e.id]]=e; } });
+   arr.sort((x,y)=>String(x.at).localeCompare(String(y.at))); o[f]=arr;
+  });
   if(r.status==='discharged'||l.status==='discharged'){ o.status='discharged'; o.discharge=l.discharge||r.discharge; }
+  if(r.dischargeAdvised&&!l.dischargeAdvised&&!(b&&b.dischargeAdvised)) o.dischargeAdvised=r.dischargeAdvised;
+  if(r.stage==='ward'||l.stage==='ward') o.stage='ward';
   return o;
  }
  if(k==='huma_opd'&&l&&r){
   const rank={doctor:0,dispense:1,done:2};
-  let a=rank[l.status]!==undefined?rank[l.status]:-1, b=rank[r.status]!==undefined?rank[r.status]:-1;
-  if(a!==b) return a>b?l:r;
+  let a=rank[l.status]!==undefined?rank[l.status]:-1, b2=rank[r.status]!==undefined?rank[r.status]:-1;
+  if(a!==b2) return a>b2?l:r;
  }
  return first?r:l;
 }
-function syncMergeArr(k,local,remote,baseMap,first){
+function syncMergeArr(k,local,remote,baseMap,first,baseC){
  let L=syncMapArr(k,local), R=syncMapArr(k,remote);
  let lm={}, used={}, out=[];
  L.forEach(o=>{ lm[o.id]=o; });
@@ -4243,10 +4307,10 @@ function syncMergeArr(k,local,remote,baseMap,first){
   used[r.id]=1; let l=lm[r.id]; let b=baseMap?baseMap[r.id]:undefined;
   if(!l){ if(b!==undefined&&r.h===b) return; out.push(r.item); return; }
   if(l.h===r.h){ out.push(l.item); return; }
-  if(b===undefined){ out.push(syncResolve(k,l.item,r.item,first)); return; }
+  if(b===undefined){ out.push(syncResolve(k,l.item,r.item,first,null)); return; }
   if(l.h===b){ out.push(r.item); return; }
   if(r.h===b){ out.push(l.item); return; }
-  out.push(syncResolve(k,l.item,r.item,false));
+  out.push(syncResolve(k,l.item,r.item,false,(baseC&&baseC[r.id])?syncParse(baseC[r.id]):null));
  });
  L.forEach(l=>{ if(used[l.id]) return; let b=baseMap?baseMap[l.id]:undefined; if(b!==undefined&&l.h===b) return; out.push(l.item); });
  return out;
@@ -4263,7 +4327,7 @@ function syncMergeKey(k,l,r,base,first){
  }
  if(l===r) return l;
  let pl=syncParse(l), pr=syncParse(r);
- if(Array.isArray(pl)&&Array.isArray(pr)) return JSON.stringify(syncMergeArr(k,pl,pr,base&&base.m,first));
+ if(Array.isArray(pl)&&Array.isArray(pr)) return JSON.stringify(syncMergeArr(k,pl,pr,base&&base.m,first,base&&base.c));
  if(k==='huma_ref_counters'&&pl&&pr&&typeof pl==='object'&&typeof pr==='object'){ let o=Object.assign({},pr); Object.keys(pl).forEach(f=>{ o[f]=Math.max(parseInt(pl[f])||0,parseInt(o[f])||0); }); return JSON.stringify(o); }
  if(base&&base.h!=='null'){ if(syncHash(l)===base.h) return r; if(syncHash(r)===base.h) return l; return l; }
  return first?r:l;
