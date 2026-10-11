@@ -1,417 +1,346 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMA CLINIC - OPD SYSTEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huma Clinic - Record Editable</title>
 <style>
-body{font-family:sans-serif;background:#eef5ff;margin:0}
-.header{background:#0d6efd;color:white;padding:15px;text-align:center}
-.container{padding:12px}
-.card{background:white;padding:15px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.1);margin-bottom:12px;position:relative}
-input,select,textarea{width:100%;padding:11px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-input[readonly]{background:#e9ecef;font-weight:bold;color:#0d6efd;border:2px solid #0d6efd}
-button{width:100%;padding:12px;background:#0d6efd;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:6px}
-button.green{background:#198754} button.orange{background:#fd7e14} button.gray{background:#6c757d} button.red{background:#dc3545} button.blue{background:#0d6efd} button.purple{background:#6f42c1}
-.hidden{display:none}.small{font-size:11px;color:#666}
-.login-box{max-width:380px;margin:40px auto}
-.link{color:#0d6efd;text-align:center;display:block;margin-top:10px;font-size:13px;cursor:pointer;text-decoration:underline}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
-th,td{border:1px solid #ddd;padding:7px 6px;vertical-align:top;text-align:left}
-th{background:#0d6efd;color:white;font-size:12px}
-.scroll{overflow-x:auto;border:1px solid #ddd;border-radius:8px}
-.msg{padding:20px;text-align:center;color:#888;border:2px dashed #ccc;border-radius:8px;margin-top:10px}
-.suggest-box{position:absolute;background:white;border:1px solid #0d6efd;border-radius:8px;max-height:150px;overflow-y:auto;width:calc(100% - 30px);z-index:1000;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-.suggest-item{padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid #eee}
-.suggest-item:hover{background:#e7f1ff}
-.summary{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.summary div{background:#eef5ff;border:1px solid #0d6efd;border-radius:8px;padding:6px 10px;font-size:12px;flex:1;min-width:70px;text-align:center}
-.summary b{display:block;font-size:14px;color:#0d6efd}
-.import-box{border:2px dashed #198754;background:#e8f5e9;padding:12px;border-radius:10px;margin-top:10px}
-.action-btn{width:auto;padding:4px 8px;font-size:11px;margin:1px;display:inline-block}
-.print-btn{background:#198754;color:white;border:none;padding:5px 10px;border-radius:5px;font-size:11px;cursor:pointer}
-.range-box{border:1px dashed #0d6efd;background:#eef5ff;padding:8px;border-radius:8px;margin-top:8px}
-.back-home{width:auto;padding:10px 18px;font-size:13px;background:#333;margin-bottom:12px;border-radius:20px}
-.home-hero{background:linear-gradient(135deg,#0d6efd 0%,#6f42c1 50%,#198754 100%);color:white;padding:22px 16px;border-radius:16px;text-align:center;box-shadow:0 8px 20px rgba(13,110,253,0.3)}
-.home-hero h1{margin:0;font-size:22px}
-.home-hero p{margin:4px 0 0 0;font-size:12px;opacity:0.9}
-.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.home-card{border-radius:14px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.1);color:white;border:none}
-.card-new{background:linear-gradient(135deg,#0d6efd,#0dcaf0)}
-.card-expense{background:linear-gradient(135deg,#6f42c1,#d63384)}
-.card-user{background:linear-gradient(135deg,#198754,#20c997)}
-.card-admin{background:linear-gradient(135deg,#dc3545,#ff6b6b)}
-.card-logout{background:linear-gradient(135deg,#343a40,#6c757d)}
-.reports-group{grid-column:1 / -1;background:white;border:2px solid #ffc107;border-radius:14px;padding:14px}
-.reports-group h3{margin:0 0 10px 0;color:#fd7e14;text-align:center;font-size:14px}
-.reports-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.report-btn{border-radius:10px;padding:14px 6px;text-align:center;cursor:pointer;font-weight:bold;font-size:12px;color:white}
-.report-btn.daily{background:linear-gradient(135deg,#198754,#20c997)}
-.report-btn.monthly{background:linear-gradient(135deg,#fd7e14,#ff922b)}
-.report-btn.search{background:linear-gradient(135deg,#6c757d,#adb5bd)}
-
-/* ADR FORM STYLE - EXACT AS PHOTO */
-.adr-table{width:100%;border-collapse:collapse;border:2px solid #000;font-size:12px}
-.adr-table td{border:1px solid #000;padding:6px 8px;vertical-align:top}
-.adr-green{background:#8fd5a6;font-weight:bold;text-align:center;font-size:13px;padding:8px!important}
-.adr-input{border:none;border-bottom:1px dotted #000;width:90%;padding:2px;background:transparent;font-size:12px}
-.adr-small-input{border:none;border-bottom:1px dotted #000;width:60%;padding:2px;background:transparent;font-size:11px}
-.adr-section{font-weight:bold;background:#f0f0f0}
+:root{--line:#e2e8f0;--bg:#f1f5f9;--muted:#64748b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Inter,'Segoe UI',Arial,sans-serif;color:#1e293b}
+.topbar{position:sticky;top:0;z-index:99;background:#fff;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.btn-main{background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff}
+.btn-light{background:#fff;color:#020024;border:1px solid #020024}
+.btn-save{background:#059669;color:#fff;border:0}
+.btn-record{background:#fff;color:#020024;border:1px solid #020024;display:flex;align-items:center;gap:6px;position:relative}
+.btn-record b{position:absolute;top:-6px;right:-6px;background:#020024;color:#fff;border-radius:50%;min-width:18px;height:18px;font-size:10px;display:grid;place-items:center;padding:2px}
+.letters-dropdown{position:absolute;left:0;top:44px;width:250px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.15);padding:8px;display:none;z-index:100}
+.letters-dropdown.open{display:block}
+.letters-dropdown button{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#f8fafc;margin-bottom:6px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between}
+.letters-dropdown button.active{background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff;border:0}
+.record-panel{position:fixed;right:12px;top:62px;width:460px;max-width:94vw;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 25px 60px rgba(0,0,0,.25);padding:0;display:none;z-index:200;max-height:78vh;overflow:hidden;flex-direction:column}
+.record-panel.open{display:flex!important}
+.record-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-radius:14px 14px 0 0}
+.record-body{padding:10px;overflow:auto;flex:1}
+.record-filter{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.record-filter input{padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:11px}
+.record-table{width:100%;border-collapse:collapse;font-size:11px}
+.record-table th,.record-table td{border:1px solid #e2e8f0;padding:5px 6px;text-align:left}
+.record-table td.editable{cursor:text;background:#fffff0}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.2);display:none;z-index:150}
+.overlay.open{display:block!important}
+.inputs{max-width:1080px;margin:14px auto;background:#fff;border-radius:14px;border:1px solid var(--line);padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.inputs label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:3px}
+.inputs input,.inputs textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#f8fafc;outline:none}
+.field.hidden{display:none}
+.full{grid-column:1/-1}.span2{grid-column:span 2}.area{min-height:60px}.big{min-height:80px}
+.auto{background:#e0f2fe!important;font-weight:800;color:#020024}
+.sheet-wrap{max-width:1080px;margin:18px auto;padding:0 14px}
+.sheet-wrap.hidden{display:none}
+.sheet-title{font-size:12px;font-weight:800;color:#020024;margin:18px 0 8px 0;display:flex;align-items:center;justify-content:space-between}
+.stage{display:flex;justify-content:center;padding:6px}
+.holder{position:relative}
+.sheet{width:210mm;min-height:270mm;background:#fff;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12);-webkit-print-color-adjust:exact;print-color-adjust:exact;transform-origin:top left;border-radius:3mm;padding-bottom:0}
+.top-accent{position:absolute;left:0;right:0;top:0;height:4mm;background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%)}
+.header{position:absolute;left:12mm;right:12mm;top:8mm;height:24mm;display:flex;justify-content:space-between;align-items:center;z-index:2;border-bottom:2.5px solid #090979;padding-bottom:3mm}
+.brand{display:flex;gap:4mm;align-items:center}
+.logo{width:14mm;height:14mm;background:linear-gradient(135deg,#020024 0%,#090979 35%,#00D4FF 100%);border-radius:50%;display:grid;place-items:center}
+.logo svg{width:10mm;height:10mm}
+.brand h1{margin:0;color:#020024;font-size:14pt;font-weight:900;line-height:1}
+.contacts{text-align:right;line-height:1.45}
+.contacts div{font-size:7pt;font-weight:600}
+.patient-bar{position:absolute;left:12mm;right:12mm;top:35mm;height:10mm;background:#e0f2fe;border:1px solid #7dd3fc;border-radius:3mm;display:flex;align-items:center;gap:4mm;padding:0 4mm;z-index:2}
+.pb{flex:1;display:flex;align-items:center;gap:1.5mm;font-size:8pt;font-weight:700;min-width:0}
+.pb b{color:#090979;white-space:nowrap;font-size:7pt}
+.pb.v{flex:1;border-bottom:1px dotted #0ea5e9;min-height:4mm;font-weight:400;font-size:9pt;padding:0 1mm;overflow:hidden;white-space:nowrap}
+.fitness-banner{position:absolute;left:6mm;right:6mm;top:6mm;height:30mm;background:linear-gradient(90deg,#012840 0%,#023e7d 22%,#0077b6 58%,#0096c7 82%,#0a9396 100%);border-radius:4mm;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 6mm;color:#fff}
+.fitness-left h1{margin:0;font-size:18pt;letter-spacing:1px;font-weight:900}
+.fitness-left h1 span:first-child{color:#5ee1ff}
+.fitness-pill{margin-top:2mm;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:1mm 3mm;font-size:6.5pt;font-weight:600;display:flex;gap:2mm}
+.fitness-right{text-align:right;line-height:1.4}
+.fitness-right div{font-size:6.8pt;font-weight:600}
+.fitness-title{position:absolute;left:12mm;right:12mm;top:39mm;text-align:center;z-index:2;color:#2a5a7a;font-size:13pt;font-weight:800}
+.content-area{position:absolute;left:12mm;right:12mm;top:46mm;bottom:14mm;z-index:2}
+.content-area.fit{top:48mm;bottom:14mm}
+.presc-main{display:flex;gap:4mm;height:100%}
+.left{width:52mm;display:flex;flex-direction:column;gap:3mm}
+.card{border:1px solid var(--line);border-radius:3mm;overflow:hidden;background:#fff}
+.card h4{margin:0;background:linear-gradient(90deg,#020024 0%,#090979 35%,#00D4FF 100%);color:#fff;font-size:7.5pt;padding:1.5mm 3mm;text-transform:uppercase}
+.card.detail h4{background:#020024}
+.kv{display:flex;justify-content:space-between;font-size:8pt;padding:1.2mm 3mm;border-bottom:.3mm dashed #e5e7eb}
+.kv b{color:var(--muted);font-size:6.8pt;text-transform:uppercase}
+.kv span{font-weight:700;max-width:26mm;overflow:hidden;white-space:nowrap;text-align:right}
+.lines{font-size:8pt;line-height:6mm;min-height:16mm;white-space:pre-wrap;padding:0 3mm}
+.right{flex:1;border:1px solid var(--line);border-radius:3mm;display:flex;flex-direction:column;background:#fff;overflow:hidden;position:relative}
+.right h4{margin:0;background:#020024;color:#fff;font-size:8pt;padding:2mm 4mm;display:flex;justify-content:space-between}
+.rx-big{font-family:Georgia,serif;font-size:28pt;font-weight:900;color:#020024;font-style:italic;line-height:1;margin:2mm 0 1mm 4mm}
+.rx-write{flex:1;padding:1mm 4mm;font-size:10pt;line-height:6.5mm;white-space:pre-wrap}
+.letter-body{padding:4mm;font-size:10pt;line-height:6.5mm;white-space:pre-wrap}
+.sig{position:absolute;right:12mm;bottom:12mm;text-align:center;min-width:50mm;z-index:3}
+.sig-name{color:#000!important;font-weight:900;font-size:10.5pt}
+.sig-dash{font-size:8pt;letter-spacing:2px;color:#000;margin-top:1mm}
+.footer-wrap{position:absolute;left:12mm;right:12mm;bottom:1.5mm;z-index:4;text-align:center;height:6mm;display:flex;flex-direction:column;justify-content:flex-end}
+.footer-text{font-size:5.4pt;color:var(--muted);font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:0.8mm}
+.footer-line{border-top:1px solid var(--line);width:100%}
+.date-bar{position:absolute;left:12mm;right:12mm;top:47mm;font-size:7pt;font-weight:600;color:#475569;display:flex;justify-content:space-between;z-index:2}
+@media print{@page{size:A4;margin:0}.topbar,.inputs,.sheet-title,.letters-dropdown,.record-panel,.overlay,.record-filter{display:none!important}.sheet-wrap{display:block!important}.sheet-wrap.hidden{display:none!important}.sheet{transform:none!important;box-shadow:none!important;width:210mm!important;height:287mm!important;min-height:287mm!important;max-height:287mm!important;border-radius:0;margin:0 auto!important;overflow:hidden!important;page-break-after:always;page-break-inside:avoid}.content-area{bottom:10mm!important}.footer-wrap{bottom:1mm!important;display:flex!important}}
 </style>
 </head>
 <body>
-<div class="header"><h1>HUMA CLINIC</h1><p>OPD SYSTEM</p><p style="font-size:10px;margin:0">Itehad Colony Gulberg III Lahore</p></div>
-<div id="loginPage" class="container"><div class="card login-box"><h2 style="text-align:center;margin:0">🔐 Login</h2><input id="loginId" placeholder="User ID" onkeydown="if(event.key==='Enter') doLogin()"/><input id="loginPass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') doLogin()"/><button onclick="doLogin()">Login</button><span class="link" onclick="showReset()">Forgot Password?</span><p id="loginMsg" class="small" style="color:red;text-align:center"></p><div id="resetBox" class="hidden" style="border-top:1px solid #ddd;margin-top:10px;padding-top:10px"><input id="masterCode" placeholder="Master Code"/><input id="newAdminPass" type="password" placeholder="New Admin Password"/><button class="orange" onclick="resetAdminPass()">Reset</button><button class="gray" onclick="hideReset()">Cancel</button></div></div></div>
-<div id="appPage" class="container hidden">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span id="welcome" class="small"></span><button style="width:auto;padding:6px 12px" class="red" onclick="doLogout()">Logout</button></div>
 
-<div id="tab-home" class="card" style="background:transparent;box-shadow:none;padding:0">
-<div class="home-hero"><div style="font-size:42px">🩺 💊 🏥</div><h1>HUMA CLINIC</h1><p>OPD Management System</p><p style="font-size:10px;margin-top:8px;background:rgba(255,255,255,0.2);display:inline-block;padding:4px 10px;border-radius:20px" id="homeUserInfo">Welcome</p></div>
-<div class="home-grid">
-<div class="home-card card-new" onclick="openTab('new')"><div style="font-size:32px">➕</div><div style="font-weight:bold">New Patient</div></div>
-<div class="home-card card-expense" onclick="openTab('expense')"><div style="font-size:32px">💰</div><div style="font-weight:bold">Expense</div></div>
-<div class="home-card card-user" onclick="openTab('user')"><div style="font-size:32px">👤</div><div style="font-weight:bold">User Panel</div></div>
-<div class="home-card card-admin hidden" id="homeAdminCard" onclick="openTab('admin')"><div style="font-size:32px">🔐</div><div style="font-weight:bold">Admin Panel</div></div>
-</div>
-<div class="reports-group"><h3>📊 Reports Section</h3><div class="reports-inner"><div class="report-btn daily" onclick="openTab('daily')">📅 Daily Report</div><div class="report-btn monthly" onclick="openTab('monthly')">📈 Monthly Report</div><div class="report-btn search" onclick="openTab('search')">🔍 Search Report</div></div></div>
-<div class="home-grid" style="margin-top:12px"><div class="home-card card-logout" onclick="doLogout()"><div style="font-size:32px">🚪</div><div style="font-weight:bold">Logout</div></div><div class="home-card" style="background:linear-gradient(135deg,#0dcaf0,#0d6efd)" onclick="location.reload()"><div style="font-size:32px">🏠</div><div style="font-weight:bold">Refresh</div></div></div>
-</div>
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
 
-<div id="tab-new" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>New Patient</h3><input id="opdNo" readonly onclick="adminEditOPD()" placeholder="New Button par click karen"/><input id="patientType" placeholder="Patient Type - N = New, O = Old" oninput="autoPatientType(this)" onblur="autoPatientType(this)"/><input id="pName" placeholder="Patient Name"/><input id="parentage" placeholder="Parentage / Father Name"/><input id="age" placeholder="Age / Gender" oninput="autoGender(this)" onblur="autoGender(this)"/><input id="contact" placeholder="Contact"/><input id="historyInput" placeholder="History"/><input id="complaint" placeholder="Disease / Complaint"/><div style="position:relative"><textarea id="treatment" placeholder="Treatment / Medicine" oninput="showMedicineSuggest(this)" onfocus="showMedicineSuggest(this)"></textarea><div id="medSuggest" class="suggest-box"></div></div><input id="fee" type="text" inputmode="numeric" placeholder="Fee - 000 = FREE"/><input id="address" placeholder="Address"/><input type="hidden" id="editIndex" value="-1"/><button id="saveBtn" onclick="savePatient()">Save & Print</button><button id="cancelEdit" style="display:none" class="gray" onclick="cancelEdit()">Cancel Edit</button></div>
-
-<div id="tab-search" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>Search Report</h3><input id="search" placeholder="Name ya OPD No Search..." onkeyup="searchData()"/><div class="range-box"><b>📅 Days Wise Statement</b><div style="display:flex;gap:6px;margin-top:6px"><input type="date" id="searchFrom" style="flex:1"/><input type="date" id="searchTo" style="flex:1"/></div><button class="blue" onclick="searchDaysWise()">🔍 Days Wise Search</button></div><div class="scroll" id="searchList"><div class="msg">Search likhein</div></div></div>
-
-<div id="tab-daily" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>Daily Report</h3><input type="date" id="dailyDate"/><button onclick="dailyReport()">Show Daily Data</button><div class="range-box"><b>📅 Days Wise Statement</b><div style="display:flex;gap:6px;margin-top:6px"><input type="date" id="dailyFrom" style="flex:1"/><input type="date" id="dailyTo" style="flex:1"/></div><button class="green" onclick="dailyRangeReport()">📊 Days Wise Statement</button></div><div class="scroll" id="dailyDiv"><div class="msg">Date select karein</div></div></div>
-
-<div id="tab-monthly" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>Monthly Report</h3><div style="display:flex;gap:6px"><select id="monthSel"><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select><select id="yearSel"><option>2025</option><option selected>2026</option></select></div><button onclick="monthlyReport()">Show Monthly Data</button><div class="range-box"><b>📅 Days Wise Statement</b><div style="display:flex;gap:6px;margin-top:6px"><input type="date" id="monthlyFrom" style="flex:1"/><input type="date" id="monthlyTo" style="flex:1"/></div><button class="orange" onclick="monthlyRangeReport()">📊 Days Wise Statement</button></div><div class="scroll" id="monthlyDiv"><div class="msg">Month select karein</div></div>
-<div class="import-box hidden" id="importBox"><h4 style="margin:0 0 8px 0;color:#198754">🔒 Import Options - Admin Only</h4><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="blue" style="flex:1" onclick="triggerFileImport()">📁 Import from Device</button><button class="green" style="flex:1" onclick="importFromLocalStorage()">💾 Import from Local Storage</button></div><input type="file" id="importFile" accept=".csv" class="hidden" onchange="doImport()"/><div id="localBackups" style="margin-top:8px;max-height:120px;overflow-y:auto"></div><button class="gray" onclick="cancelImport()" style="margin-top:8px">Cancel</button></div></div>
-
-<div id="tab-expense" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>💰 Expense Entry</h3><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:12px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#6f42c1">+ New Expense Add Karen</h4><input type="date" id="expDate"/><input id="expAmount" type="number" placeholder="Expense Amount - Rs."/><input id="expDesc" placeholder="Expense Detail"/><button class="purple" onclick="saveExpense()">💾 Save Expense</button></div><div style="border:1px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0 0 6px 0">📊 Daily Expense Report</h4><div style="display:flex;gap:6px"><input type="date" id="expDailyDate" style="flex:1"/><button style="width:auto" class="green" onclick="dailyExpenseReport()">Show</button></div><div id="dailyExpenseDiv"><div class="msg">Date select karein</div></div></div><div id="expenseSummary" style="margin-top:10px"></div></div>
-
-<div id="tab-user" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>👤 User Panel</h3><div style="border:1px solid #0d6efd;background:#eef5ff;padding:10px;border-radius:8px;margin-bottom:10px"><p style="margin:4px 0"><b>User ID:</b> <span id="userPanelId">-</span></p><p style="margin:4px 0"><b>Role:</b> <span id="userPanelRole">-</span></p></div></div>
-
-<div id="tab-admin" class="card hidden"><button class="back-home" onclick="openTab('home')">⬅️ Back to Home</button><h3>Admin Panel</h3>
-<div style="border:2px solid #dc3545;background:#ffe6e6;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#dc3545">🔒 OPD Control</h4><button class="red" onclick="adminGenerateOPD()">🔑 Generate New OPD</button><button class="orange" onclick="adminEditOPD()">🔑 Edit OPD</button></div>
-<div style="border:2px solid #6f42c1;background:#f3e8ff;padding:12px;border-radius:10px;margin-bottom:10px">
-<h4 style="margin:0 0 8px 0;color:#6f42c1">📄 Official Letter - Letterhead</h4>
-<button class="purple" onclick="openTab('official')">📝 A - Official Letter / Prescription</button>
-<button class="blue" style="background:#198754;margin-top:8px" onclick="openTab('adr')">🅱️ B - Drug Adverse Reaction Form - PHC</button>
-</div>
-<div style="border:2px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#198754">👥 Kis User Ne Entries Ki Hain</h4><button class="green" onclick="loadAdminUserEntries()">🔄 Refresh</button><div id="adminUserSummary" style="margin-top:8px"></div><div style="display:flex;gap:6px;margin-top:8px"><select id="adminUserSelect" style="flex:1"></select><button style="width:auto;padding:11px" class="blue" onclick="showSelectedUserEntries()">Show Entries</button></div><div class="scroll" id="adminUserEntriesList" style="margin-top:8px"><div class="msg">User select karke Show dabayein</div></div></div>
-<div style="border:1px solid #0d6efd;background:#eef5ff;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0">👤 User Create</h4><div style="display:flex;gap:6px"><input id="newUserId" placeholder="User ID"/><button style="width:auto;padding:11px" class="blue" onclick="generateUserId()">🎲 Generate ID</button></div><input id="newUserPass" placeholder="Password"/><button class="green" onclick="createUser()">Create User</button><div id="userList" style="margin-top:8px"></div></div>
+<div class="topbar">
+  <div style="display:flex;gap:8px;position:relative">
+    <div style="position:relative">
+      <button class="btn btn-main" onclick="toggleLetters(event)">Letters ▼ <span id="curType" style="font-weight:400;margin-left:4px">RX</span></button>
+      <div class="letters-dropdown" id="lettersDrop">
+        <button onclick="openLetter('all',this)">All Letters <span>↕</span></button>
+        <button class="active" onclick="openLetter('presc',this)">Prescription - RX <span>℞</span></button>
+        <button onclick="openLetter('fitness',this)">Fitness - FIT <span>★</span></button>
+        <button onclick="openLetter('medical',this)">Medical - MED <span>📄</span></button>
+        <button onclick="openLetter('referral',this)">Referral - REF <span>↗</span></button>
+      </div>
+    </div>
+    <button class="btn btn-record" onclick="toggleRecord(event)">Record 📋 <b id="recBadge">0</b></button>
+    <div class="record-panel" id="recordPanel">
+      <div class="record-head"><div><b>Record Editable</b> - Total: <span id="totalRec">0</span> | Today: <span id="todayRec">0</span></div><div style="display:flex;gap:6px"><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="clearRecord()">Clear All</button><button class="btn btn-main" style="padding:5px 8px;font-size:10px" onclick="closeAll()">X</button></div></div>
+      <div class="record-filter"><input type="date" id="recDateFilter"><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="filterByDate()">Filter</button><button class="btn btn-main" style="padding:5px 8px;font-size:10px" onclick="printByDate()">Print Date Wise</button><button class="btn btn-light" style="padding:5px 8px;font-size:10px" onclick="showAllRecord()">All</button></div>
+      <div class="record-body"><table class="record-table" id="recTable"><thead><tr><th>#</th><th>Type</th><th>Name</th><th>Ref</th><th>Date</th><th>Action</th></tr></thead><tbody></tbody></table><div style="font-size:9px;color:#64748b;margin-top:6px">Tip: Name par double-click karke edit kar sakte hain - har row par Print / Delete</div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px">
+    <button class="btn btn-save" onclick="savePrint()">SavePrint</button>
+    <button class="btn btn-light" onclick="printCurrent()">Print Current</button>
+    <button class="btn btn-main" onclick="printAll()">Print All</button>
+  </div>
 </div>
 
-<div id="tab-official" class="card hidden">
-<button class="back-home" onclick="openTab('admin')">⬅️ Back to Admin Panel</button>
-<button class="back-home" style="margin-left:6px;background:#0d6efd" onclick="openTab('home')">🏠 Home</button>
-<button class="back-home" style="margin-left:6px;background:#198754" onclick="openTab('adr')">🅱️ B - ADR Form</button>
-<div style="border:2px solid #6f42c1;background:#f3e8ff;padding:10px;border-radius:10px;margin-bottom:10px">
-<h4 style="margin:0 0 8px 0;color:#6f42c1">Letterhead Details</h4>
-<input id="letterClinicName" value="HUMA CLINIC"/><input id="letterAddress" value="Itehad Colony Gulberg III Lahore"/><input id="letterPHC" value="PHC NUMBER R-96277"/><input id="letterDoctor" placeholder="Doctor Name - Sirf Signature me ayega" onblur="saveDoctorName()"/><select id="letterType" onchange="togglePrescriptionFields()"><option value="official">Official Letter</option><option value="referral">Referral Letter</option><option value="medical">Medical Certificate</option><option value="prescription">Prescription Letterhead - Rx</option></select><p class="small" style="margin:4px 0 0 0;color:#198754" id="doctorSaveMsg"></p><p class="small" style="margin:4px 0 0 0;color:#0d6efd" id="refSaveMsg"></p></div>
-<div style="border:1px solid #0d6efd;background:#eef5ff;padding:10px;border-radius:8px;margin-bottom:10px">
-<input id="letterTo" placeholder="Patient Name - Sirf Name, detail box me jayegi"/><input id="letterSubject" placeholder="Subject"/>
-<div id="prescriptionFields" class="hidden" style="border:2px dashed #198754;background:#e8f5e9;padding:8px;border-radius:8px;margin:6px 0"><h4 style="margin:0 0 6px 0;color:#198754;font-size:12px">💊 Patient Detail Box</h4><div style="display:flex;gap:6px"><input id="letterAge" placeholder="Age - M=Male F=Female" style="flex:1" oninput="autoLetterAge(this)" onblur="autoLetterAge(this)"/><input id="letterWeight" placeholder="Weight" style="flex:1"/></div><input id="letterHistory" placeholder="History" onblur="saveHistoryAdvise()"/><textarea id="letterAdvise" rows="2" placeholder="Advise" onblur="saveHistoryAdvise()"></textarea></div>
-<textarea id="letterBody" rows="8" placeholder="Medicines / Letter Matter"></textarea></div>
-<button class="purple" onclick="previewOfficialLetter()">👁️ Preview - Ref Change Nahi Hoga</button><button class="green" onclick="printOfficialLetter()">🖨️ Print & Save Record</button>
-<div id="officialPreview" style="margin-top:12px"></div>
-<div style="border:2px solid #000;background:#fff3cd;padding:10px;border-radius:10px;margin-top:12px"><h4 style="margin:0 0 8px 0">📊 Letters Record</h4><div class="summary"><div><b id="totalLetters">0</b>Total</div><div><b id="todayLetters">0</b>Today</div><div><b id="monthLetters">0</b>Month</div></div><button class="orange" onclick="loadLetterRecord()">🔄 Refresh Record</button><div class="scroll" id="letterRecordDiv" style="margin-top:8px"><div class="msg">Record yahan show hoga</div></div></div>
+<div class="inputs" id="inputGrid">
+  <div class="field" data-for="all presc fitness medical referral"><label>Name</label><input id="i_name" oninput="sync()"></div>
+  <div class="field" data-for="all presc fitness medical referral"><label>Age / Sex</label><input id="i_age" oninput="sync()"></div>
+  <div class="field" data-for="all presc fitness medical referral"><label>Date</label><input id="i_date" type="date" oninput="sync()"></div>
+  <div class="field" data-for="presc"><label>OPD No (Auto)</label><input id="i_opd" class="auto" readonly></div>
+  <div class="field" data-for="presc"><label>Contact</label><input id="i_phone" value="0300-0000000" oninput="sync()"></div>
+  <div class="field" data-for="presc"><label>Weight (kg)</label><input id="i_weight" placeholder="70 kg" oninput="sync()"></div>
+  <div class="field" data-for="presc"><label>BP</label><input id="i_bp" placeholder="120/80" oninput="sync()"></div>
+  <div class="field" data-for="presc"><label>Temp</label><input id="i_temp" placeholder="98.6 F" oninput="sync()"></div>
+  <div class="field" data-for="presc"><label>Pulse</label><input id="i_pulse" placeholder="78 /min" oninput="sync()"></div>
+  <div class="field" data-for="all presc fitness medical referral"><label>Ref No (Auto)</label><input id="i_ref" class="auto" readonly></div>
+  <div class="field" data-for="referral"><label>Referred To</label><input id="i_refer" value="Consultant Physician, DHQ Hospital" oninput="sync()"></div>
+  <div class="field span2" data-for="presc referral"><label>History</label><textarea id="i_hist" class="area" oninput="sync()"></textarea></div>
+  <div class="field span2" data-for="presc medical"><label>Diagnosis / Advice</label><textarea id="i_adv" class="area" oninput="sync()"></textarea></div>
+  <div class="field span2" data-for="fitness"><label>Clinical Findings</label><textarea id="i_hist_fit" class="area" oninput="sync()"></textarea></div>
+  <div class="field full" data-for="presc"><label>Prescription</label><textarea id="i_desc" class="big" oninput="sync()"></textarea></div>
+  <div class="field full" data-for="fitness"><label>Fitness Opinion</label><textarea id="i_fitness" class="big" oninput="sync()"></textarea></div>
+  <div class="field full" data-for="medical referral"><label>Details / Opinion</label><textarea id="i_medical" class="big" oninput="sync()"></textarea></div>
+  <div class="field" data-for="all presc fitness medical referral"><label>Doctor Name</label><input id="i_doc" value="Dr. Huma" oninput="sync()"></div>
 </div>
 
-<!-- B - DRUG ADVERSE REACTION FORM - EXACT COPY OF PHOTO -->
-<div id="tab-adr" class="card hidden">
-<button class="back-home" onclick="openTab('admin')">⬅️ Back to Admin Panel</button>
-<button class="back-home" style="margin-left:6px;background:#6f42c1" onclick="openTab('official')">📝 A - Official Letter</button>
-<button class="back-home" style="margin-left:6px;background:#0d6efd" onclick="openTab('home')">🏠 Home</button>
-
-<h3 style="text-align:center;color:#000">MSDS/Reference Manual for GPs/ Family Physicians/Specialist Clinics</h3>
-
-<div style="border:2px solid #000;padding:0;background:white">
-<table class="adr-table">
-<tr><td colspan="4" class="adr-green">ADVERSE DRUG REACTION REPORTING FORMAT</td></tr>
-<tr><td colspan="4">Name of Clinic/HCE reporting the problem of Pharmaceutical Product:<br><input id="adr_clinic" style="width:100%;border:none;border-bottom:1px dotted #000;padding:6px" placeholder="HUMA CLINIC - Itehad Colony Gulberg III Lahore"/></td></tr>
-<tr><td colspan="2">Name of contact person:<br><input id="adr_contact" style="width:100%;border:none;border-bottom:1px dotted #000;padding:4px"/></td><td colspan="2">Position:<br><input id="adr_position" style="width:100%;border:none;border-bottom:1px dotted #000;padding:4px"/></td></tr>
-<tr><td colspan="4">Address:<br><input id="adr_address" style="width:100%;border:none;border-bottom:1px dotted #000;padding:4px" value="Itehad Colony Gulberg III Lahore"/></td></tr>
-<tr><td colspan="4">E-mail address:<br><input id="adr_email" style="width:100%;border:none;border-bottom:1px dotted #000;padding:4px"/></td></tr>
-<tr><td colspan="4">Tel:(office) <input id="adr_tel_off" style="width:20%;border:none;border-bottom:1px dotted #000"/> (Fax) <input id="adr_fax" style="width:20%;border:none;border-bottom:1px dotted #000"/> (mobile) <input id="adr_mobile" style="width:25%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4">Date of receiving complaint: <input type="date" id="adr_complaint_date" style="width:40%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td>Source of Complaint</td><td>O Patient <input type="checkbox" id="adr_src_patient"/></td><td>O Attendant <input type="checkbox" id="adr_src_attendant"/> O Self-inspection <input type="checkbox" id="adr_src_self"/></td><td>Other: <input id="adr_src_other" style="width:60%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="2">Number of similar reports received:<br><input id="adr_similar_no" style="width:90%;border:none;border-bottom:1px dotted #000"/></td><td colspan="2">Attach Results of tests if conducted:<br><input id="adr_test_results" style="width:90%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4">Has manufacturer/distributor been contacted earlier? _ No _ Yes (If yes attach details)<br>
-<label><input type="radio" name="adr_contacted" value="No" id="adr_contacted_no"/> No</label> &nbsp; <label><input type="radio" name="adr_contacted" value="Yes" id="adr_contacted_yes"/> Yes</label> <input id="adr_contacted_details" style="width:50%;border:none;border-bottom:1px dotted #000" placeholder="If yes attach details"/>
-</td></tr>
-<tr><td colspan="4">Attach photocopies, package insert and press clipping about the product if any)<br><input id="adr_attach" style="width:100%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4" class="adr-section">DETAIL OF THE PRODUCT</td></tr>
-<tr><td colspan="3">Name of the product:<br><input id="adr_product_name" style="width:100%;border:none;border-bottom:1px dotted #000"/></td><td>Pack size:<br><input id="adr_pack_size" style="width:100%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4">Active Ingredients and Strength:<br><input id="adr_active" style="width:100%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="2">Registration number:<br><input id="adr_reg_no" style="width:90%;border:none;border-bottom:1px dotted #000"/></td><td colspan="2">Dosage Form: Tablet/Syrup/Powder/Injection/Drip<br><select id="adr_dosage_form" style="width:100%;padding:4px"><option>Tablet</option><option>Syrup</option><option>Powder</option><option>Injection</option><option>Drip</option><option>Other</option></select></td></tr>
-<tr><td colspan="2">Batch number<br><input id="adr_batch" style="width:90%;border:none;border-bottom:1px dotted #000"/></td><td colspan="2">Expiry date<br><input type="date" id="adr_expiry" style="width:90%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4" class="adr-section">Manufacturer Name:<br><input id="adr_mfg_name" style="width:100%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4">Address<br><input id="adr_mfg_address" style="width:100%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td>Tel <input id="adr_mfg_tel" style="width:70%;border:none;border-bottom:1px dotted #000"/></td><td>Fax <input id="adr_mfg_fax" style="width:70%;border:none;border-bottom:1px dotted #000"/></td><td colspan="2">Manufacture date <input type="date" id="adr_mfg_date" style="width:60%;border:none;border-bottom:1px dotted #000"/></td></tr>
-<tr><td colspan="4">
-Name of Reporting: <input id="adr_reporting_name" style="width:30%;border:none;border-bottom:1px dotted #000"/> Post: <input id="adr_reporting_post" style="width:25%;border:none;border-bottom:1px dotted #000"/><br><br>
-Mobile #: <input id="adr_reporting_mobile" style="width:25%;border:none;border-bottom:1px dotted #000"/> Phone# <input id="adr_reporting_phone" style="width:25%;border:none;border-bottom:1px dotted #000"/> Date: DD/MM/YYYY <input type="date" id="adr_reporting_date" style="width:25%"/><br><br>
-Sig of Reporting Person:____________________ PMDC/PCP/PNC Registration Number: <input id="adr_pmdc" style="width:30%;border:none;border-bottom:1px dotted #000"/>
-</td></tr>
-</table>
+<div class="sheet-wrap" data-type="presc" id="wrap-presc">
+  <div class="sheet-title"><div>Prescription - RX</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('presc')">Print</button></div>
+  <div class="stage"><div class="holder"><div class="sheet">
+    <div class="top-accent"></div>
+    <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M14,9 C14,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M38,9 C38,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M27,41 C27,60 52,60 52,38" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><rect x="9.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><rect x="33.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><circle cx="52" cy="31" r="7.6" fill="#fff"/><circle cx="52" cy="31" r="3.6" fill="#020024"/></svg></div><div><h1>HUMA CLINIC</h1><p>Caring for Community</p></div></div><div class="contacts"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
+    <div class="patient-bar"><div class="pb"><b>NAME</b><span class="v" id="v_name"></span></div><div class="pb" style="flex:.4"><b>AGE/SEX</b><span class="v" id="v_age"></span></div><div class="pb" style="flex:.6"><b>REF</b><span class="v" id="v_ref_presc"></span></div></div>
+    <div class="date-bar"><span>Date: <b id="v_date_show">-</b></span><span>OPD: <b id="v_date_opd">-</b></span></div>
+    <div class="content-area"><div class="presc-main">
+      <div class="left">
+        <div class="card detail"><h4>PATIENT DETAIL</h4>
+          <div class="kv"><b>OPD No</b><span id="v_opd">-</span></div>
+          <div class="kv"><b>Contact</b><span id="v_contact">-</span></div>
+          <div class="kv"><b>Weight</b><span id="v_weight">-</span></div>
+          <div class="kv"><b>BP</b><span id="v_bp">-</span></div>
+          <div class="kv"><b>Temp</b><span id="v_temp">-</span></div>
+          <div class="kv"><b>Pulse</b><span id="v_pulse">-</span></div>
+        </div>
+        <div class="card" style="flex:1"><h4>History</h4><div class="lines" id="v_hist"></div></div>
+        <div class="card" style="flex:1"><h4>Advice</h4><div class="lines" id="v_adv"></div></div>
+      </div>
+      <div class="right"><h4><span>Prescription</span></h4><div class="rx-big">R<sub>x</sub></div><div class="rx-write" id="v_desc"></div></div>
+    </div></div>
+    <div class="sig"><div class="sig-name" id="v_doc1">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
+    <div class="footer-wrap"><div class="footer-text">Date: <span id="v_footer_date">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
+  </div></div></div>
 </div>
 
-<div style="margin-top:10px;font-size:11px;border:1px solid #ccc;padding:8px;background:#f9f9f9">
-Following is additional information on the subject:<br>
-Identifying the problems leading to ADRs, planning for positive changes, and measuring the results of these changes are important. Positive outcomes resulting from an ADR reporting should be emphasized to support safety efforts.
-<div style="text-align:right;margin-top:8px;font-weight:bold">Punjab Healthcare Commission &nbsp; 79</div>
+<div class="sheet-wrap hidden" data-type="fitness" id="wrap-fitness">
+  <div class="sheet-title"><div>Fitness</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('fitness')">Print</button></div>
+  <div class="stage"><div class="holder"><div class="sheet">
+    <div class="fitness-banner"><div class="fitness-left"><h1><span>HUMA</span> CLINIC</h1><div class="sub">Caring for Community</div><div class="fitness-pill"><span>Ref: <span id="fb_ref">FIT-0001</span></span> | <span>Date: <span id="fb_date"></span></span></div></div><div class="fitness-right"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
+    <div class="fitness-title">FITNESS CERTIFICATE</div>
+    <div class="content-area fit"><div class="letter-body"><p>This is to certify that Mr/Ms <b id="f_name"></b> Age <span id="f_age"></span> was examined on <span id="f_date2"></span> Ref: <b id="f_ref"></b></p><p><b>Clinical Findings:</b></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:18mm" id="f_hist"></div><p><b>Opinion:</b></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:4mm;min-height:30mm" id="f_desc"></div></div></div>
+    <div class="sig"><div class="sig-name" id="f_doc">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
+    <div class="footer-wrap"><div class="footer-text">Date: <span class="fb_date_footer">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
+  </div></div></div>
 </div>
 
-<button class="purple" onclick="previewADR()">👁️ Preview ADR Form</button>
-<button class="green" onclick="printADR()">🖨️ Print ADR Form - A4</button>
-<button class="blue" onclick="saveADRRecord()">💾 Save ADR Record</button>
-
-<div id="adrPreview" style="margin-top:12px"></div>
-
-<div style="border:2px solid #000;background:#fff3cd;padding:10px;border-radius:10px;margin-top:12px">
-<h4 style="margin:0 0 8px 0">📊 ADR Forms Record</h4>
-<div class="summary"><div><b id="totalADR">0</b>Total ADR</div><div><b id="todayADR">0</b>Today</div></div>
-<button class="orange" onclick="loadADRRecord()">🔄 Refresh ADR Record</button>
-<div class="scroll" id="adrRecordDiv" style="margin-top:8px"><div class="msg">ADR Record yahan show hoga</div></div>
-</div>
+<div class="sheet-wrap hidden" data-type="medical" id="wrap-medical">
+  <div class="sheet-title"><div>Medical</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('medical')">Print</button></div>
+  <div class="stage"><div class="holder"><div class="sheet">
+    <div class="fitness-banner"><div class="fitness-left"><h1><span>HUMA</span> CLINIC</h1><div class="sub">Medical Certificate</div><div class="fitness-pill"><span>Ref: <span class="fb_ref_med">MED-0001</span></span> | <span>Date: <span class="fb_date_med"></span></span></div></div><div class="fitness-right"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
+    <div class="fitness-title">MEDICAL CERTIFICATE</div>
+    <div class="content-area fit"><div class="letter-body"><p>This is to certify that <b id="m_name"></b> Age <span id="m_age"></span> was examined on <span id="m_date"></span> Ref: <b id="m_ref"></b></p><p><b>Diagnosis:</b> <span id="m_adv"></span></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:4mm;min-height:35mm" id="m_desc"></div></div></div>
+    <div class="sig"><div class="sig-name" id="v_doc3">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
+    <div class="footer-wrap"><div class="footer-text">Date: <span class="fb_date_footer2">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp - Not valid for medico-legal purpose</div><div class="footer-line"></div></div>
+  </div></div></div>
 </div>
 
+<div class="sheet-wrap hidden" data-type="referral" id="wrap-referral">
+  <div class="sheet-title"><div>Referral</div><button class="btn btn-light" style="padding:6px 10px" onclick="printSingle('referral')">Print</button></div>
+  <div class="stage"><div class="holder"><div class="sheet">
+    <div class="top-accent"></div>
+    <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M14,9 C14,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M38,9 C38,25 27,29 27,41" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M27,41 C27,60 52,60 52,38" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><rect x="9.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><rect x="33.5" y="2" width="9" height="9" rx="3.5" fill="#fff"/><circle cx="52" cy="31" r="7.6" fill="#fff"/><circle cx="52" cy="31" r="3.6" fill="#020024"/></svg></div><div><h1>HUMA CLINIC</h1><p>Referral Letter</p></div></div><div class="contacts"><div><span>PHC Reg:</span> R-96277</div><div><span>Phone:</span> <span class="c_phone">0300-0000000</span></div><div><span>Email:</span> info.humaclinic@gmail.com</div><div><span>Address:</span> Itehad Colony, Gulberg III, Lahore</div></div></div>
+    <div class="content-area"><div class="letter-body"><h2 style="text-align:center;color:#020024">REFERRAL LETTER - <span id="r_ref">REF-0001</span></h2><p>Date: <b id="r_date_show">-</b></p><p>To, <b id="r_refer"></b></p><p><b>Name:</b> <span id="r_name"></span> | <b>Age:</b> <span id="r_age"></span></p><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:25mm" id="r_hist"></div><div style="border:1px solid #cbd5e1;border-radius:3mm;padding:3mm;min-height:30mm;margin-top:3mm" id="r_desc"></div></div></div>
+    <div class="sig"><div class="sig-name" id="v_doc2">Dr. Huma</div><div class="sig-dash">-------------------------</div></div>
+    <div class="footer-wrap"><div class="footer-text">Date: <span id="r_footer_date">-</span> | This is a computer generated document and is not valid without doctor's signature and stamp</div><div class="footer-line"></div></div>
+  </div></div></div>
 </div>
+
 <script>
-const DEFAULT_USERS_EMBEDDED = [{"id":"TEST-123A","pass":"HC123"}];
-let patients=JSON.parse(localStorage.getItem('huma_opd')||'[]');
-let expenses=JSON.parse(localStorage.getItem('huma_expenses')||'[]');
-let letters=JSON.parse(localStorage.getItem('huma_letters')||'[]');
-let adrRecords=JSON.parse(localStorage.getItem('huma_adr')||'[]');
-let users=JSON.parse(localStorage.getItem('huma_users')||'null');
-let medicines=JSON.parse(localStorage.getItem('huma_medicines')||'[]');
-let currentUser=JSON.parse(sessionStorage.getItem('huma_current')||'null');
-let lockedOPD=null;
-let currentLetterRef=null;
-const MASTER_CODE='HC-RESET-786';
-function initUsersFix(){ if(!users || users.length===0){ if(DEFAULT_USERS_EMBEDDED && DEFAULT_USERS_EMBEDDED.length>0){ let realDefaults = DEFAULT_USERS_EMBEDDED.filter(u=>u.id!=='TEST-123A'); if(realDefaults.length>0){ users = realDefaults; localStorage.setItem('huma_users', JSON.stringify(users)); } else { users = JSON.parse(localStorage.getItem('huma_users')||'[]'); } } else { users = JSON.parse(localStorage.getItem('huma_users')||'[]'); } } if(!users) users=[]; }
-function getPendingKey(){ if(!currentUser) return 'huma_pending_opd_guest'; return 'huma_pending_opd_'+currentUser.id; }
-function getOrCreateLetterRef(){ if(currentLetterRef) return currentLetterRef; let saved=localStorage.getItem('huma_current_letter_ref'); if(saved){ currentLetterRef=saved; return currentLetterRef; } let newRef='HC-'+Date.now().toString().slice(-6); currentLetterRef=newRef; localStorage.setItem('huma_current_letter_ref',newRef); return newRef; }
-function generateNextLetterRef(){ let newRef='HC-'+Date.now().toString().slice(-6); currentLetterRef=newRef; localStorage.setItem('huma_current_letter_ref',newRef); if(document.getElementById('refSaveMsg')) document.getElementById('refSaveMsg').innerText='Next Ref: '+newRef; return newRef; }
-function init(){ initUsersFix(); let savedDoctor=localStorage.getItem('huma_doctor_name'); if(savedDoctor){ document.getElementById('letterDoctor').value=savedDoctor; document.getElementById('doctorSaveMsg').innerText='✅ Saved Doctor: '+savedDoctor; } getOrCreateLetterRef(); if(document.getElementById('refSaveMsg')) document.getElementById('refSaveMsg').innerText='Current Ref: '+currentLetterRef+' (Preview se change nahi hoga)'; if(currentUser) showApp(); let pendingKey=getPendingKey(); let savedPending=localStorage.getItem(pendingKey) || sessionStorage.getItem('huma_locked_opd'); if(savedPending){ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let exists=patients.some(p=>p.opd===savedPending); if(!exists){ lockedOPD=savedPending; document.getElementById('opdNo').value=lockedOPD; } else { localStorage.removeItem(pendingKey); sessionStorage.removeItem('huma_locked_opd'); } } let todayISO=new Date().toISOString().slice(0,10); if(document.getElementById('dailyDate')) document.getElementById('dailyDate').value=todayISO; if(document.getElementById('expDate')) document.getElementById('expDate').value=todayISO; if(document.getElementById('expDailyDate')) document.getElementById('expDailyDate').value=todayISO; if(document.getElementById('monthSel')) document.getElementById('monthSel').value=String(new Date().getMonth()+1).padStart(2,'0'); }
-function saveDoctorName(){ let doc=document.getElementById('letterDoctor').value.trim(); if(doc){ localStorage.setItem('huma_doctor_name',doc); document.getElementById('doctorSaveMsg').innerText='✅ Doctor Saved: '+doc+' - Sirf Signature me ayega'; } }
-function autoLetterAge(el){ let v=el.value.trim(); if(!v) return; let low=v.toLowerCase(); if(low==='m'){ el.value='Male'; return; } if(low==='f'){ el.value='Female'; return; } let match=v.match(/^(\d+)\s*([mMfF])$/); if(match){ let g=match[2].toLowerCase()==='m'?'Male':'Female'; el.value=match[1]+' '+g; return; } }
-function saveHistoryAdvise(){ let h=document.getElementById('letterHistory').value.trim(); let a=document.getElementById('letterAdvise').value.trim(); if(h){ let arr=JSON.parse(localStorage.getItem('huma_histories')||'[]'); if(!arr.includes(h)){ arr.push(h); localStorage.setItem('huma_histories',JSON.stringify(arr)); } } if(a){ let arr=JSON.parse(localStorage.getItem('huma_advises')||'[]'); if(!arr.includes(a)){ arr.push(a); localStorage.setItem('huma_advises',JSON.stringify(arr)); } } }
-function getNextFreeOPD(){ let todayISO=new Date().toISOString().slice(0,10); patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let todayPatients=patients.filter(p=>p.dateISO===todayISO); let usedNumbers=new Set(); todayPatients.forEach(p=>{ let parts=p.opd.split('-'); let num=parseInt(parts[parts.length-1]||0); if(num) usedNumbers.add(num); }); let counter=parseInt(localStorage.getItem('huma_opd_counter_'+todayISO)||'0'); let next=counter+1; while(usedNumbers.has(next)){ next++; } return {opd:'HC-'+todayISO+'-'+String(next).padStart(3,'0'), num:next, date:todayISO}; }
-function generateOPD(force=false){ if(lockedOPD &&!force && document.getElementById('editIndex').value==='-1'){ document.getElementById('opdNo').value=lockedOPD; localStorage.setItem(getPendingKey(), lockedOPD); sessionStorage.setItem('huma_locked_opd', lockedOPD); return lockedOPD; } let result=getNextFreeOPD(); lockedOPD=result.opd; document.getElementById('opdNo').value=lockedOPD; localStorage.setItem(getPendingKey(), lockedOPD); sessionStorage.setItem('huma_locked_opd', lockedOPD); return lockedOPD; }
-function adminGenerateOPD(){ let adminPass=localStorage.getItem('huma_admin_pass')||'humaclinic'; let input=prompt('🔒 Admin Password:'); if(input!==adminPass){ alert('❌ Wrong'); return; } lockedOPD=null; localStorage.removeItem(getPendingKey()); sessionStorage.removeItem('huma_locked_opd'); generateOPD(true); alert('✅ New OPD: '+lockedOPD); openTab('new'); }
-function adminEditOPD(){ let adminPass=localStorage.getItem('huma_admin_pass')||'humaclinic'; let input=prompt('🔒 Admin Password:'); if(input!==adminPass){ alert('❌ Wrong'); return; } let newOPD=prompt('Naya OPD:', document.getElementById('opdNo').value); if(newOPD && newOPD.trim()!==''){ lockedOPD=newOPD.trim(); document.getElementById('opdNo').value=lockedOPD; localStorage.setItem(getPendingKey(), lockedOPD); sessionStorage.setItem('huma_locked_opd', lockedOPD); } }
-function autoGender(el){ let v=el.value.trim(); if(!v) return; let low=v.toLowerCase(); if(low==='m'){ el.value='Male'; return; } if(low==='f'){ el.value='Female'; return; } let match=v.match(/^(\d+)\s*([mMfF])$/); if(match){ let g=match[2].toLowerCase()==='m'?'Male':'Female'; el.value=match[1]+' '+g; } }
-function autoPatientType(el){ let v=el.value.trim().toLowerCase(); if(!v) return; if(v==='n' || v.startsWith('n')){ el.value='New'; setTimeout(()=>{ document.getElementById('pName').focus(); }, 100); return; } if(v==='o' || v.startsWith('o')){ el.value='Old'; setTimeout(()=>{ document.getElementById('pName').focus(); }, 100); return; } }
-function togglePrescriptionFields(){ let type=document.getElementById('letterType').value; let div=document.getElementById('prescriptionFields'); if(type==='prescription'){ div.classList.remove('hidden'); } else { div.classList.add('hidden'); } }
-function showMedicineSuggest(el){ let box=document.getElementById('medSuggest'); medicines=JSON.parse(localStorage.getItem('huma_medicines')||'[]'); let val=el.value; let cursorPos=el.selectionStart; let lines=val.substring(0,cursorPos).split(/[\n,;]/); let currentWord=lines[lines.length-1].trim().toLowerCase(); if(currentWord.length<1){ if(medicines.length>0){ let html='<div style="padding:6px;font-size:10px;color:#0d6efd;font-weight:bold;background:#eef5ff">💊 Pehle Save Ki Hui Medicines</div>'; html+=medicines.slice(-100).reverse().map(m=>`<div class="suggest-item" onclick="selectMedicine('${m.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${m}</div>`).join(''); box.innerHTML=html; box.style.display='block'; return; } box.style.display='none'; return; } let filtered=medicines.filter(m=>m.toLowerCase().includes(currentWord)).slice(0,20); if(filtered.length===0){ box.style.display='none'; return; } box.innerHTML=filtered.map(m=>`<div class="suggest-item" onclick="selectMedicine('${m.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">${m}</div>`).join(''); box.style.display='block'; }
-function selectMedicine(med){ let el=document.getElementById('treatment'); let cursorPos=el.selectionStart; let val=el.value; let before=val.substring(0,cursorPos); let after=val.substring(cursorPos); let lastDelim=Math.max(before.lastIndexOf('\n'),before.lastIndexOf(','),before.lastIndexOf(';')); let prefix=lastDelim>=0?before.substring(0,lastDelim+1):''; if(prefix &&!prefix.endsWith('\n') && prefix.trim()!=='') prefix+='\n'; let newVal=prefix+med+'\n'; if(after.trim().length>0) newVal+=after.trim()+'\n'; el.value=newVal; el.focus(); document.getElementById('medSuggest').style.display='none'; el.selectionStart=el.value.length; el.selectionEnd=el.value.length; }
-document.addEventListener('click',function(e){ if(e.target.id!=='treatment' && e.target.closest('#medSuggest')===null){ document.getElementById('medSuggest').style.display='none'; } });
-function saveExpense(){ let dateVal=document.getElementById('expDate').value; let amt=parseInt(document.getElementById('expAmount').value||0); let desc=document.getElementById('expDesc').value.trim(); if(!dateVal){ alert('Date select karen'); return; } if(!amt || amt<=0){ alert('Amount likhein'); return; } if(!desc){ alert('Expense detail likhein'); return; } expenses=JSON.parse(localStorage.getItem('huma_expenses')||'[]'); expenses.push({dateISO:dateVal,amount:amt,desc:desc,by:currentUser.id,time:new Date().toLocaleTimeString()}); localStorage.setItem('huma_expenses',JSON.stringify(expenses)); document.getElementById('expAmount').value=''; document.getElementById('expDesc').value=''; alert('✅ Expense Saved: Rs.'+amt); }
-function dailyExpenseReport(){ expenses=JSON.parse(localStorage.getItem('huma_expenses')||'[]'); let sel=document.getElementById('expDailyDate').value; let f=expenses.filter(x=>x.dateISO==sel); if(f.length===0){ document.getElementById('dailyExpenseDiv').innerHTML='<div class="msg">No expense on '+sel+'</div>'; return; } let total=f.reduce((s,x)=>s+x.amount,0); let html=`<div class="summary"><div><b>Rs.${total}</b>Total</div><div><b>${f.length}</b>Entries</div></div><table><tr><th>#</th><th>Date</th><th>Amount</th><th>Desc</th></tr>`+f.map((x,i)=>`<tr><td>${i+1}</td><td>${x.dateISO}</td><td>Rs.${x.amount}</td><td>${x.desc}</td></tr>`).join('')+`</table>`; document.getElementById('dailyExpenseDiv').innerHTML=html; }
-
-/* LETTERHEAD - DOCTOR ONLY SIGNATURE - REF FIXED */
-function getLetterHTML(isForSave=false, existingRef=null){
- let clinic=document.getElementById('letterClinicName').value||'HUMA CLINIC';
- let address=document.getElementById('letterAddress').value||'Itehad Colony Gulberg III Lahore';
- let phc=document.getElementById('letterPHC').value||'PHC NUMBER R-96277';
- let doctor=document.getElementById('letterDoctor').value||localStorage.getItem('huma_doctor_name')||'';
- let to=document.getElementById('letterTo').value||'';
- let subject=document.getElementById('letterSubject').value||'';
- let body=document.getElementById('letterBody').value||'';
- let type=document.getElementById('letterType').value;
- let typeTitle={official:'OFFICIAL LETTER',referral:'REFERRAL LETTER',medical:'MEDICAL CERTIFICATE',prescription:'PRESCRIPTION'};
- let title=typeTitle[type]||'OFFICIAL LETTER';
- let age=document.getElementById('letterAge')?.value||'';
- let weight=document.getElementById('letterWeight')?.value||'';
- let hist=document.getElementById('letterHistory')?.value||'';
- let advise=document.getElementById('letterAdvise')?.value||'';
- let refToUse=existingRef || getOrCreateLetterRef();
- if(type==='prescription'){
-   return `<div style="width:210mm;min-height:297mm;margin:0 auto;background:white;border:1px solid #ccc;padding:0;box-sizing:border-box">
-   <div style="background:#0d6efd;color:white;padding:14px 18px;text-align:center">
-   <h1 style="margin:0;font-size:22px;letter-spacing:1px">${clinic}</h1>
-   <p style="margin:2px 0 0 0;font-size:12px">${address}</p>
-   <p style="margin:2px 0 0 0;font-size:11px;font-weight:bold">${phc}</p>
-   </div>
-   <div style="padding:14px 18px">
-   <div style="display:flex;justify-content:space-between;border-bottom:2px solid #0d6efd;padding-bottom:6px;font-size:11px;margin-bottom:10px"><span><b>Date:</b> ${new Date().toLocaleDateString()} | <b>Ref:</b> ${refToUse}</span><span style="border:1px solid #0d6efd;padding:2px 10px;border-radius:4px;font-weight:bold;color:#0d6efd">${title}</span></div>
-   <div style="font-size:13px;margin:6px 0"><b>Patient Name:</b> ${to||'___________________'}</div>
-   <div style="display:flex;gap:0;border:1.5px solid #000;min-height:440px;margin-top:8px">
-   <div style="width:32%;background:#f8f9ff;border-right:1.5px solid #000;padding:10px;font-size:12px">
-   <div style="background:#0d6efd;color:white;padding:4px 8px;border-radius:4px;text-align:center;font-weight:bold;margin-bottom:8px;font-size:11px">PATIENT DETAILS</div>
-   <div style="margin-bottom:10px"><b>Age:</b><div style="border:1px solid #ccc;min-height:22px;padding:3px;margin-top:3px;background:white">${age||''}</div></div>
-   <div style="margin-bottom:10px"><b>Weight:</b><div style="border:1px solid #ccc;min-height:22px;padding:3px;margin-top:3px;background:white">${weight||''}</div></div>
-   <div style="margin-bottom:10px"><b>History:</b><div style="border:1px solid #ccc;min-height:70px;padding:4px;margin-top:4px;white-space:pre-wrap;background:white">${hist||''}</div></div>
-   <div style="margin-bottom:10px"><b>Advise:</b><div style="border:1px solid #ccc;min-height:90px;padding:4px;margin-top:4px;white-space:pre-wrap;background:white">${advise||''}</div></div>
-   </div>
-   <div style="width:68%;padding:10px 12px"><div style="font-size:22px;font-weight:bold;color:#0d6efd;margin-bottom:8px">Rx,</div><div style="font-size:13px;white-space:pre-wrap;line-height:1.7;font-family:'Times New Roman',serif;min-height:380px">${body}</div></div>
-   </div>
-   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:end"><div style="font-size:10px"><b>${clinic}</b><br>${address}</div><div style="text-align:center"><div style="width:180px;border-top:1.5px solid #000;padding-top:6px;font-size:11px;font-weight:bold">${doctor?doctor:'Authorized Signature'}<br><span style="font-weight:normal;font-size:10px">Signature</span></div></div></div>
-   <div style="margin-top:12px;border:1px solid #dc3545;background:#ffe6e6;padding:5px;text-align:center;font-size:10px;font-weight:bold;color:#dc3545">⚠️ Not valid for any court of law</div>
-   </div></div>`;
+let currentFilter='presc';
+let counters = JSON.parse(localStorage.getItem('huma_ref_counters')||'{"RX":0,"FIT":0,"MED":0,"REF":0,"OPD":0}');
+let currentRefs = JSON.parse(localStorage.getItem('huma_current_refs')||'{"presc":"","fitness":"","medical":"","referral":"","opd":""}');
+function genRef(type){
+ let map={presc:'RX',fitness:'FIT',medical:'MED',referral:'REF',opd:'OPD'};
+ let pre=map[type]||'GEN';
+ counters[pre]=(counters[pre]||0)+1;
+ localStorage.setItem('huma_ref_counters',JSON.stringify(counters));
+ let d=new Date(); let y=String(d.getFullYear()).slice(-2); let m=String(d.getMonth()+1).padStart(2,'0');
+ return `${pre}-${y}${m}-${String(counters[pre]).padStart(4,'0')}`;
+}
+function ensureRefs(){
+ if(!currentRefs.presc) currentRefs.presc=genRef('presc');
+ if(!currentRefs.fitness) currentRefs.fitness=genRef('fitness');
+ if(!currentRefs.medical) currentRefs.medical=genRef('medical');
+ if(!currentRefs.referral) currentRefs.referral=genRef('referral');
+ if(!currentRefs.opd) currentRefs.opd=genRef('opd');
+ localStorage.setItem('huma_current_refs',JSON.stringify(currentRefs));
+}
+ensureRefs();
+function toggleLetters(e){if(e) e.stopPropagation();document.getElementById('lettersDrop').classList.toggle('open');document.getElementById('recordPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+function toggleRecord(e){if(e) e.stopPropagation();let p=document.getElementById('recordPanel');let o=document.getElementById('overlay');let isOpen=p.classList.contains('open');if(isOpen){p.classList.remove('open');o.classList.remove('open');} else {document.getElementById('lettersDrop').classList.remove('open');p.classList.add('open');o.classList.add('open');renderRecord();}}
+function closeAll(){document.getElementById('lettersDrop').classList.remove('open');document.getElementById('recordPanel').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+function openLetter(type,btn){
+ currentFilter=type;
+ document.querySelectorAll('.letters-dropdown button').forEach(b=>b.classList.remove('active'));
+ if(btn) btn.classList.add('active');
+ document.getElementById('lettersDrop').classList.remove('open');
+ document.getElementById('curType').innerText= type==='all'?'ALL':type.toUpperCase();
+ document.querySelectorAll('#inputGrid.field').forEach(f=>{let fors=f.getAttribute('data-for').split(' ');if(type==='all' || fors.includes('all') || fors.includes(type)){f.classList.remove('hidden')} else {f.classList.add('hidden')}});
+ if(type!=='all'){let refMap={presc:currentRefs.presc,fitness:currentRefs.fitness,medical:currentRefs.medical,referral:currentRefs.referral};document.getElementById('i_ref').value=refMap[type]||'';}
+ document.getElementById('i_opd').value=currentRefs.opd;
+ if(type==='all'){document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'))}
+ else {document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===type) w.classList.remove('hidden'); else w.classList.add('hidden')})}
+ fitAll(); sync(); closeAll();
+ if(type!=='all') document.getElementById('wrap-'+type).scrollIntoView({behavior:'smooth'});
+}
+function getDateShow(){let date=i_date.value;let dshow=date; if(date){let p=date.split('-');dshow=p[2]+'-'+p[1]+'-'+p[0]} else {let now=new Date();dshow=String(now.getDate()).padStart(2,'0')+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+now.getFullYear()} return dshow;}
+function sync(){
+ let name=i_name.value, age=i_age.value, hist=i_hist.value, hist_fit=i_hist_fit.value, adv=i_adv.value, desc=i_desc.value, fitness=i_fitness.value, medical=i_medical.value, doc=i_doc.value||'Dr. Huma', refer=i_refer.value, phone=i_phone.value||'0300-0000000', opd=currentRefs.opd, weight=i_weight.value, bp=i_bp.value, temp=i_temp.value, pulse=i_pulse.value;
+ let dshow=getDateShow();
+ document.querySelectorAll('.c_phone').forEach(e=>e.innerText=phone);
+ fb_ref.innerText=currentRefs.fitness; fb_date.innerText=dshow; document.querySelectorAll('.fb_date_med').forEach(e=>e.innerText=dshow); document.querySelectorAll('.fb_ref_med').forEach(e=>e.innerText=currentRefs.medical);
+ document.querySelectorAll('.fb_date_footer').forEach(e=>e.innerText=dshow); document.querySelectorAll('.fb_date_footer2').forEach(e=>e.innerText=dshow);
+ v_name.innerText=name; v_age.innerText=age; v_ref_presc.innerText=currentRefs.presc;
+ v_opd.innerText=opd||'-'; v_contact.innerText=phone||'-'; v_weight.innerText=weight||'-'; v_bp.innerText=bp||'-'; v_temp.innerText=temp||'-'; v_pulse.innerText=pulse||'-';
+ v_hist.innerText=hist; v_adv.innerText=adv; v_desc.innerText=desc; v_doc1.innerText=doc;
+ v_date_show.innerText=dshow; v_date_opd.innerText=opd; v_footer_date.innerText=dshow;
+ f_name.innerText=name; f_age.innerText=age; f_date2.innerText=dshow; f_ref.innerText=currentRefs.fitness; f_hist.innerText=hist_fit||hist; f_desc.innerText=fitness||medical||desc; f_doc.innerText=doc;
+ m_name.innerText=name; m_age.innerText=age; m_date.innerText=dshow; m_ref.innerText=currentRefs.medical; m_adv.innerText=adv; m_desc.innerText=medical||fitness||desc; v_doc3.innerText=doc;
+ r_name.innerText=name; r_age.innerText=age; r_ref.innerText=currentRefs.referral; r_hist.innerText=hist; r_desc.innerText=medical||desc; r_refer.innerText=refer; v_doc2.innerText=doc; r_date_show.innerText=dshow; r_footer_date.innerText=dshow;
+}
+const sheets=document.querySelectorAll('.sheet');
+function fitAll(){sheets.forEach(s=>{let holder=s.closest('.holder');if(!holder||holder.closest('.hidden')) return;let w=s.offsetWidth;let avail=Math.min(document.documentElement.clientWidth-28,800);let sc=Math.min(1,avail/w);s.style.transform='scale('+sc+')';holder.style.width=(w*sc)+'px';holder.style.height=(s.offsetHeight*sc)+'px';});}
+addEventListener('resize',fitAll);
+openLetter('presc',null);document.querySelectorAll('.letters-dropdown button')[1].classList.add('active');fitAll();sync();
+let records=JSON.parse(localStorage.getItem('huma_letters_records')||'[]');
+function renderRecord(list){
+ let data=list||records;
+ recBadge.innerText=records.length;totalRec.innerText=records.length;let today=new Date().toISOString().slice(0,10);todayRec.innerText=records.filter(r=>r.dateISO===today).length;
+ let tbody=document.querySelector('#recTable tbody');tbody.innerHTML='';
+ data.slice().reverse().forEach((r)=>{
+   let origIdx=records.indexOf(r);
+   let tr=document.createElement('tr');
+   // EDITABLE + PRINT + DELETE
+   tr.innerHTML=`<td>${data.length - data.indexOf(r)}</td><td>${r.type}</td><td class="editable" contenteditable="true" onblur="editRecord(${origIdx},'name',this.innerText)" ondblclick="this.focus()">${r.name||'-'}</td><td>${r.ref}</td><td>${r.datetime}</td><td style="display:flex;gap:3px"><button class="btn btn-light" style="padding:3px 6px;font-size:10px" onclick="reprintRecord(${origIdx})">Print</button><button class="btn" style="padding:3px 6px;font-size:10px;background:#dc2626;color:#fff;border:0" onclick="deleteRecord(${origIdx})">Del</button></td>`;
+   tbody.appendChild(tr);
+ });
+}
+function editRecord(idx,field,value){
+ if(records[idx]){records[idx][field]=value;localStorage.setItem('huma_letters_records',JSON.stringify(records));}
+}
+function deleteRecord(idx){
+ if(confirm('Is record ko delete karna hai?')){
+   records.splice(idx,1);
+   localStorage.setItem('huma_letters_records',JSON.stringify(records));
+   renderRecord();
  }
- return `<div style="width:210mm;min-height:297mm;margin:0 auto;background:white;border:1px solid #ccc;padding:0;box-sizing:border-box"><div style="background:#0d6efd;color:white;padding:14px 18px;text-align:center"><h1 style="margin:0;font-size:22px;letter-spacing:1px">${clinic}</h1><p style="margin:2px 0 0 0;font-size:12px">${address}</p><p style="margin:2px 0 0 0;font-size:11px;font-weight:bold">${phc}</p></div><div style="padding:18px 22px"><div style="display:flex;justify-content:space-between;border-bottom:2px solid #0d6efd;padding-bottom:6px;font-size:11px;margin-bottom:14px"><span><b>Date:</b> ${new Date().toLocaleDateString()} | <b>Ref:</b> ${refToUse}</span><span style="border:2px solid #0d6efd;padding:4px 12px;border-radius:6px;font-weight:bold;color:#0d6efd">${title}</span></div>${to?`<div style="font-size:13px;margin:10px 0"><b>To:</b> ${to}</div>`:''}${subject?`<div style="font-size:13px;margin:8px 0;background:#eef5ff;padding:6px 10px;border-left:4px solid #0d6efd"><b>Subject:</b> ${subject}</div>`:''}<div style="font-size:14px;white-space:pre-wrap;line-height:1.7;margin-top:16px;font-family:'Times New Roman',serif;min-height:380px">${body}</div><div style="margin-top:50px;display:flex;justify-content:space-between;align-items:end"><div style="font-size:11px"><b>${clinic}</b><br>${address}</div><div style="text-align:center"><div style="width:180px;border-top:2px solid #000;padding-top:6px;font-size:12px;font-weight:bold">${doctor?doctor:'Authorized Signature'}<br><span style="font-weight:normal;font-size:10px">Signature</span></div></div></div><div style="margin-top:18px;border:1px solid #dc3545;background:#ffe6e6;padding:6px;text-align:center;font-size:11px;font-weight:bold;color:#dc3545">⚠️ Not valid for any court of law</div></div></div>`;
 }
-function getLetterPrintHTML(existingRef=null){ let html=getLetterHTML(false, existingRef); return `<html><head><meta charset="UTF-8"><title>HUMA CLINIC</title><style>@page{size:A4;margin:0}body{margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif}.a4-page{width:210mm;min-height:297mm;margin:10mm auto;background:white;box-shadow:0 0 10px rgba(0,0,0,0.2)} @media print{body{background:white}.a4-page{margin:0;box-shadow:none;width:100%} button{display:none}}</style></head><body><div class="a4-page">${html}</div><div style="text-align:center;margin:12px"><button onclick="window.print()" style="padding:12px 32px;background:#0d6efd;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer">🖨️ PRINT</button></div></body></html>`; }
-function previewOfficialLetter(){ let ref=getOrCreateLetterRef(); document.getElementById('officialPreview').innerHTML=getLetterHTML(false, ref); document.getElementById('refSaveMsg').innerText='Current Ref: '+ref+' - Preview se change nahi hoga, Save par next ayega'; loadLetterRecord(); }
-function printOfficialLetter(){ if(!currentUser || currentUser.role!=='admin'){ alert('❌ Only Admin'); return; } let adminPass=localStorage.getItem('huma_admin_pass')||'humaclinic'; let input=prompt('🔒 Admin Password:'); if(input!==adminPass){ alert('❌ Wrong'); return; } let to=document.getElementById('letterTo').value.trim(); if(!to){ alert('Patient Name likhein'); return; } saveDoctorName(); saveHistoryAdvise(); let refForThisLetter=getOrCreateLetterRef(); letters=JSON.parse(localStorage.getItem('huma_letters')||'[]'); let clinic=document.getElementById('letterClinicName').value; let phc=document.getElementById('letterPHC').value; let doctor=document.getElementById('letterDoctor').value; let type=document.getElementById('letterType').value; let subject=document.getElementById('letterSubject').value; let body=document.getElementById('letterBody').value; let age=document.getElementById('letterAge')?.value||''; let weight=document.getElementById('letterWeight')?.value||''; let hist=document.getElementById('letterHistory')?.value||''; let advise=document.getElementById('letterAdvise')?.value||''; let now=new Date(); let record={id:'LTR-'+Date.now(),ref:refForThisLetter,dateISO:now.toISOString().slice(0,10),time:now.toLocaleTimeString(),clinic:clinic,phc:phc,doctor:doctor,type:type,to:to,subject:subject,body:body,age:age,weight:weight,history:hist,advise:advise,by:currentUser.id}; letters.push(record); localStorage.setItem('huma_letters',JSON.stringify(letters)); let w=window.open('','_blank'); w.document.write(getLetterPrintHTML(refForThisLetter)); w.document.close(); generateNextLetterRef(); alert('✅ Saved - Ref: '+refForThisLetter); loadLetterRecord(); }
-function loadLetterRecord(){ letters=JSON.parse(localStorage.getItem('huma_letters')||'[]'); let total=letters.length; let todayISO=new Date().toISOString().slice(0,10); let thisMonth=todayISO.slice(0,7); let todayCount=letters.filter(x=>x.dateISO===todayISO).length; let monthCount=letters.filter(x=>x.dateISO.startsWith(thisMonth)).length; document.getElementById('totalLetters').innerText=total; document.getElementById('todayLetters').innerText=todayCount; document.getElementById('monthLetters').innerText=monthCount; if(letters.length===0){ document.getElementById('letterRecordDiv').innerHTML='<div class="msg">No record</div>'; return; } let html=`<table><tr><th>#</th><th>Ref</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Print</th></tr>`+letters.slice().reverse().map((x,i)=>`<tr><td>${letters.length-i}</td><td>${x.ref||x.id}</td><td>${x.to}</td><td>${x.doctor||'-'}</td><td>${x.dateISO}</td><td><button style="width:auto;padding:3px 6px" class="blue" onclick="reprintLetter('${x.id}')">🖨️</button></td></tr>`).join('')+`</table>`; document.getElementById('letterRecordDiv').innerHTML=html; }
-function reprintLetter(id){ letters=JSON.parse(localStorage.getItem('huma_letters')||'[]'); let l=letters.find(x=>x.id===id); if(!l){ alert('Not found'); return; } let w=window.open('','_blank'); w.document.write(getLetterPrintHTML(l.ref||l.id)); w.document.close(); }
-
-/* ADR FORM FUNCTIONS */
-function getADRData(){
- return {
-  clinic:document.getElementById('adr_clinic').value,
-  contact:document.getElementById('adr_contact').value,
-  position:document.getElementById('adr_position').value,
-  address:document.getElementById('adr_address').value,
-  email:document.getElementById('adr_email').value,
-  tel_off:document.getElementById('adr_tel_off').value,
-  fax:document.getElementById('adr_fax').value,
-  mobile:document.getElementById('adr_mobile').value,
-  complaint_date:document.getElementById('adr_complaint_date').value,
-  src_patient:document.getElementById('adr_src_patient').checked,
-  src_attendant:document.getElementById('adr_src_attendant').checked,
-  src_self:document.getElementById('adr_src_self').checked,
-  src_other:document.getElementById('adr_src_other').value,
-  similar_no:document.getElementById('adr_similar_no').value,
-  test_results:document.getElementById('adr_test_results').value,
-  contacted:document.querySelector('input[name="adr_contacted"]:checked')?.value||'',
-  contacted_details:document.getElementById('adr_contacted_details').value,
-  attach:document.getElementById('adr_attach').value,
-  product_name:document.getElementById('adr_product_name').value,
-  pack_size:document.getElementById('adr_pack_size').value,
-  active:document.getElementById('adr_active').value,
-  reg_no:document.getElementById('adr_reg_no').value,
-  dosage_form:document.getElementById('adr_dosage_form').value,
-  batch:document.getElementById('adr_batch').value,
-  expiry:document.getElementById('adr_expiry').value,
-  mfg_name:document.getElementById('adr_mfg_name').value,
-  mfg_address:document.getElementById('adr_mfg_address').value,
-  mfg_tel:document.getElementById('adr_mfg_tel').value,
-  mfg_fax:document.getElementById('adr_mfg_fax').value,
-  mfg_date:document.getElementById('adr_mfg_date').value,
-  reporting_name:document.getElementById('adr_reporting_name').value,
-  reporting_post:document.getElementById('adr_reporting_post').value,
-  reporting_mobile:document.getElementById('adr_reporting_mobile').value,
-  reporting_phone:document.getElementById('adr_reporting_phone').value,
-  reporting_date:document.getElementById('adr_reporting_date').value,
-  pmdc:document.getElementById('adr_pmdc').value
- };
+function filterByDate(){let d=document.getElementById('recDateFilter').value;if(!d){alert('Date select karen');return;}let f=records.filter(r=>r.dateISO===d);renderRecord(f);}
+function showAllRecord(){document.getElementById('recDateFilter').value='';renderRecord();}
+function printByDate(){
+ let d=document.getElementById('recDateFilter').value;
+ if(!d){alert('Pehle date select karen');return;}
+ let list=records.filter(r=>r.dateISO===d);
+ if(list.length===0){alert('Is date ka koi record nahi');return;}
+ closeAll();
+ document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'));
+ setTimeout(()=>{window.print();},300);
 }
-function getADRHTML(data){
- let d=data||getADRData();
- return `<div style="width:210mm;min-height:297mm;margin:0 auto;background:white;border:2px solid #000;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;font-size:12px">
- <div style="text-align:center;font-size:11px;padding:6px">MSDS/Reference Manual for GPs/ Family Physicians/Specialist Clinics</div>
- <table style="width:100%;border-collapse:collapse;border:2px solid #000">
- <tr><td style="background:#8fd5a6;font-weight:bold;text-align:center;padding:8px;border:1px solid #000">ADVERSE DRUG REACTION REPORTING FORMAT</td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Name of Clinic/HCE reporting the problem of Pharmaceutical Product:<br><b>${d.clinic||''}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:50%;border:none">Name of contact person: <b>${d.contact}</b></td><td style="border:none">Position: <b>${d.position}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Address: <b>${d.address}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">E-mail address: <b>${d.email}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Tel:(office) <b>${d.tel_off}</b> (Fax) <b>${d.fax}</b> (mobile) <b>${d.mobile}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Date of receiving complaint: <b>${d.complaint_date}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Source of Complaint ${d.src_patient?'☑ Patient':'☐ Patient'} ${d.src_attendant?'☑ Attendant':'☐ Attendant'} ${d.src_self?'☑ Self-inspection':'☐ Self-inspection'} Other: <b>${d.src_other}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:50%;border:none">Number of similar reports received: <b>${d.similar_no}</b></td><td style="border:none">Attach Results of tests if conducted: <b>${d.test_results}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Has manufacturer/distributor been contacted earlier? ${d.contacted} ${d.contacted_details?' - '+d.contacted_details:''}</td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Attach photocopies, package insert and press clipping about the product if any) <b>${d.attach}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px;font-weight:bold;background:#f0f0f0">DETAIL OF THE PRODUCT</td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:70%;border:none">Name of the product: <b>${d.product_name}</b></td><td style="border:none">Pack size: <b>${d.pack_size}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Active Ingredients and Strength: <b>${d.active}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:50%;border:none">Registration number: <b>${d.reg_no}</b></td><td style="border:none">Dosage Form: <b>${d.dosage_form}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:50%;border:none">Batch number <b>${d.batch}</b></td><td style="border:none">Expiry date <b>${d.expiry}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:6px;font-weight:bold;background:#f0f0f0">Manufacturer Name: <b>${d.mfg_name}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px">Address <b>${d.mfg_address}</b></td></tr>
- <tr><td style="border:1px solid #000;padding:6px"><table style="width:100%"><tr><td style="width:30%;border:none">Tel <b>${d.mfg_tel}</b></td><td style="width:30%;border:none">Fax <b>${d.mfg_fax}</b></td><td style="border:none">Manufacture date <b>${d.mfg_date}</b></td></tr></table></td></tr>
- <tr><td style="border:1px solid #000;padding:8px">Name of Reporting: <b>${d.reporting_name}</b> &nbsp; Post: <b>${d.reporting_post}</b><br><br>Mobile #: <b>${d.reporting_mobile}</b> &nbsp; Phone# <b>${d.reporting_phone}</b> &nbsp; Date: DD/MM/YYYY <b>${d.reporting_date}</b><br><br>Sig of Reporting Person:____________________ PMDC/PCP/PNC Registration Number: <b>${d.pmdc}</b></td></tr>
- </table>
- <div style="font-size:10px;padding:8px">Following is additional information on the subject:<br>Identifying the problems leading to ADRs, planning for positive changes, and measuring the results of these changes are important. Positive outcomes resulting from an ADR reporting should be emphasized to support safety efforts.<div style="text-align:right;font-weight:bold;margin-top:6px">Punjab Healthcare Commission &nbsp; 79</div></div>
- </div>`;
+function saveRecord(type){
+ let refMap={presc:currentRefs.presc,fitness:currentRefs.fitness,medical:currentRefs.medical,referral:currentRefs.referral,all:'ALL'};
+ let ref=refMap[type]||document.getElementById('i_ref').value;
+ let dshow=getDateShow();
+ records.push({type:type.toUpperCase(),name:i_name.value,ref:ref,datetime:dshow+' '+new Date().toLocaleTimeString(),dateISO:i_date.value||new Date().toISOString().slice(0,10)});
+ localStorage.setItem('huma_letters_records',JSON.stringify(records)); renderRecord();
+ if(type!=='all'){
+   let newRef=genRef(type);
+   currentRefs[type]=newRef;
+   if(type==='presc'){let newOPD=genRef('opd');currentRefs.opd=newOPD;document.getElementById('i_opd').value=newOPD;}
+   localStorage.setItem('huma_current_refs',JSON.stringify(currentRefs));
+   if(currentFilter===type) document.getElementById('i_ref').value=newRef;
+   sync();
+ }
 }
-function previewADR(){ let data=getADRData(); document.getElementById('adrPreview').innerHTML=getADRHTML(data); }
-function printADR(){
- let html=getADRHTML();
- let w=window.open('','_blank');
- w.document.write(`<html><head><meta charset="UTF-8"><title>ADR Form - PHC</title><style>@page{size:A4;margin:10mm}body{margin:0;padding:0;background:#f0f0f0}.a4{width:210mm;min-height:297mm;margin:10mm auto;background:white;box-shadow:0 0 10px rgba(0,0,0,0.2)} @media print{body{background:white}.a4{margin:0;box-shadow:none} button{display:none}}</style></head><body><div class="a4">${html}</div><div style="text-align:center;margin:12px"><button onclick="window.print()" style="padding:12px 32px;background:#198754;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer">🖨️ PRINT A4 - ADR FORM</button></div></body></html>`);
- w.document.close();
+function savePrint(){
+ sync();
+ saveRecord(currentFilter);
+ closeAll();
+ document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===currentFilter) w.classList.remove('hidden'); else w.classList.add('hidden')});
+ setTimeout(()=>{window.print(); setTimeout(()=>openLetter(currentFilter),400);},300);
 }
-function saveADRRecord(){
- if(!currentUser || currentUser.role!=='admin'){ alert('❌ Only Admin'); return; }
- let adminPass=localStorage.getItem('huma_admin_pass')||'humaclinic'; let input=prompt('🔒 Admin Password - Save ADR:'); if(input!==adminPass){ alert('❌ Wrong'); return; }
- let data=getADRData();
- if(!data.product_name){ alert('Product Name likhein'); return; }
- adrRecords=JSON.parse(localStorage.getItem('huma_adr')||'[]');
- let now=new Date();
- let rec={id:'ADR-'+Date.now(),dateISO:now.toISOString().slice(0,10),time:now.toLocaleTimeString(),...data,by:currentUser.id};
- adrRecords.push(rec);
- localStorage.setItem('huma_adr',JSON.stringify(adrRecords));
- alert('✅ ADR Form Saved');
- loadADRRecord();
+function printSingle(type){
+ sync();
+ saveRecord(type);
+ closeAll();
+ document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===type) w.classList.remove('hidden'); else w.classList.add('hidden')});
+ setTimeout(()=>{window.print(); setTimeout(()=>openLetter(type),400);},300);
 }
-function loadADRRecord(){
- adrRecords=JSON.parse(localStorage.getItem('huma_adr')||'[]');
- let total=adrRecords.length;
- let todayISO=new Date().toISOString().slice(0,10);
- let todayCount=adrRecords.filter(x=>x.dateISO===todayISO).length;
- document.getElementById('totalADR').innerText=total;
- document.getElementById('todayADR').innerText=todayCount;
- if(adrRecords.length===0){ document.getElementById('adrRecordDiv').innerHTML='<div class="msg">No ADR record</div>'; return; }
- let html=`<table><tr><th>#</th><th>Date</th><th>Product</th><th>Batch</th><th>Reported By</th><th>Print</th></tr>`+adrRecords.slice().reverse().map((x,i)=>`<tr><td>${adrRecords.length-i}</td><td>${x.dateISO}</td><td>${x.product_name}</td><td>${x.batch||'-'}</td><td>${x.reporting_name||x.by}</td><td><button style="width:auto;padding:3px 6px" class="blue" onclick="reprintADR('${x.id}')">🖨️</button></td></tr>`).join('')+`</table>`;
- document.getElementById('adrRecordDiv').innerHTML=html;
+function printCurrent(){
+ if(currentFilter==='all') {printAll(); return;}
+ printSingle(currentFilter);
 }
-function reprintADR(id){
- adrRecords=JSON.parse(localStorage.getItem('huma_adr')||'[]');
- let r=adrRecords.find(x=>x.id===id);
- if(!r){ alert('Not found'); return; }
- let w=window.open('','_blank');
- w.document.write(`<html><head><meta charset="UTF-8"><title>ADR - ${r.product_name}</title><style>@page{size:A4;margin:10mm}body{margin:0;padding:0}</style></head><body>${getADRHTML(r)}<div style="text-align:center;margin:12px"><button onclick="window.print()" style="padding:10px 24px;background:#198754;color:white;border:none;border-radius:6px">🖨️ PRINT</button></div></body></html>`);
- w.document.close();
+function printAll(){
+ sync();
+ records.push({type:'ALL',name:i_name.value,ref:'ALL',datetime:getDateShow()+' '+new Date().toLocaleTimeString(),dateISO:i_date.value||new Date().toISOString().slice(0,10)});
+ localStorage.setItem('huma_letters_records',JSON.stringify(records));renderRecord();
+ closeAll();
+ document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'));
+ setTimeout(()=>{window.print();},300);
 }
-
-function openTab(name){
- document.getElementById('tab-home').classList.add('hidden');
- document.getElementById('tab-new').classList.add('hidden');
- document.getElementById('tab-search').classList.add('hidden');
- document.getElementById('tab-daily').classList.add('hidden');
- document.getElementById('tab-monthly').classList.add('hidden');
- document.getElementById('tab-expense').classList.add('hidden');
- document.getElementById('tab-user').classList.add('hidden');
- document.getElementById('tab-admin').classList.add('hidden');
- document.getElementById('tab-official').classList.add('hidden');
- document.getElementById('tab-adr').classList.add('hidden');
- document.getElementById('tab-'+name).classList.remove('hidden');
- if(name==='new'){ if(lockedOPD) document.getElementById('opdNo').value=lockedOPD; else generateOPD(true); }
- if(name==='user'){ loadUserPanel(); }
- if(name==='admin'){ loadAdminUserEntries(); }
- if(name==='expense'){ dailyExpenseReport(); }
- if(name==='official'){ loadLetterRecord(); previewOfficialLetter(); togglePrescriptionFields(); let savedDoctor=localStorage.getItem('huma_doctor_name'); if(savedDoctor) document.getElementById('letterDoctor').value=savedDoctor; }
- if(name==='adr'){ loadADRRecord(); previewADR(); }
- if(name==='home'){ document.getElementById('homeUserInfo').innerText=`${currentUser.id} (${currentUser.role}) | ${new Date().toISOString().slice(0,10)}`; }
- window.scrollTo(0,0);
+function reprintRecord(idx){
+ let r=records[idx];
+ let map={PRESC:'presc',FITNESS:'fitness',MEDICAL:'medical',REFERRAL:'referral',RX:'presc',FIT:'fitness',MED:'medical',REF:'referral',ALL:'all'};
+ let t=map[r.type]||'presc';
+ closeAll();
+ if(t==='all'){document.querySelectorAll('.sheet-wrap').forEach(w=>w.classList.remove('hidden'))}
+ else {document.querySelectorAll('.sheet-wrap').forEach(w=>{if(w.dataset.type===t) w.classList.remove('hidden'); else w.classList.add('hidden')})}
+ setTimeout(()=>{window.print();},300);
 }
-function doLogin(){ let id=loginId.value.trim(); let pass=loginPass.value.trim(); let adminPass=localStorage.getItem('huma_admin_pass')||'humaclinic'; if(id==='admin' && pass===adminPass){ currentUser={id:'admin',role:'admin'}; sessionStorage.setItem('huma_current',JSON.stringify(currentUser)); showApp(); return; } let f=users.find(u=>u.id===id && u.pass===pass); if(f){ currentUser={id:f.id,role:'user'}; sessionStorage.setItem('huma_current',JSON.stringify(currentUser)); showApp(); } else { loginMsg.innerText='Wrong ID or Password!'; } }
-function showApp(){ loginPage.classList.add('hidden'); appPage.classList.remove('hidden'); welcome.innerText='Logged: '+currentUser.id+' ('+currentUser.role+')'; if(currentUser.role==='admin'){ document.getElementById('homeAdminCard').classList.remove('hidden'); loadUsers(); loadAdminUserEntries(); } else { document.getElementById('homeAdminCard').classList.add('hidden'); } openTab('home'); }
-function doLogout(){ sessionStorage.removeItem('huma_current'); location.reload(); }
-function showReset(){ resetBox.classList.remove('hidden'); } function hideReset(){ resetBox.classList.add('hidden'); }
-function resetAdminPass(){ if(masterCode.value!==MASTER_CODE){alert('Wrong Master');return;} localStorage.setItem('huma_admin_pass',newAdminPass.value); alert('Reset Done'); hideReset(); }
-function generateUserId(){ let num=Math.floor(100 + Math.random()*900); let newId='USER-'+num; document.getElementById('newUserId').value=newId; document.getElementById('newUserPass').value='HC'+num; }
-function createUser(){ let nid=newUserId.value.trim(); let np=newUserPass.value.trim(); if(!nid||!np){ alert('ID aur Password likhein'); return; } users.push({id:nid,pass:np}); localStorage.setItem('huma_users',JSON.stringify(users)); loadUsers(); newUserId.value=''; newUserPass.value=''; alert('✅ User Created'); }
-function loadUsers(){ let h='<table><tr><th>ID</th><th>Pass</th><th>Del</th></tr>'; users.forEach((u,i)=>{h+=`<tr><td>${u.id}</td><td>${u.pass}</td><td><button style="width:auto;padding:3px 6px" class="red" onclick="deleteUser(${i})">X</button></td></tr>`;}); h+='</table>'; userList.innerHTML=h; }
-function deleteUser(i){ if(!confirm('Delete?')) return; users.splice(i,1); localStorage.setItem('huma_users',JSON.stringify(users)); loadUsers(); }
-function loadAdminUserEntries(){ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let byUser={}; patients.forEach(p=>{ let by=p.by||'Unknown'; if(!byUser[by]) byUser[by]={count:0}; byUser[by].count++; }); let html=`<table><tr><th>User</th><th>Total</th></tr>`; Object.keys(byUser).forEach(uid=>{ html+=`<tr><td>${uid}</td><td>${byUser[uid].count}</td></tr>`; }); html+=`</table>`; document.getElementById('adminUserSummary').innerHTML=html; let sel=document.getElementById('adminUserSelect'); sel.innerHTML='<option value="">-- Select User --</option>'; Object.keys(byUser).forEach(uid=>{ sel.innerHTML+=`<option value="${uid}">${uid}</option>`; }); }
-function showSelectedUserEntries(){ let uid=document.getElementById('adminUserSelect').value; if(!uid){ alert('User select karein'); return; } patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let filtered=patients.filter(p=>p.by===uid); if(filtered.length===0){ document.getElementById('adminUserEntriesList').innerHTML=`<div class="msg">No entries</div>`; return; } let html=`<table><tr><th>OPD</th><th>Name</th><th>Date</th></tr>`+filtered.map(x=>`<tr><td>${x.opd}</td><td>${x.name}</td><td>${x.dateISO}</td></tr>`).join('')+`</table>`; document.getElementById('adminUserEntriesList').innerHTML=html; }
-function savePatient(){ autoGender(document.getElementById('age')); autoPatientType(document.getElementById('patientType')); let typeVal=document.getElementById('patientType').value.trim(); if(typeVal==='' || (typeVal!=='New' && typeVal!=='Old')){ alert('Patient Type lazmi hai!'); return; } let feeVal=document.getElementById('fee').value.trim(); if(feeVal===''){ alert('Fees likhna lazmi hai!'); return; } let isFree=(feeVal==='000'||feeVal==='0'); let feeNum=isFree?0:parseInt(feeVal||0); patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let idx=parseInt(document.getElementById('editIndex').value); let currentOPD=document.getElementById('opdNo').value; let now=new Date(); let p={opd:currentOPD,patientType:document.getElementById('patientType').value,name:document.getElementById('pName').value,parentage:document.getElementById('parentage').value,age:document.getElementById('age').value,contact:document.getElementById('contact').value,history:document.getElementById('historyInput').value,complaint:document.getElementById('complaint').value,treatment:document.getElementById('treatment').value,fee:feeNum,isFree:isFree,address:document.getElementById('address').value,date:now.toLocaleString(),dateISO:now.toISOString().slice(0,10),time:now.toLocaleTimeString(),by:currentUser.id}; if(!p.name){alert('Name likhain');return;} if(idx>=0){ patients[idx]=p; } else { patients.push(p); } localStorage.setItem('huma_opd',JSON.stringify(patients)); localStorage.removeItem(getPendingKey()); sessionStorage.removeItem('huma_locked_opd'); printSlip(p); lockedOPD=null; document.getElementById('editIndex').value=-1; document.getElementById('opdNo').value=''; document.getElementById('patientType').value=''; document.getElementById('pName').value=''; document.getElementById('parentage').value=''; document.getElementById('age').value=''; document.getElementById('contact').value=''; document.getElementById('historyInput').value=''; document.getElementById('complaint').value=''; document.getElementById('treatment').value=''; document.getElementById('fee').value=''; document.getElementById('address').value=''; }
-function cancelEdit(){ document.getElementById('editIndex').value=-1; openTab('home'); }
-function printSlip(p){ let feeShow=p.isFree?'FREE':'Rs. '+p.fee; let w=window.open('','_blank'); w.document.write(`<html><head><meta charset="UTF-8"><style>body{font-family:monospace;margin:0;padding:10px}.slip{width:360px;margin:0 auto;border:2px solid #000;padding:10px}.header-slip{text-align:center;border-bottom:2px solid #000;padding-bottom:6px}h1{margin:0}</style></head><body><div class="slip"><div class="header-slip"><h1>HUMA CLINIC</h1><p>Itehad Colony Gulberg III Lahore</p></div><p>OPD: ${p.opd}<br>Name: ${p.name}<br>Fee: ${feeShow}</p><button onclick="window.print()">PRINT</button></div></body></html>`); }
-function searchData(){ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let q=document.getElementById('search').value.trim().toLowerCase(); if(q===''){ document.getElementById('searchList').innerHTML='<div class="msg">Search likhein</div>'; return; } let f=patients.filter(x=>(x.name+' '+x.opd).toLowerCase().includes(q)).reverse(); if(f.length===0){ document.getElementById('searchList').innerHTML='<div class="msg">No data</div>'; return; } let html=`<table><tr><th>OPD</th><th>Name</th><th>Date</th></tr>`+f.map(x=>`<tr><td>${x.opd}</td><td>${x.name}</td><td>${x.dateISO}</td></tr>`).join('')+`</table>`; document.getElementById('searchList').innerHTML=html; }
-function dailyReport(){ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let sel=document.getElementById('dailyDate').value; let f=patients.filter(x=>x.dateISO==sel); if(f.length===0){ document.getElementById('dailyDiv').innerHTML='<div class="msg">No data</div>'; return; } let html=`<table><tr><th>OPD</th><th>Name</th></tr>`+f.map(x=>`<tr><td>${x.opd}</td><td>${x.name}</td></tr>`).join('')+`</table>`; document.getElementById('dailyDiv').innerHTML=html; }
-function monthlyReport(){ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); let pre=document.getElementById('yearSel').value+'-'+document.getElementById('monthSel').value; let f=patients.filter(x=>x.dateISO.startsWith(pre)); if(f.length===0){ document.getElementById('monthlyDiv').innerHTML='<div class="msg">No data</div>'; return; } let html=`<table><tr><th>OPD</th><th>Name</th></tr>`+f.map(x=>`<tr><td>${x.opd}</td><td>${x.name}</td></tr>`).join('')+`</table>`; document.getElementById('monthlyDiv').innerHTML=html; }
-function searchDaysWise(){ dailyReport(); } function dailyRangeReport(){ dailyReport(); } function monthlyRangeReport(){ monthlyReport(); }
-function protectedExport(){ alert('Export disabled'); } function protectedImport(){ alert('Import disabled'); }
-function triggerFileImport(){ document.getElementById('importFile').click(); } function cancelImport(){ document.getElementById('importBox').classList.add('hidden'); } function doImport(){} function importFromLocalStorage(){} function loadBackups(){}
-function loadUserPanel(){ document.getElementById('userPanelId').innerText=currentUser.id; if(document.getElementById('userPanelRole')) document.getElementById('userPanelRole').innerText=currentUser.role; }
-init();
+function clearRecord(){if(confirm('Clear all records?')){records=[];localStorage.removeItem('huma_letters_records');renderRecord();}}
+renderRecord();
 </script>
 </body>
 </html>
