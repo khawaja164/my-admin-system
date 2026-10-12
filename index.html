@@ -1,6 +1,6 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HUMA1 - OPD SYSTEM</title><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDZggST08qtbgsZIIOgxawjneas5Ztbc2k",
@@ -16,22 +16,36 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  async function autoLoadFromFirebase() {
-    try {
-      const dbRef = ref(db);
-      const snapshot = await get(child(dbRef, 'huma_clinic_data'));
+  // Real-time sync function (doosre computer par foran data update karne ke liye)
+  function enableRealtimeSync() {
+    const dataRef = ref(db, 'huma_clinic_data');
+    onValue(dataRef, (snapshot) => {
       if (snapshot.exists()) {
         const cloudData = snapshot.val();
+        let needsRefresh = false;
+
         for (let key in cloudData) {
-          localStorage.setItem(key, JSON.stringify(cloudData[key]));
+          let localVal = localStorage.getItem(key);
+          let cloudValStr = JSON.stringify(cloudData[key]);
+          
+          if (localVal !== cloudValStr) {
+            localStorage.setItem(key, cloudValStr);
+            needsRefresh = true;
+          }
         }
-        console.log("Data auto-loaded from Firebase successfully!");
+
+        if (needsRefresh && !sessionStorage.getItem('sync_refreshed')) {
+          sessionStorage.setItem('sync_refreshed', 'true');
+          setTimeout(() => {
+            sessionStorage.removeItem('sync_refreshed');
+            location.reload();
+          }, 1000);
+        }
       }
-    } catch (error) {
-      console.error("Auto-load error:", error);
-    }
+    });
   }
 
+  // Auto-save override (automatically Firebase par save karne ke liye)
   const originalSetItem = Storage.prototype.setItem;
   Storage.prototype.setItem = function(key, value) {
     originalSetItem.apply(this, arguments);
@@ -43,8 +57,8 @@
     }
   };
 
-  window.addEventListener('DOMContentLoaded', async () => {
-    await autoLoadFromFirebase();
+  window.addEventListener('DOMContentLoaded', () => {
+    enableRealtimeSync();
   });
 </script><style>
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef5ff;margin:0}
