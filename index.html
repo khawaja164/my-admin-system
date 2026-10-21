@@ -155,10 +155,10 @@ th{background:#0d6efd;color:white;font-size:10px;white-space:nowrap}
 <div class="reports-group"><h3>Reports Section</h3><div style="display:flex;gap:8px"><div class="report-btn daily" style="flex:1" onclick="openTab('daily')">📅 Daily Report</div><div class="report-btn monthly" style="flex:1" onclick="openTab('monthly')">🗓️ Monthly Report</div><div class="report-btn search" style="flex:1" onclick="openTab('search')">🔍 Search Report</div></div></div>
 <div class="home-grid" style="margin-top:12px"><div class="home-card card-logout" onclick="doLogout()"><div style="font-size:32px">🚪</div><div style="font-weight:bold">Logout</div></div><div class="home-card" style="background:linear-gradient(135deg,#0dcaf0,#0d6efd)" onclick="location.reload()"><div style="font-size:32px">🔄</div><div style="font-weight:bold">Refresh</div></div></div>
 </div><div id="tab-new" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>New Patient</h3><input id="opdNo" readonly onclick="adminEditOPD()" placeholder="OPD auto"/><input id="patientType" placeholder="Patient Type - N = New, O = Old" onkeydown="filterPatientTypeKey(event)" oninput="autoPatientType(this,true)" onblur="autoPatientType(this)"/><div id="oldPatientNotice" style="display:none;background:#e7f3ff;border:1px solid #0d6efd;border-radius:8px;padding:6px 10px;margin:4px 0;font-size:11px;color:#0d6efd;font-weight:bold">🔍 Old Patient Mode: Name ya Contact number likhein taake purana record auto-load ho jaye.</div><div style="position:relative"><input id="pName" placeholder="Patient Name" oninput="searchOldPatientByName(this)" onfocus="searchOldPatientByName(this)"/><div id="oldPatientNameSuggest" class="suggest-box"></div></div><input id="parentage" placeholder="Parentage"/><input id="age" placeholder="Age / Gender - M/F auto" oninput="autoGender(this)" onblur="autoGender(this)"/><div style="position:relative"><input id="contact" inputmode="numeric" placeholder="Contact (Numbers only)" onkeydown="filterContactKey(event)" oninput="sanitizeContact(this)" onfocus="searchOldPatientByContact(this)"/><div id="oldPatientContactSuggest" class="suggest-box"></div></div><label style="font-size:12px;font-weight:bold;color:#0d6efd;margin-top:6px;display:block">Doctor / Specialist:</label><select id="pDoctorSelect" style="border:2px solid #0d6efd;background:#f0f7ff;font-weight:bold"></select><input id="historyInput" placeholder="History"/><div style="position:relative"><input id="complaint" placeholder="Disease / Complaint" oninput="dSuggest(this,'huma_diseases','nSuggComplaint','comma')" onfocus="dSuggest(this,'huma_diseases','nSuggComplaint','comma')" onkeydown="dEnterComma(event,this,'huma_diseases','nSuggComplaint')"/><div id="nSuggComplaint" class="suggest-box"></div></div><div style="position:relative"><textarea id="treatment" placeholder="Treatment / Medicine" oninput="showMedicineSuggest(this)" onfocus="showMedicineSuggest(this)"></textarea><div id="medSuggest" class="suggest-box"></div></div><input id="adviceInput" placeholder="Advice"/><input id="fee" type="text" inputmode="numeric" placeholder="Fee - 000 = FREE"/><input id="address" placeholder="Address"/><input type="hidden" id="editIndex" value="-1"/><div class="print-opt"><label><input type="checkbox" id="printTreatmentOpt"> Treatment print karna hai?</label><span style="font-size:10px">Default: Treatment nahi print hoga</span></div><button id="saveBtn" onclick="savePatient()">💾 Save & Print Slip</button><button id="cancelEdit" style="display:none" class="gray" onclick="cancelEdit()">✖️ Cancel Edit</button></div>
-<div id="tab-rnew" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>New Entry</h3><input id="r_opd" readonly placeholder="OPD auto"/><input id="r_type" placeholder="Patient Type - N = New, O = Old" onkeydown="filterPatientTypeKey(event)" oninput="autoPatientType(this,true)" onblur="autoPatientType(this)"/><div id="r_oldPatientNotice" style="display:none;background:#e7f3ff;border:1px solid #0d6efd;border-radius:8px;padding:6px 10px;margin:4px 0;font-size:11px;color:#0d6efd;font-weight:bold">🔍 Old Patient Mode: Name ya Contact number likhein taake purana record auto-load ho jaye.</div><div style="position:relative"><input id="r_name" placeholder="Patient Name" oninput="searchOldPatientByName(this)" onfocus="searchOldPatientByName(this)"/><div id="r_oldPatientNameSuggest" class="suggest-box"></div></div><input id="r_parentage" placeholder="Parentage"/><input id="r_age" placeholder="Age / Gender - M/F auto" oninput="autoGender(this)" onblur="autoGender(this)"/><div style="position:relative"><input id="r_contact" inputmode="numeric" placeholder="Contact (Numbers only)" onkeydown="filterContactKey(event)" oninput="sanitizeContact(this)" onfocus="searchOldPatientByContact(this)"/><div id="r_oldPatientContactSuggest" class="suggest-box"></div></div><label style="font-size:12px;font-weight:bold;color:#0d6efd;margin-top:6px;display:block">Doctor / Specialist:</label><select id="r_doctor" style="border:2px solid #0d6efd;background:#f0f7ff;font-weight:bold"></select><input id="r_fee" type="text" inputmode="numeric" placeholder="Fee - 000 = FREE"/><input id="r_address" placeholder="Address"/><input id="r_token" readonly placeholder="Daily Token No (auto)"/><button class="green" onclick="receptionNext()">➡️ Next</button></div>
+<div id="tab-rnew" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>New Entry</h3><input id="r_opd" readonly placeholder="OPD auto"/><input id="r_type" placeholder="Patient Type - N = New, O = Old" onkeydown="filterPatientTypeKey(event)" oninput="autoPatientType(this,true)" onblur="autoPatientType(this)"/><div id="r_oldPatientNotice" style="display:none;background:#e7f3ff;border:1px solid #0d6efd;border-radius:8px;padding:6px 10px;margin:4px 0;font-size:11px;color:#0d6efd;font-weight:bold">🔍 Old Patient Mode: Name ya Contact number likhein taake purana record auto-load ho jaye.</div><div style="position:relative"><input id="r_name" placeholder="Patient Name" oninput="searchOldPatientByName(this)" onfocus="searchOldPatientByName(this)"/><div id="r_oldPatientNameSuggest" class="suggest-box"></div></div><input id="r_parentage" placeholder="Parentage"/><input id="r_age" placeholder="Age / Gender - M/F auto" oninput="autoGender(this)" onblur="autoGender(this)"/><div style="position:relative"><input id="r_contact" inputmode="numeric" placeholder="Contact (Numbers only)" onkeydown="filterContactKey(event)" oninput="sanitizeContact(this)" onfocus="searchOldPatientByContact(this)"/><div id="r_oldPatientContactSuggest" class="suggest-box"></div></div><label style="font-size:12px;font-weight:bold;color:#0d6efd;margin-top:6px;display:block">Doctor / Specialist:</label><select id="r_doctor" style="border:2px solid #0d6efd;background:#f0f7ff;font-weight:bold"></select><input id="r_fee" type="text" inputmode="numeric" placeholder="Fee - 000 = FREE"/><input id="r_address" placeholder="Address"/><input id="r_token" readonly placeholder="Daily Token No (auto)"/><div class="print-opt"><label><input type="checkbox" id="r_print" checked> 🖨️ OPD slip print karna hai?</label></div><button class="green" onclick="receptionNext()">➡️ Next</button></div>
 <div id="tab-dtreat" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3 id="docHeaderTitle">Treatment</h3><div id="docQueue"></div><div id="docPatient" style="display:none"><div class="flow-box" id="docInfo"></div><div class="flow-box" id="docPrev" style="background:#fff"></div><div id="docRef"></div><label class="small"><b>History</b></label><textarea id="d_history" placeholder="History" style="min-height:60px"></textarea><label class="small"><b>Disease / Complaint</b></label><div style="position:relative"><textarea id="d_complaint" placeholder="Disease / Complaint" style="min-height:60px" oninput="dSuggest(this,'huma_diseases','dSuggComplaint','comma')" onfocus="dSuggest(this,'huma_diseases','dSuggComplaint','comma')" onkeydown="dEnterComma(event,this,'huma_diseases','dSuggComplaint')"></textarea><div id="dSuggComplaint" class="suggest-box"></div></div><label class="small"><b>Treatment / Medicine</b></label><div style="position:relative"><textarea id="d_treatment" placeholder="Treatment / Medicine" style="min-height:120px" oninput="dSuggest(this,'huma_medicines','dSuggTreat','line')" onfocus="dSuggest(this,'huma_medicines','dSuggTreat','line')"></textarea><div id="dSuggTreat" class="suggest-box"></div></div><label class="small"><b>Advice</b></label><textarea id="d_advice" placeholder="Advice" style="min-height:60px"></textarea><div class="print-opt" style="background:#e0f7fa;border:1px solid #0e7490;margin:8px 0;padding:8px"><label style="cursor:pointer;color:#0e7490"><input type="checkbox" id="d_admit" onchange="toggleAdmitNote()"> <b>🛏️ Patient ko Admit karna zaroori hai (admission ki sifarish)</b></label></div><input id="d_admitNote" class="hidden" placeholder="Admission ki wajah / hidayat (optional)"/><div class="print-opt" style="background:#fff3cd;border:1px solid #ffc107;margin:8px 0;padding:8px"><label style="cursor:pointer;color:#856404"><input type="checkbox" id="d_noTreatment" onchange="toggleNoTreatment()"> <b>Patient treatment nahi le raha</b> (Checkup Only / No Medicine)</label></div><button class="green" onclick="doctorNext()">➡️ Next</button><button class="orange" onclick="openPad()">📝 Prescription Pad</button><button class="gray" id="btnNoTreatForward" style="display:none;background:#6c757d;margin-top:6px" onclick="doctorForwardNoTreatment()">➡️ Forward Without Treatment (Dispenser ko bhejein)</button><button class="purple" onclick="openRefer()">🔁 Refer to Another Doctor</button><div id="docReferBox" class="flow-box hidden" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#6f42c1">🔁 Refer Patient to Another Doctor</h4><label class="small"><b>Specialization *</b></label><select id="d_refSpec"></select><label class="small"><b>Referral Note (optional)</b></label><input id="d_refNote" placeholder="Reason / note for the next doctor"/><button class="green" onclick="doRefer()">✅ Confirm Refer</button><button class="gray" onclick="closeRefer()">✖️ Cancel</button></div></div>
 <div class="flow-box" id="docReportBox" style="background:#fff;margin-top:14px"><h4 style="margin:0 0 6px 0;color:#0d6efd">My Patients Report</h4><div style="display:flex;gap:6px;align-items:center;flex-wrap:nowrap"><input type="date" id="d_repDate" style="flex:1;min-width:0;margin:0"/><button style="width:auto;margin:0;padding:11px 10px" class="blue" onclick="docReport('daily')">📅 Daily</button><input type="month" id="d_repMonth" style="flex:1;min-width:0;margin:0"/><button style="width:auto;margin:0;padding:11px 10px" class="orange" onclick="docReport('monthly')">🗓️ Monthly</button></div><div id="docRepSummary" class="summary" style="margin-top:8px"></div><div class="scroll" id="docRepList"></div></div></div>
-<div id="tab-dispense" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Final Dispense</h3><div id="dispQueue"></div><div id="dispPatient" style="display:none"><div id="dispSlip" style="margin:10px 0"></div><div class="flow-box" id="dispStockBox" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#198754">📦 Stock Deduction (Inventory)</h4><p class="small" style="margin:0 0 6px 0">Jo medicine dispense ho uska naam aur quantity likhein - wo stock se minus ho jayegi. Agar medicine stock mein na ho to <b>Add Stock</b> ya <b>Other</b> select karein.</p><datalist id="dispMedList"></datalist><div id="dispRows"></div><button class="blue" onclick="dispAddRow()">➕ Add Medicine Row</button></div><div class="print-opt"><label><input type="checkbox" id="dispPrintTreat" checked> Doctor ka Treatment OPD slip par print karna hai?</label></div><div class="print-opt"><label><input type="checkbox" id="dispDone" onchange="dispToggle()"> Medicine dispense complete</label></div><button class="green" id="dispSaveBtn" style="display:none" onclick="dispenseSavePrint()">💾 SavePrint</button></div><div class="flow-box" style="background:#fff;margin-top:14px"><h4 style="margin:0 0 6px 0;color:#6f42c1">Special Patients - Letters</h4><div id="dispSpecial"></div></div></div>
+<div id="tab-dispense" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Final Dispense</h3><div id="dispQueue"></div><div id="dispPatient" style="display:none"><div id="dispSlip" style="margin:10px 0"></div><div id="dispAdmitBox" class="flow-box hidden" style="background:#e0f7fa;border-color:#0e7490"><h4 style="margin:0 0 4px 0;color:#0e7490">🛏️ Admission Case</h4><p class="small" style="margin:0 0 6px 0">Doctor ne is mareez ko admit karne ko kaha hai. Is ki medicine sirf <b>Nurse</b> dispense karegi. Aap sirf OPD slip print kar sakte hain - medicine ka data Nurse ko khud chala jayega.</p><button class="green" onclick="dispAdmitPrint()">🖨️ Print OPD Slip (Nurse ko bhejein)</button></div><div class="flow-box" id="dispStockBox" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#198754">📦 Stock Deduction (Inventory)</h4><p class="small" style="margin:0 0 6px 0">Jo medicine dispense ho uska naam aur quantity likhein - wo stock se minus ho jayegi. Agar medicine stock mein na ho to <b>Add Stock</b> ya <b>Other</b> select karein.</p><datalist id="dispMedList"></datalist><div id="dispRows"></div><button class="blue" onclick="dispAddRow()">➕ Add Medicine Row</button></div><div class="print-opt"><label><input type="checkbox" id="dispPrintTreat" checked> Doctor ka Treatment OPD slip par print karna hai?</label></div><div class="print-opt"><label><input type="checkbox" id="dispDone" onchange="dispToggle()"> Medicine dispense complete</label></div><button class="green" id="dispSaveBtn" style="display:none" onclick="dispenseSavePrint()">💾 SavePrint</button></div><div class="flow-box" style="background:#fff;margin-top:14px"><h4 style="margin:0 0 6px 0;color:#6f42c1">Special Patients - Letters</h4><div id="dispSpecial"></div></div></div>
 <div id="tab-docs" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:12px;border-radius:12px"><h3 style="margin:0 0 10px 0;color:#6f42c1;font-size:16px">📄 Official Letter - Letterhead</h3><button style="background:#6f42c1;padding:14px;border-radius:10px;font-size:13px;margin-top:8px" onclick="openTab('letters')">📝 A - Official Letter / Prescription</button><button style="background:#00875a;padding:14px;border-radius:10px;font-size:13px;margin-top:8px" onclick="openTab('adr')">🅱️ B - Drug Adverse Reaction Form - PHC</button></div></div>
 <div id="tab-letters" class="card hidden" style="padding:4px"><iframe id="lettersFrame" title="Doc / Letter"></iframe></div>
 <div id="tab-adr" class="card hidden" style="padding:4px"><button class="back-home" onclick="openTab('docs')">📂 Back to Documents</button><button class="back-home" style="margin-left:6px" onclick="openTab('home')">🏠 Back to Home</button><iframe id="adrFrame" title="B Drug Adverse Reaction Form"></iframe></div>
@@ -167,7 +167,7 @@ th{background:#0d6efd;color:white;font-size:10px;white-space:nowrap}
 <div id="tab-monthly" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Monthly Report</h3><div style="display:flex;gap:6px"><select id="monthSel"><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select><select id="yearSel"><option>2025</option><option selected>2026</option></select></div><button onclick="monthlyReport()">📊 Show Monthly Data</button><div class="io-box"><button class="blue" onclick="exportCurrentReport('monthly')">📤 Export CSV</button><button class="green" onclick="document.getElementById('importFileMonthly').click()">📥 Import CSV</button><input type="file" id="importFileMonthly" accept=".csv" style="display:none" onchange="importCSV(this,'monthly')"/><button class="orange" onclick="printCurrentReport('monthly')">🖨️ Print Full Report</button></div><div class="scroll" id="monthlyDiv"><div class="msg">Month select karein</div></div></div>
 <div id="tab-expense" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Expense</h3><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:12px;border-radius:10px;margin-bottom:10px"><input type="date" id="expDate"/><input id="expAmount" type="number" placeholder="Expense Amount Rs."/><input id="expDesc" placeholder="Expense Detail"/><button class="purple" onclick="saveExpense()">💾 Save Expense</button></div><div style="border:2px solid #198754;background:#e8f5e9;padding:12px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#198754">Daily Calculation</h4><div style="display:flex;gap:6px"><input type="date" id="expDailyDate" style="flex:1"/><button style="width:auto" class="green" onclick="dailyExpenseReport()">🧮 Calculate</button></div><div id="expenseCalcDiv" class="summary" style="margin-top:10px"></div><div class="io-box" style="margin-top:10px"><button class="orange" onclick="printExpenseReport()">🖨️ Print Expense Report</button><button class="blue" onclick="exportExpenseReport()">📤 Export Expense CSV</button></div><div id="dailyExpenseDiv"><div class="msg">Date select karke Calculate dabayein</div></div></div></div>
 <div id="tab-user" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>User Panel</h3><div style="border:1px solid #0d6efd;background:#eef5ff;padding:10px;border-radius:8px;margin-bottom:10px"><p style="margin:4px 0"><b>User ID:</b> <span id="userPanelId">-</span></p><p style="margin:4px 0"><b>Role:</b> <span id="userPanelRole">-</span></p></div><div id="userDataDiv" class="scroll"><div class="msg">User data yahan</div></div></div>
-<div id="tab-admin" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Admin Panel</h3><div style="border:2px solid #dc3545;background:#ffe6e6;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#dc3545">OPD Control</h4><button class="red" onclick="adminGenerateOPD()">🔢 Generate New OPD</button><button class="orange" onclick="adminEditOPD()">✏️ Edit OPD</button></div><div style="border:2px solid #fd7e14;background:#fff3e6;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#fd7e14">🎛️ Button Show / Hide</h4><p class="small">Button chhupane se sirf button hat'ta hai - entries aur function chalte rehte hain. Admin ko button hamesha dikhta hai.</p><div class="print-opt"><label><input type="checkbox" id="ft_adm"> 🛏️ Admission / Discharge (IPD) buttons dikhayein (Receptionist, Doctor, Nurse / Dispenser, General User)</label></div><div class="print-opt"><label><input type="checkbox" id="ft_fees"> 💰 Extra Fees button dikhayein (General User)</label></div><button class="green" onclick="ftSave()">💾 Save</button></div><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#6f42c1">Summary Reports</h4><p class="small">Patient (disease + age wise), income aur medicine consumption ki monthly report graph ke saath</p><button class="purple" onclick="openTab('summary')">📈 Summary Reports</button></div><div style="border:2px solid #0e4a56;background:#e0f2f3;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#0e4a56">Staff Attendance</h4><p class="small">Poore staff ki attendance - QR, Staff ID / Login ID ya manual</p><button style="background:#0e4a56" onclick="openTab('attendance')">🕘 Attendance</button></div><div style="border:2px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#198754">Medicine Inventory</h4><p class="small">Medicine add karein, stock in / out, expiry notification aur stock report</p><button id="adminMedBtn" class="green" onclick="openTab('medinv')">💊 Medicine Inventory</button></div><div style="border:2px solid #090979;background:#eef2ff;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#090979">Staff ID Cards</h4><p class="small">Staff ke ID card photo aur designation ke sath banayein aur print karein</p><button style="background:linear-gradient(135deg,#020024,#090979 45%,#00D4FF)" onclick="openTab('idcard')">🆔 Staff ID Card Banayein</button></div><div style="border:2px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#198754">User Data + User ID - Admin Edit/Delete</h4><p class="small">User ki ID aur uska data dono admin permission se edit/delete hoga</p><button class="green" onclick="loadAdminUserEntries()">🔄 Refresh User Data</button><button class="blue" style="margin-top:6px" onclick="adminUnlockEditMode()">🔓 Unlock Edit Mode (Admin Password)</button><div id="adminUserSummary" style="margin-top:8px"></div><div style="display:flex;gap:6px;margin-top:8px"><select id="adminUserSelect" style="flex:1"></select><button style="width:auto;padding:11px" class="blue" onclick="showSelectedUserEntries()">👁️ Show Entries</button></div><div class="scroll" id="adminUserEntriesList" style="margin-top:8px"><div class="msg">User select karke Show dabayein</div></div></div><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:10px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#6f42c1">User ID Management</h4><div id="userListAdmin" style="margin-top:8px"></div><div style="border:1px solid #ccc;background:white;padding:10px;border-radius:8px;margin-top:8px"><h4 style="margin:0">Create New User</h4><div style="display:flex;gap:6px"><input id="newUserId" placeholder="User ID"/><button style="width:auto;padding:11px" class="blue" onclick="generateUserId()">🎲 Generate ID</button></div><select id="newUserRole" onchange="toggleDocSpecWrap()"><option value="receptionist">Receptionist</option><option value="doctor">Doctor</option><option value="dispenser">Dispenser</option><option value="nurse">Nurse (Ward)</option><option value="user">General User (all access)</option></select><div id="docSpecWrap" style="display:none;background:#f0f7ff;border:1px solid #7dd3fc;border-radius:8px;padding:8px;margin:5px 0"><label style="font-size:12px;font-weight:bold;color:#0d6efd;display:block;margin-bottom:3px">Doctor Specialization / Category:</label><select id="newDocSpec" onchange="onDocSpecChange()"><option value="General Physician">General Physician</option><option value="Cardiologist">Cardiologist</option><option value="Gynecologist">Gynecologist</option><option value="Pediatrician">Pediatrician</option><option value="Orthopedic Surgeon">Orthopedic Surgeon</option><option value="Dermatologist">Dermatologist</option><option value="ENT Specialist">ENT Specialist</option><option value="Ophthalmologist">Ophthalmologist</option><option value="Neurologist">Neurologist</option><option value="General Surgeon">General Surgeon</option><option value="Other">Other (Custom Category)</option></select><input id="newDocSpecCustom" placeholder="Enter Custom Specialization..." style="display:none;margin-top:5px"/></div><input id="newUserPass" placeholder="Password"/><button class="green" onclick="createUser()">➕ Create User</button></div></div><div style="border:3px solid #000;background:#fff3cd;padding:12px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#000">ALL RESET</h4><button class="red" style="background:#000;color:white;border:2px solid red" onclick="allReset()">⚠️ ALL RESET - Delete All Data</button></div></div>
+<div id="tab-admin" class="card hidden"><button class="back-home" onclick="openTab('home')">🏠 Back to Home</button><h3>Admin Panel</h3><div style="border:2px solid #dc3545;background:#ffe6e6;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#dc3545">OPD Control</h4><button class="red" onclick="adminGenerateOPD()">🔢 Generate New OPD</button><button class="orange" onclick="adminEditOPD()">✏️ Edit OPD</button></div><div style="border:2px solid #fd7e14;background:#fff3e6;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#fd7e14">🎛️ Button Show / Hide</h4><p class="small">Button chhupane se sirf button hat'ta hai - entries aur function chalte rehte hain. Admin ko button hamesha dikhta hai.</p><div class="print-opt"><label><input type="checkbox" id="ft_adm"> 🛏️ Admission / Discharge (IPD) buttons dikhayein (Receptionist, Doctor, Nurse / Dispenser, General User)</label></div><div class="print-opt"><label><input type="checkbox" id="ft_fees"> 💰 Extra Fees button dikhayein (General User)</label></div><div class="print-opt"><label><input type="checkbox" id="ft_dw"> 🏥 Dispenser ko admitted mareez ki OPD medicine dispense aur ward (bed wise) ki ijazat dein. Band ho to dispenser sirf OPD mareez ko medicine de aur admit-mareez ki sirf OPD slip print kare.</label></div><button class="green" onclick="ftSave()">💾 Save</button></div><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#6f42c1">Summary Reports</h4><p class="small">Patient (disease + age wise), income aur medicine consumption ki monthly report graph ke saath</p><button class="purple" onclick="openTab('summary')">📈 Summary Reports</button></div><div style="border:2px solid #0e4a56;background:#e0f2f3;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#0e4a56">Staff Attendance</h4><p class="small">Poore staff ki attendance - QR, Staff ID / Login ID ya manual</p><button style="background:#0e4a56" onclick="openTab('attendance')">🕘 Attendance</button></div><div style="border:2px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#198754">Medicine Inventory</h4><p class="small">Medicine add karein, stock in / out, expiry notification aur stock report</p><button id="adminMedBtn" class="green" onclick="openTab('medinv')">💊 Medicine Inventory</button></div><div style="border:2px solid #090979;background:#eef2ff;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#090979">Staff ID Cards</h4><p class="small">Staff ke ID card photo aur designation ke sath banayein aur print karein</p><button style="background:linear-gradient(135deg,#020024,#090979 45%,#00D4FF)" onclick="openTab('idcard')">🆔 Staff ID Card Banayein</button></div><div style="border:2px solid #198754;background:#e8f5e9;padding:10px;border-radius:8px;margin-bottom:10px"><h4 style="margin:0;color:#198754">User Data + User ID - Admin Edit/Delete</h4><p class="small">User ki ID aur uska data dono admin permission se edit/delete hoga</p><button class="green" onclick="loadAdminUserEntries()">🔄 Refresh User Data</button><button class="blue" style="margin-top:6px" onclick="adminUnlockEditMode()">🔓 Unlock Edit Mode (Admin Password)</button><div id="adminUserSummary" style="margin-top:8px"></div><div style="display:flex;gap:6px;margin-top:8px"><select id="adminUserSelect" style="flex:1"></select><button style="width:auto;padding:11px" class="blue" onclick="showSelectedUserEntries()">👁️ Show Entries</button></div><div class="scroll" id="adminUserEntriesList" style="margin-top:8px"><div class="msg">User select karke Show dabayein</div></div></div><div style="border:2px solid #6f42c1;background:#f3e8ff;padding:10px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#6f42c1">User ID Management</h4><div id="userListAdmin" style="margin-top:8px"></div><div style="border:1px solid #ccc;background:white;padding:10px;border-radius:8px;margin-top:8px"><h4 style="margin:0">Create New User</h4><div style="display:flex;gap:6px"><input id="newUserId" placeholder="User ID"/><button style="width:auto;padding:11px" class="blue" onclick="generateUserId()">🎲 Generate ID</button></div><select id="newUserRole" onchange="toggleDocSpecWrap()"><option value="receptionist">Receptionist</option><option value="doctor">Doctor</option><option value="dispenser">Dispenser</option><option value="nurse">Nurse (Ward)</option><option value="user">General User (all access)</option></select><div id="docSpecWrap" style="display:none;background:#f0f7ff;border:1px solid #7dd3fc;border-radius:8px;padding:8px;margin:5px 0"><label style="font-size:12px;font-weight:bold;color:#0d6efd;display:block;margin-bottom:3px">Doctor Specialization / Category:</label><select id="newDocSpec" onchange="onDocSpecChange()"><option value="General Physician">General Physician</option><option value="Cardiologist">Cardiologist</option><option value="Gynecologist">Gynecologist</option><option value="Pediatrician">Pediatrician</option><option value="Orthopedic Surgeon">Orthopedic Surgeon</option><option value="Dermatologist">Dermatologist</option><option value="ENT Specialist">ENT Specialist</option><option value="Ophthalmologist">Ophthalmologist</option><option value="Neurologist">Neurologist</option><option value="General Surgeon">General Surgeon</option><option value="Other">Other (Custom Category)</option></select><input id="newDocSpecCustom" placeholder="Enter Custom Specialization..." style="display:none;margin-top:5px"/></div><input id="newUserPass" placeholder="Password"/><button class="green" onclick="createUser()">➕ Create User</button></div></div><div style="border:3px solid #000;background:#fff3cd;padding:12px;border-radius:10px;margin-bottom:10px"><h4 style="margin:0 0 8px 0;color:#000">ALL RESET</h4><button class="red" style="background:#000;color:white;border:2px solid red" onclick="allReset()">⚠️ ALL RESET - Delete All Data</button></div></div>
 <div id="tab-medinv" class="card hidden"><button class="back-home" onclick="openTab('admin')">🛡️ Back to Admin Panel</button><button class="back-home" style="margin-left:6px" onclick="openTab('home')">🏠 Back to Home</button>
 <h3 style="margin-top:0">💊 Medicine Inventory</h3>
 <div id="medAlertBox"></div>
@@ -332,7 +332,7 @@ th{background:#0d6efd;color:white;font-size:10px;white-space:nowrap}
 <span class="chip" id="admcN_sum" onclick="admSubShow('sum')">📊 Intake / Output Summary</span>
 <span class="chip" id="admcN_dis" onclick="admSubShow('dis')">🚪 Discharge</span>
 </div>
-<div id="admc_med"><div class="admFormWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#0d6efd">💉 Treatment / Medicine Given</h4>
+<div id="admc_med"><div class="admEmgWrap flow-box" style="background:#fff3f3;border-color:#dc3545"><h4 style="margin:0 0 4px 0;color:#dc3545">🚨 Emergency Medicine (doctor maujood nahi)</h4><div class="small" style="margin-bottom:6px">Normal halat mein sirf <b>Doctor Orders</b> wali dawai di ja sakti hai. Doctor ki ghair maujoodgi mein emergency ho to yahan se dawai dein aur wajah (note) zaroor likhein - doctor ko alert chala jayega.</div><div class="idc-form"><div class="full"><label>Medicine *</label><input id="em_med" placeholder="e.g. Inj Diclofenac 75mg"/></div><div><label>Dose</label><input id="em_dose"/></div><div><label>Route</label><select id="em_route"><option>IV</option><option>IM</option><option>Oral</option><option>SC</option><option>Inhalation / Nebulizer</option><option>Other</option></select></div><div><label>Quantity (pieces)</label><input id="em_qty" type="number" min="1" value="1"/></div><div class="full"><label>Note * (doctor kyun nahi tha / emergency kya thi)</label><input id="em_note" placeholder="e.g. Doctor maujood nahi tha - shadeed dard / saans ki takleef"/></div></div><button class="red" onclick="admEmergency()">🚨 Give Emergency Medicine</button></div><div class="admMedFree flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#0d6efd">💉 Treatment / Medicine Given</h4>
 <div class="idc-form"><div><label>Date & Time *</label><input id="cm_at" type="datetime-local"/></div><div><label>Medicine / Treatment *</label><input id="cm_med" placeholder="e.g. Inj Ceftriaxone"/></div><div><label>Dose</label><input id="cm_dose" placeholder="e.g. 1 gm"/></div><div><label>Route</label><select id="cm_route"><option>IV</option><option>Oral</option><option>IM</option><option>SC</option><option>Inhalation / Nebulizer</option><option>Topical</option><option>Other</option></select></div><div><label>Frequency</label><input id="cm_freq" placeholder="e.g. BD / TDS / Stat"/></div><div><label>Given by (Nurse / Staff)</label><input id="cm_person" placeholder="Name (optional)"/></div><div class="full"><label>Note</label><input id="cm_note"/></div></div>
 <button class="green" onclick="admAddEntry('med')">💾 Add Entry</button></div><div class="scroll" id="admc_med_list"></div></div>
 <div id="admc_ord" class="hidden">
@@ -343,16 +343,16 @@ th{background:#0d6efd;color:white;font-size:10px;white-space:nowrap}
 <button class="blue" onclick="admAddNote()">📒 Add Note</button>
 <div class="io-box"><button class="orange" onclick="admSendWard()">➡️ Send to Ward (Nurse / Dispenser)</button></div>
 <input id="dn_dis" placeholder="Discharge advice (optional)"/><button class="red" onclick="admAdviseDischarge()">🚪 Advise Discharge</button></div>
-<div class="scroll" id="admc_ord_list"></div>
+<div id="admAlertBox"></div><div id="admPotBox" class="flow-box hidden" style="background:#fff;border-color:#fd7e14"><h4 style="margin:0 0 4px 0;color:#fd7e14">🔁 Medicine ki Potency Change</h4><input type="hidden" id="pot_oid"/><div class="idc-form"><div class="full"><label>Maujooda</label><input id="pot_cur" readonly/></div><div class="full"><label>Nayi Medicine / Potency *</label><input id="pot_new" placeholder="e.g. Inj Ceftriaxone 2gm"/></div><div><label>Dose</label><input id="pot_dose"/></div><div class="full"><label>Wajah (nurse ke liye zaroori)</label><input id="pot_reason" placeholder="Kyun badli"/></div></div><button class="green" onclick="admPotSave()">💾 Save Change</button><button class="gray" onclick="document.getElementById('admPotBox').classList.add('hidden')">✖️ Cancel</button></div><div class="scroll" id="admc_ord_list"></div>
 <h4 style="margin:10px 0 4px 0;color:#6f42c1">📒 Doctor's Progress Notes</h4><div class="scroll" id="admc_notes_list"></div></div>
-<div id="admc_food" class="hidden"><div class="admFormWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#198754">🍽️ Intake - Khorak (Food / Oral Fluids)</h4>
+<div id="admc_food" class="hidden"><div class="admRecWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#198754">🍽️ Intake - Khorak (Food / Oral Fluids)</h4>
 <div class="idc-form"><div><label>Date & Time *</label><input id="cf_at" type="datetime-local"/></div><div><label>Type</label><select id="cf_type"><option>Food (Khorak)</option><option>Fluid (Pani / Doodh / Juice)</option></select></div><div><label>Item *</label><input id="cf_item" placeholder="e.g. Khichdi / Doodh / ORS"/></div><div><label>Quantity</label><input id="cf_qty" type="number" min="0"/></div><div><label>Unit</label><select id="cf_unit"><option>ml</option><option>g</option><option>serving</option></select></div><div><label>Note</label><input id="cf_note"/></div></div>
 <button class="green" onclick="admAddEntry('food')">💾 Add Entry</button></div><div class="scroll" id="admc_food_list"></div></div>
-<div id="admc_inf" class="hidden"><div class="admFormWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#0e7490">💧 IV Infusion</h4>
+<div id="admc_inf" class="hidden"><div class="admRecWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#0e7490">💧 IV Infusion</h4>
 <datalist id="admFluids"><option value="Normal Saline 0.9%"><option value="Ringer Lactate"><option value="Dextrose 5%"><option value="Dextrose Saline"><option value="Half Saline"><option value="Plasma Expander"></datalist>
 <div class="idc-form"><div><label>Start Date & Time *</label><input id="ci_at" type="datetime-local"/></div><div><label>Fluid / Drip *</label><input id="ci_fluid" list="admFluids" placeholder="e.g. Normal Saline 0.9%"/></div><div><label>Volume (ml) *</label><input id="ci_vol" type="number" min="1"/></div><div><label>Rate</label><input id="ci_rate" placeholder="e.g. 60 drops/min"/></div><div><label>Medicine Added</label><input id="ci_add" placeholder="e.g. Inj Ranitidine"/></div><div><label>End Date & Time</label><input id="ci_end" type="datetime-local"/></div><div class="full"><label>Note</label><input id="ci_note"/></div></div>
 <button class="green" onclick="admAddEntry('inf')">💾 Add Entry</button></div><div class="scroll" id="admc_inf_list"></div></div>
-<div id="admc_out" class="hidden"><div class="admFormWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#fd7e14">🚽 Output</h4>
+<div id="admc_out" class="hidden"><div class="admRecWrap flow-box" style="background:#fff"><h4 style="margin:0 0 4px 0;color:#fd7e14">🚽 Output</h4>
 <div class="idc-form"><div><label>Date & Time *</label><input id="co_at" type="datetime-local"/></div><div><label>Type</label><select id="co_type"><option>Urine</option><option>Vomit</option><option>Stool</option><option>Drain</option><option>Other</option></select></div><div><label>Quantity *</label><input id="co_qty" type="number" min="0"/></div><div><label>Unit</label><select id="co_unit"><option>ml</option><option>times</option></select></div><div class="full"><label>Note</label><input id="co_note"/></div></div>
 <button class="green" onclick="admAddEntry('out')">💾 Add Entry</button></div><div class="scroll" id="admc_out_list"></div></div>
 <div id="admc_sum" class="hidden"></div>
@@ -1059,12 +1059,21 @@ function populateDoctorSelect(selId){
  if(!sel) return;
  let currVal=sel.value;
  let uList=JSON.parse(localStorage.getItem('huma_users')||'[]');
+ let cards=[]; try{ cards=JSON.parse(localStorage.getItem('huma_staff_cards')||'[]'); }catch(e){}
  let docs=uList.filter(u=>u.role==='doctor');
  let h='';
  if(docs.length>0){
-  docs.forEach(d=>{
-   let spec=d.specialization||'General Physician';
-   h+='<option value="'+escH(d.id)+'" data-spec="'+escH(spec)+'">'+escH(spec)+'</option>';
+  let bySpec={}; docs.forEach(d=>{ let sp=d.specialization||'General Physician'; (bySpec[sp]=bySpec[sp]||[]).push(d); });
+  Object.keys(bySpec).forEach(sp=>{
+   let arr=bySpec[sp], many=arr.length>1;
+   h+='<optgroup label="'+escH(sp)+'">';
+   if(many) h+='<option value="" data-spec="'+escH(sp)+'">Any '+escH(sp)+' (koi bhi)</option>';
+   arr.forEach((d,i)=>{
+    let c=cards.find(x=>x.loginId&&String(x.loginId).toLowerCase()===String(d.id).toLowerCase());
+    let label=c?(c.name+' - '+sp):(many?(sp+' - Doctor '+(i+1)):sp);
+    h+='<option value="'+escH(d.id)+'" data-spec="'+escH(sp)+'">'+escH(label)+'</option>';
+   });
+   h+='</optgroup>';
   });
  } else {
   DOCTOR_SPECIALTIES.forEach(sp=>{
@@ -1157,7 +1166,8 @@ function receptionNext(){
   selDocSpec=docSel.selectedOptions[0].dataset.spec||docSel.selectedOptions[0].text;
  }
  if(!selDocSpec) selDocSpec='General Physician';
- list.push({
+ let selDocLabel=(selDocId&&docSel&&docSel.selectedOptions&&docSel.selectedOptions[0])?docSel.selectedOptions[0].text:'';
+ let rec={
   opd:opd,
   token:tok,
   patientType:typeVal,
@@ -1167,6 +1177,7 @@ function receptionNext(){
   contact:gE('r_contact').value.trim(),
   doctorId:selDocId,
   doctorSpec:selDocSpec,
+  doctorLabel:selDocLabel,
   history:'',
   complaint:'',
   treatment:'',
@@ -1179,8 +1190,10 @@ function receptionNext(){
   by:currentUser.id,
   status:'doctor',
   createdAt:now.toISOString()
- });
+ };
+ list.push(rec);
  flowSave(list);
+ if(gE('r_print')&&gE('r_print').checked) printSlip(rec,false);
  ['r_type','r_name','r_parentage','r_age','r_contact','r_fee','r_address'].forEach(id=>{ gE(id).value=''; });
  initReception();
  alert('Next - Patient '+selDocSpec+' ko bhej diya gaya (OPD: '+opd+' | Token: #'+tok+')');
@@ -1216,7 +1229,7 @@ function docReport(mode){
 function docChips(w){ gE('docQueue').innerHTML='<div class="small"><b>Waiting: '+w.length+'</b></div><div>'+(w.map(p=>'<span class="chip'+(p.opd===docCur?' on':'')+'" data-opd="'+escH(p.opd)+'" onclick="showDoctorPatient(this.dataset.opd)">#'+escH(p.token||'-')+' '+escH(p.name)+(p.referred?' 🔁':'')+'</span>').join('')||'<span class="small">Koi patient wait nahi kar raha</span>')+'</div>'; }
 function infoRows(p){
  let fee=p.isFree?'FREE':'Rs. '+p.fee;
- let docDisplay=(p.doctorSpec||'General Physician');
+ let docDisplay=(p.doctorLabel||p.doctorSpec||'General Physician');
  return [
   ['OPD No',p.opd],
   ['Token No',p.token||'-'],
@@ -1325,7 +1338,7 @@ function flowSlipHTML(p){
  return '<div class="slip-box" style="width:100%;max-width:380px"><div class="slip-header"><h1>HUMA CLINIC</h1><p>Itehad Colony Gulberg III Lahore - PHC R-96277</p><p>OPD SLIP</p></div><div class="slip-body"><div class="slip-row"><span><b>OPD No:</b> '+escH(p.opd)+'</span><span><b>Date:</b> '+escH(p.dateISO)+' '+escH(p.time)+'</span></div>'+row('Token No',p.token||'-')+row('Patient Type',p.patientType)+row('Patient Name',p.name)+row('Parentage',p.parentage||'-')+row('Age / Gender',p.age||'-')+row('Contact',p.contact||'-')+row('History',p.history||'-')+row('Complaint',p.complaint||'-')+row('Advice',p.advice||'-')+'<div class="slip-row"><span><b>Fee:</b> '+fee+'</span><span><b>By:</b> '+escH(p.by)+'</span></div>'+row('Address',p.address||'-')+'<div class="slip-treatment"><b>Treatment / Medicine:</b><br><div style="white-space:pre-wrap;font-size:11px">'+escH(p.treatment||'-')+'</div></div></div></div>';
 }
 function dispChips(w){ gE('dispQueue').innerHTML='<div class="small"><b>Waiting: '+w.length+'</b></div><div>'+(w.map(p=>'<span class="chip'+(p.opd===dispCur?' on':'')+'" data-opd="'+escH(p.opd)+'" onclick="showDispPatient(this.dataset.opd)">#'+escH(p.token||'-')+' '+escH(p.name)+'</span>').join('')||'<span class="small">Koi patient wait nahi kar raha</span>')+'</div>'; }
-function openDispPatient(p){ dispCur=p.opd; dispInitRows(p); gE('dispSlip').innerHTML=flowSlipHTML(p); gE('dispDone').checked=false; gE('dispPrintTreat').checked=true; gE('dispSaveBtn').style.display='none'; gE('dispPatient').style.display='block'; dispChips(flowWaiting('dispense')); }
+function openDispPatient(p){ dispCur=p.opd; dispInitRows(p); dispApplyAdmitMode(p); gE('dispSlip').innerHTML=flowSlipHTML(p); gE('dispDone').checked=false; gE('dispPrintTreat').checked=true; gE('dispSaveBtn').style.display='none'; gE('dispPatient').style.display='block'; dispChips(flowWaiting('dispense')); }
 function showDispPatient(opd){ let p=flowWaiting('dispense').find(x=>x.opd===opd); if(p) openDispPatient(p); else renderDispenser(); }
 function renderDispenser(){
  let w=flowWaiting('dispense'); dispChips(w); renderSpecial();
@@ -1362,6 +1375,7 @@ function printSpecialLetter(opd){
 function dispToggle(){ gE('dispSaveBtn').style.display=gE('dispDone').checked?'block':'none'; }
 function dispenseSavePrint(){
  if(!dispCur){ alert('Koi patient select nahi'); return; }
+ { let pp=flowAll().find(x=>x.opd===dispCur); if(dispAdmitMode(pp)){ alert('Ye admission case hai - sirf Nurse medicine dispense karegi. Aap sirf OPD slip print kar sakte hain.'); return; } }
  if(!gE('dispDone').checked){ alert('Pehle Medicine dispense complete tick karein'); return; }
  let showT=gE('dispPrintTreat').checked;
  let list=flowAll(); let i=list.findIndex(x=>x.opd===dispCur&&x.status==='dispense');
@@ -1380,6 +1394,7 @@ function pollFlow(){
  if(vis('tab-dtreat')) renderDoctor();
  if(vis('tab-dispense')) renderDispenser();
  if(vis('tab-home')) updateHomeCounts();
+ liveRefresh();
 }
 setInterval(pollFlow,3000);
 let adrLoaded=false;
@@ -1402,7 +1417,7 @@ function loadLetters(){
 }
 function openTab(name){
  if((name==='medinv'||name==='attendance'||name==='summary'||name==='dashboard')&&(!currentUser||currentUser.role!=='admin')) return;
- if(name==='admission'&&(!currentUser||['admin','user','receptionist','doctor','dispenser','nurse'].indexOf(currentUser.role)<0)) return;
+ if(name==='admission'&&(!currentUser||(['admin','user','receptionist','doctor','nurse'].indexOf(currentUser.role)<0&&!(currentUser.role==='dispenser'&&featPerm('dispWard'))))) return;
  if(name==='fees'&&(!currentUser||['admin','user'].indexOf(currentUser.role)<0)) return;
  if(name!=='attendance') attStopCam();
  if(currentUser&&ROLE_TABS[currentUser.role]&&ROLE_TABS[currentUser.role].indexOf(name)===-1) return;
@@ -1879,7 +1894,7 @@ function savePatient(){
  let currentOPD=document.getElementById('opdNo').value;
  let now=new Date();
  let printTreatment=document.getElementById('printTreatmentOpt').checked;
- let p={opd:currentOPD,patientType:document.getElementById('patientType').value,name:document.getElementById('pName').value,parentage:document.getElementById('parentage').value,age:document.getElementById('age').value,contact:document.getElementById('contact').value,history:document.getElementById('historyInput').value,complaint:document.getElementById('complaint').value,treatment:document.getElementById('treatment').value,advice:document.getElementById('adviceInput').value,fee:feeNum,isFree:isFree,address:document.getElementById('address').value,date:now.toLocaleString(),dateISO:now.toISOString().slice(0,10),time:now.toLocaleTimeString(),by:currentUser.id,printTreatment:printTreatment,doctorId:(function(){ let s=document.getElementById('pDoctorSelect'); return s?s.value:''; })(),doctorSpec:(function(){ let s=document.getElementById('pDoctorSelect'); return (s&&s.selectedOptions&&s.selectedOptions[0])?(s.selectedOptions[0].dataset.spec||s.selectedOptions[0].text):'General Physician'; })()};
+ let p={opd:currentOPD,patientType:document.getElementById('patientType').value,name:document.getElementById('pName').value,parentage:document.getElementById('parentage').value,age:document.getElementById('age').value,contact:document.getElementById('contact').value,history:document.getElementById('historyInput').value,complaint:document.getElementById('complaint').value,treatment:document.getElementById('treatment').value,advice:document.getElementById('adviceInput').value,fee:feeNum,isFree:isFree,address:document.getElementById('address').value,date:now.toLocaleString(),dateISO:now.toISOString().slice(0,10),time:now.toLocaleTimeString(),by:currentUser.id,printTreatment:printTreatment,doctorId:(function(){ let s=document.getElementById('pDoctorSelect'); return s?s.value:''; })(),doctorSpec:(function(){ let s=document.getElementById('pDoctorSelect'); return (s&&s.selectedOptions&&s.selectedOptions[0])?(s.selectedOptions[0].dataset.spec||s.selectedOptions[0].text):'General Physician'; })(),doctorLabel:(function(){ let s=document.getElementById('pDoctorSelect'); return (s&&s.value&&s.selectedOptions&&s.selectedOptions[0])?s.selectedOptions[0].text:''; })()};
  if(!p.name){alert('Name likhain');return;}
  p.complaint=String(p.complaint||'').replace(/[,;\s]+$/,''); saveDiseaseTreatment(p.complaint,p.treatment);
  let sendDoc=false;
@@ -1898,7 +1913,7 @@ function printSlip(p,showTreatment){
  let treatmentHTML='';
  if(showTreatment&&p.treatment){ treatmentHTML=`<div class="slip-treatment"><b>Treatment / Medicine:</b><br><div style="white-space:pre-wrap;font-size:11px">${p.treatment}</div></div>`; }
  else { treatmentHTML=`<div style="text-align:center;font-size:9px;margin-top:8px;color:#666;border:1px dashed #ccc;padding:4px">Treatment - Doctor will advise</div>`; }
- let slipHTML=`<div class="slip-box"><div class="slip-header"><h1>HUMA CLINIC</h1><p>Itehad Colony Gulberg III Lahore - PHC R-96277</p><p>OPD SLIP</p></div><div class="slip-body"><div class="slip-row"><span><b>OPD No:</b> ${p.opd}</span><span><b>Date:</b> ${p.dateISO} ${p.time}</span></div>${p.token?'<div class="slip-row"><span><b>Token No:</b> '+p.token+'</span></div>':''}${(p.doctorSpec||p.doctorId)?'<div class="slip-row"><span><b>Doctor / Specialist:</b> '+(p.doctorSpec||'General Physician')+'</span></div>':''}<div class="slip-row"><span><b>Patient Type:</b> ${p.patientType}</span></div><div class="slip-row"><span><b>Patient Name:</b> ${p.name}</span></div><div class="slip-row"><span><b>Parentage:</b> ${p.parentage||'-'}</span></div><div class="slip-row"><span><b>Age / Gender:</b> ${p.age||'-'}</span></div><div class="slip-row"><span><b>Contact:</b> ${p.contact||'-'}</span></div><div class="slip-row"><span><b>History:</b> ${p.history||'-'}</span></div><div class="slip-row"><span><b>Complaint:</b> ${p.complaint||'-'}</span></div><div class="slip-row"><span><b>Advice:</b> ${p.advice||'-'}</span></div><div class="slip-row"><span><b>Fee:</b> ${feeShow}</span><span><b>By:</b> ${p.by}</span></div><div class="slip-row"><span><b>Address:</b> ${p.address||'-'}</span></div>${treatmentHTML}</div><div class="slip-footer"><p>Computer Generated - ${p.dateISO} ${p.time}</p></div></div>`;
+ let slipHTML=`<div class="slip-box"><div class="slip-header"><h1>HUMA CLINIC</h1><p>Itehad Colony Gulberg III Lahore - PHC R-96277</p><p>OPD SLIP</p></div><div class="slip-body"><div class="slip-row"><span><b>OPD No:</b> ${p.opd}</span><span><b>Date:</b> ${p.dateISO} ${p.time}</span></div>${p.token?'<div class="slip-row"><span><b>Token No:</b> '+p.token+'</span></div>':''}${(p.doctorSpec||p.doctorId)?'<div class="slip-row"><span><b>Doctor / Specialist:</b> '+(p.doctorLabel||p.doctorSpec||'General Physician')+'</span></div>':''}<div class="slip-row"><span><b>Patient Type:</b> ${p.patientType}</span></div><div class="slip-row"><span><b>Patient Name:</b> ${p.name}</span></div><div class="slip-row"><span><b>Parentage:</b> ${p.parentage||'-'}</span></div><div class="slip-row"><span><b>Age / Gender:</b> ${p.age||'-'}</span></div><div class="slip-row"><span><b>Contact:</b> ${p.contact||'-'}</span></div><div class="slip-row"><span><b>History:</b> ${p.history||'-'}</span></div><div class="slip-row"><span><b>Complaint:</b> ${p.complaint||'-'}</span></div><div class="slip-row"><span><b>Advice:</b> ${p.advice||'-'}</span></div><div class="slip-row"><span><b>Fee:</b> ${feeShow}</span><span><b>By:</b> ${p.by}</span></div><div class="slip-row"><span><b>Address:</b> ${p.address||'-'}</span></div>${treatmentHTML}</div><div class="slip-footer"><p>Computer Generated - ${p.dateISO} ${p.time}</p></div></div>`;
  let w=window.open('','_blank');
  w.document.write(`<html><head><meta charset="UTF-8"><title>OPD Slip - ${p.opd}</title><style>body{font-family:'Courier New',monospace;margin:0;padding:10px;background:#f5f5f5}.slip-box{width:380px;margin:0 auto;background:white;border:2px solid #000;padding:0}.slip-header{text-align:center;border-bottom:2px solid #000;padding:10px;background:#f0f8ff}.slip-header h1{margin:0;font-size:22px;color:#0d6efd}.slip-body{padding:12px;font-size:12px;line-height:1.8}.slip-row{display:flex;justify-content:space-between;border-bottom:1px dotted #ccc;padding:4px 0}.slip-treatment{border:1px solid #000;padding:8px;margin-top:8px;background:#fffde7}.slip-footer{text-align:center;border-top:2px solid #000;padding:8px;background:#f9f9f9;font-size:9px} @media print{button{display:none}}${BACK_HOME_CSS}</style></head><body>${BACK_HOME_HTML}${slipHTML}<div style="text-align:center;margin-top:16px"><label><input type="checkbox" id="printTreatCheck" ${showTreatment?'checked':''} onchange="toggleTreatment()"> Treatment print?</label><br><br><button onclick="window.print()" style="padding:12px 32px;background:#0d6efd;color:white;border:none;border-radius:8px">🖨️ PRINT SLIP</button></div></body></html>`);
  w.document.close();
@@ -3620,10 +3635,16 @@ function smPrint(){
 }
 /* ---- Patient Admission / Discharge / IPD ---- */
 let admPane='list', admCur='', admSub='med', admMode='front', admModePending='';
-const ADM_CAPS={front:['admin','user','receptionist'],doctor:['admin','user','doctor'],ward:['admin','user','receptionist','dispenser','nurse'],fees:['admin','user']};
+const ADM_CAPS={front:['admin','user','receptionist'],doctor:['admin','user','doctor'],record:['admin','user','receptionist','nurse'],give:['admin','user','nurse'],medfree:['admin','user'],fees:['admin','user']};
 const ADM_CHIPS={front:['list','new','dis','chart'],doctor:['doc','chart'],ward:['ward','chart'],all:['list','new','dis','doc','ward','chart']};
 const ADM_WARDS={'General Ward':{p:'GW',n:10},'Private Room':{p:'PR',n:4},'Emergency':{p:'ER',n:4},'Observation':{p:'OB',n:4},'ICU':{p:'ICU',n:2}};
-function admCan(cap){ return !!(currentUser&&ADM_CAPS[cap]&&ADM_CAPS[cap].indexOf(currentUser.role)>-1); }
+function admCan(cap){
+ if(!currentUser) return false;
+ let r=currentUser.role;
+ if((cap==='record'||cap==='give')&&r==='dispenser') return featPerm('dispWard');
+ return !!(ADM_CAPS[cap]&&ADM_CAPS[cap].indexOf(r)>-1);
+}
+function featPerm(n){ try{ let f=JSON.parse(localStorage.getItem('huma_features')||'null'); return !!(f&&f[n]===true); }catch(e){ return false; } }
 function admOK(cap){ if(admCan(cap||'front')) return true; alert('Ye kaam aap ke role ke liye nahi hai'); return false; }
 function featOn(n){ try{ let f=JSON.parse(localStorage.getItem('huma_features')||'null'); return !f||f[n]!==false; }catch(e){ return true; } }
 function admAll(){ try{ return JSON.parse(localStorage.getItem('huma_admissions')||'[]'); }catch(e){ return []; } }
@@ -3699,13 +3720,20 @@ function admDefaultMode(){ let r=currentUser?currentUser.role:''; return r==='do
 function openAdm(mode){ admModePending=mode||''; openTab('admission'); }
 function admInit(){
  admMode=admModePending||admDefaultMode(); admModePending=''; admCur=''; admClearNew();
- let chips=ADM_CHIPS[admMode]||ADM_CHIPS.front;
+ let chips=(ADM_CHIPS[admMode]||ADM_CHIPS.front).filter(k=>{
+  if(k==='list'||k==='new'||k==='dis') return admCan('front');
+  if(k==='doc') return admCan('doctor');
+  if(k==='ward') return admCan('give')||admCan('record')||admCan('doctor');
+  return true;
+ });
+ if(!chips.length) chips=['chart'];
  ['list','new','dis','doc','ward','chart'].forEach(k=>{ gE('admNav_'+k).classList.toggle('hidden',chips.indexOf(k)<0); });
  gE('admcN_dis').classList.toggle('hidden',admMode==='doctor'||admMode==='ward');
  gE('admTitle').innerHTML={front:'🛏️ Patient Admission / Discharge',doctor:'🩺 Inpatients (IPD) - Doctor',ward:'🏥 Ward - Bed wise (Nurse / Dispenser)',all:'🛏️ Admission / IPD / Ward'}[admMode];
  admShow(chips[0]);
 }
 function admShow(p){
+ if((p==='new'||p==='list'||p==='dis')&&!admCan('front')) return;
  admPane=p;
  ['list','new','dis','doc','ward','chart'].forEach(k=>{ gE('adm_'+k).classList.toggle('hidden',k!==p); gE('admNav_'+k).classList.toggle('on',k===p); });
  if(p==='list'||p==='dis'||p==='doc'||p==='ward') admRenderLists();
@@ -3767,8 +3795,13 @@ function admSaveNew(){
   admClearNew(); admShow('list'); return;
  }
  let sug=gE('ad_sug').value;
+ if(!sug&&!confirm('Is mareez ke liye doctor ki admission ki sifarish nahi hai. Phir bhi admit karein?')) return;
  let rec=Object.assign({id:'ADM-'+Date.now(),no:admNextNo(),status:'admitted',stage:'doctor',by:currentUser.id,createdAt:new Date().toISOString(),meds:[],food:[],inf:[],out:[],orders:[],notes:[],discharge:null},data);
- if(sug){ let fl=flowAll(); let j=fl.findIndex(x=>x.opd===sug); if(j>-1){ rec.suggestedBy=(fl[j].admitAdvised&&fl[j].admitAdvised.label)||''; fl[j].admitDone={id:rec.id,no:rec.no,at:new Date().toISOString(),by:currentUser.id}; flowSave(fl); } }
+ if(sug){ let fl=flowAll(); let j=fl.findIndex(x=>x.opd===sug); if(j>-1){ rec.suggestedBy=(fl[j].admitAdvised&&fl[j].admitAdvised.label)||'';
+  let tl=String(fl[j].treatment||'').split(/\n/).map(x=>x.trim()).filter(x=>x&&!/^no treatment taken/i.test(x)); let docBy=(fl[j].admitAdvised&&fl[j].admitAdvised.by)||fl[j].doctorBy||'';
+  tl.forEach((line,li)=>{ rec.orders.push({id:'O-'+Date.now()+'-'+li+'-'+Math.floor(Math.random()*1000),at:admNow(),medicine:line,dose:'',route:'',freq:'',note:'OPD slip se (doctor ka likha)',by:docBy,active:true,fromOpd:true}); });
+  if(tl.length) rec.stage='ward';
+  fl[j].admitDone={id:rec.id,no:rec.no,at:new Date().toISOString(),by:currentUser.id}; flowSave(fl); } }
  list.push(rec); admSaveAll(list);
  alert('Patient admit ho gaya: '+rec.no+' (ab doctor ke paas jayega)');
  admClearNew(); admOpen(rec.id);
@@ -3816,6 +3849,7 @@ function admStageBadge(a){
  let b=(t,bg,c)=>'<span style="display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:bold;background:'+bg+';color:'+c+'">'+t+'</span>';
  let o=(a.stage==='doctor')?b('⏳ Doctor Orders Pending','#fd7e14','#fff'):b('✅ With Ward','#198754','#fff');
  if(a.dischargeAdvised) o+=' '+b('🚪 Discharge Advised','#6f42c1','#fff');
+ if((a.alerts||[]).some(x=>!x.ack)) o+=' '+b('🔔 Nurse Alert','#dc3545','#fff');
  return o;
 }
 function admRenderLists(){
@@ -3836,7 +3870,7 @@ function admRenderLists(){
   let mine=all.filter(x=>x.status==='admitted'&&admDoctorMatches(x)).sort((a,b)=>(a.stage==='doctor'?0:1)-(b.stage==='doctor'?0:1)||String(b.admitAt).localeCompare(String(a.admitAt)));
   b3.innerHTML=mine.length?'<table><tr><th>ADM No</th><th>Patient</th><th>Bed</th><th>Day</th><th>Diagnosis</th><th>Active Orders</th><th>Status</th><th>Action</th></tr>'+mine.map(a=>'<tr style="'+(a.stage==='doctor'?'background:#fff3e0':'')+'"><td><b>'+escH(a.no)+'</b></td><td><b>'+escH(a.name)+'</b><br><small>'+escH(a.age||'')+'</small></td><td>'+escH(a.ward||'')+'<br><b>'+escH(a.bed||'')+'</b></td><td>'+admDays(a)+'</td><td>'+escH(a.reason||'-')+'</td><td>'+(a.orders||[]).filter(o=>o.active).length+'</td><td>'+admStageBadge(a)+'</td><td style="white-space:nowrap">'+bt('purple','📝 Orders','admOpenOrd(this.dataset.id)',a.id)+bt('blue','📋 Chart','admOpen(this.dataset.id)',a.id)+'</td></tr>').join('')+'</table>':'<div class="msg">Aap ke paas abhi koi admitted mareez nahi</div>';
  }
- let b4=gE('admWardBox'); if(b4) b4.innerHTML=admBedBoardHTML('admOpenOrd');
+ let b4=gE('admWardBox'); if(b4) b4.innerHTML=admIncomingHTML()+admBedBoardHTML('admOpenOrd');
 }
 function admBedBoardHTML(fn){
  let beds=admBeds(), adm=all=>all, occ={}; let list=admAll().filter(x=>x.status==='admitted');
@@ -3845,7 +3879,7 @@ function admBedBoardHTML(fn){
   if(!a) return '<div style="width:46%;max-width:170px;border:2px solid #198754;background:#d1e7dd;border-radius:10px;padding:6px;text-align:center;font-size:12px"><b>'+escH(label)+'</b><br><span style="color:#0f5132">🟢 Khali</span></div>';
   let bg=a.stage==='doctor'?'#fff3cd':'#f8d7da', bd=a.stage==='doctor'?'#ffc107':'#dc3545';
   let act=(a.orders||[]).filter(o=>o.active).length;
-  return '<div data-id="'+escH(a.id)+'" onclick="'+fn+'(this.dataset.id)" style="cursor:pointer;width:46%;max-width:170px;border:2px solid '+bd+';background:'+bg+';border-radius:10px;padding:6px;font-size:11px"><b>'+escH(label)+'</b> <span class="small">Day '+admDays(a)+'</span><br><b>'+escH(a.name)+'</b><br><span class="small">'+escH(a.age||'')+'</span><br>'+(a.stage==='doctor'?'⏳ Doctor orders pending':'💊 '+act+' active order(s)')+(a.dischargeAdvised?'<br>🚪 Discharge advised':'')+'</div>';
+  return '<div data-id="'+escH(a.id)+'" onclick="'+fn+'(this.dataset.id)" style="cursor:pointer;width:46%;max-width:170px;border:2px solid '+bd+';background:'+bg+';border-radius:10px;padding:6px;font-size:11px"><b>'+escH(label)+'</b> <span class="small">Day '+admDays(a)+'</span><br><b>'+escH(a.name)+'</b><br><span class="small">'+escH(a.age||'')+'</span><br>'+(a.stage==='doctor'?'⏳ Doctor orders pending':'💊 '+act+' active order(s)')+(a.dischargeAdvised?'<br>🚪 Discharge advised':'')+((a.alerts||[]).some(x=>!x.ack)?'<br>🔔 Doctor alert':'')+'</div>';
  };
  let out='';
  Object.keys(beds).forEach(w=>{
@@ -3892,8 +3926,8 @@ function admRenderChart(){
  if(!a){ head.innerHTML='<div class="msg">Pehle list se kisi mareez ka chart kholein</div>'; body.classList.add('hidden'); return; }
  head.innerHTML=admHeadHTML(a); body.classList.remove('hidden');
  let locked=(a.status!=='admitted');
- document.querySelectorAll('#adm_chart .admFormWrap').forEach(w=>{ w.style.display=(locked||!admCan('ward'))?'none':''; });
- document.querySelectorAll('#adm_chart .admDocWrap').forEach(w=>{ w.style.display=(locked||!admCan('doctor'))?'none':''; });
+ let sh=(sel,ok)=>document.querySelectorAll('#adm_chart '+sel).forEach(w=>{ w.style.display=(locked||!ok)?'none':''; });
+ sh('.admMedFree',admCan('medfree')); sh('.admRecWrap',admCan('record')); sh('.admEmgWrap',admCan('give')&&!admCan('medfree')); sh('.admDocWrap',admCan('doctor'));
  Object.keys(ADM_SPEC).forEach(k=>{ let at=gE(ADM_SPEC[k].at); if(at&&!at.value) at.value=admNow(); admRenderList(k,a); });
  admRenderSum(a); admRenderDisPane(a); admRenderOrd(a);
 }
@@ -3909,7 +3943,7 @@ function admRenderList(kind,a){
  box.innerHTML='<table><tr><th>#</th>'+sp.cols.map(c=>'<th>'+c[0]+'</th>').join('')+(isAdm?'<th></th>':'')+'</tr>'+list.map((e,i)=>'<tr><td>'+(list.length-i)+'</td>'+sp.cols.map(c=>'<td>'+escH(c[1](e))+'</td>').join('')+(isAdm?'<td><button style="width:auto;padding:3px 6px;font-size:10px" class="red" data-k="'+kind+'" data-e="'+escH(e.id)+'" onclick="admDelEntry(this.dataset.k,this.dataset.e)">🗑️</button></td>':'')+'</tr>').join('')+'</table>';
 }
 function admAddEntry(kind){
- if(!admOK('ward')) return;
+ if(!admOK(kind==='med'?'medfree':'record')) return;
  let a=admCurRec(); if(!a||a.status!=='admitted'){ alert('Ye patient admitted nahi hai'); return; }
  let sp=ADM_SPEC[kind]; let e={id:'E-'+Date.now()+'-'+Math.floor(Math.random()*1000)};
  sp.map.forEach(m=>{ let el=gE(m[0]); e[m[1]]=el?String(el.value||'').trim():''; });
@@ -3930,12 +3964,16 @@ function admDelEntry(kind,eid){
 }
 /* ---------- doctor orders / ward ---------- */
 function admRenderOrd(a){
- let box=gE('admc_ord_list'), nb=gE('admc_notes_list'); if(!box) return;
+ let box=gE('admc_ord_list'), nb=gE('admc_notes_list'), ab=gE('admAlertBox'); if(!box) return;
  let orders=(a.orders||[]).slice().sort((x,y)=>String(y.at).localeCompare(String(x.at)));
- let canGive=admCan('ward')&&a.status==='admitted', canStop=admCan('doctor')&&a.status==='admitted';
+ let canGive=admCan('give')&&a.status==='admitted', canDoc=admCan('doctor')&&a.status==='admitted';
  let last=oid=>{ let g=(a.meds||[]).filter(m=>m.orderId===oid).sort((x,y)=>String(y.at).localeCompare(String(x.at)))[0]; return g?admFmt(g.at)+' ('+(a.meds||[]).filter(m=>m.orderId===oid).length+'x)':'-'; };
- let banner=a.dischargeAdvised?'<div class="sm-banner flat" style="background:#f3e8ff;border-color:#6f42c1;color:#432874">🚪 Doctor ne discharge advise kiya ('+escH(a.dischargeAdvised.label||'')+', '+escH(admFmt(a.dischargeAdvised.at))+')'+(a.dischargeAdvised.note?' - '+escH(a.dischargeAdvised.note):'')+(canStop?' <button style="width:auto;padding:3px 8px;font-size:10px" class="gray" onclick="admWithdrawAdvice()">↩️ Wapas</button>':'')+'</div>':'';
- box.innerHTML=banner+(orders.length?'<table><tr><th>Time</th><th>Medicine / Treatment</th><th>Dose</th><th>Route</th><th>Freq</th><th>Note</th><th>By</th><th>Last Given</th><th>Action</th></tr>'+orders.map(o=>'<tr style="'+(o.active?'':'opacity:.5')+'"><td>'+escH(admFmt(o.at))+'</td><td><b>'+escH(o.medicine)+'</b>'+(o.active?'':' <small>(stopped)</small>')+'</td><td>'+escH(o.dose||'-')+'</td><td>'+escH(o.route||'-')+'</td><td>'+escH(o.freq||'-')+'</td><td>'+escH(o.note||'-')+'</td><td>'+escH(admWho(o.by))+'</td><td>'+escH(last(o.id))+'</td><td style="white-space:nowrap">'+((canGive&&o.active)?'<input id="gv_'+escH(o.id)+'" type="number" min="1" value="1" title="Quantity (pieces)" style="width:52px;margin:0;padding:5px"/> <button data-o="'+escH(o.id)+'" style="width:auto;padding:5px 8px;font-size:11px" class="green" onclick="admGive(this.dataset.o)">✅ Give</button>':'')+((canStop&&o.active)?' <button data-o="'+escH(o.id)+'" style="width:auto;padding:5px 8px;font-size:11px" class="red" onclick="admStopOrder(this.dataset.o)">⏹️ Stop</button>':'')+'</td></tr>').join('')+'</table>':'<div class="msg">Doctor ne abhi koi order nahi likha</div>');
+ let banner=a.dischargeAdvised?'<div class="sm-banner flat" style="background:#f3e8ff;border-color:#6f42c1;color:#432874">🚪 Doctor ne discharge advise kiya ('+escH(a.dischargeAdvised.label||'')+', '+escH(admFmt(a.dischargeAdvised.at))+')'+(a.dischargeAdvised.note?' - '+escH(a.dischargeAdvised.note):'')+(canDoc?' <button style="width:auto;padding:3px 8px;font-size:10px" class="gray" onclick="admWithdrawAdvice()">↩️ Wapas</button>':'')+'</div>':'';
+ if(ab){
+  let al=(a.alerts||[]).filter(x=>!x.ack);
+  ab.innerHTML=(admCan('doctor')&&al.length)?'<div class="flow-box" style="background:#fff3f3;border-color:#dc3545"><h4 style="margin:0 0 6px 0;color:#dc3545">🔔 Nurse ke Alerts ('+al.length+')</h4>'+al.map(x=>'<div style="border:1px solid #f1b0b7;border-radius:8px;padding:6px 8px;margin-bottom:6px;background:#fff;font-size:12px">'+(x.type==='emergency'?'🚨 <b>Emergency medicine</b>':'🔁 <b>Potency change</b>')+': '+escH(x.text)+' <span class="small">('+escH(admWho(x.by))+', '+escH(admFmt(x.at))+')</span> <button data-a="'+escH(x.id)+'" style="width:auto;padding:4px 8px;font-size:11px" class="green" onclick="admAckAlert(this.dataset.a)">✔️ Dekh liya</button></div>').join('')+'</div>':'';
+ }
+ box.innerHTML=banner+(orders.length?'<table><tr><th>Time</th><th>Medicine / Treatment</th><th>Dose</th><th>Route</th><th>Freq</th><th>Note</th><th>By</th><th>Last Given</th><th>Action</th></tr>'+orders.map(o=>'<tr style="'+(o.active?'':'opacity:.5')+'"><td>'+escH(admFmt(o.at))+'</td><td><b>'+escH(o.medicine)+'</b>'+(o.active?'':' <small>(stopped)</small>')+'</td><td>'+escH(o.dose||'-')+'</td><td>'+escH(o.route||'-')+'</td><td>'+escH(o.freq||'-')+'</td><td>'+escH(o.note||'-')+(o.history||[]).map(h=>'<br><small>🔁 '+escH(h.from)+' ➜ '+escH(h.to)+' ('+escH(admWho(h.by))+(h.reason?': '+escH(h.reason):'')+')</small>').join('')+'</td><td>'+escH(admWho(o.by))+'</td><td>'+escH(last(o.id))+'</td><td style="white-space:nowrap">'+((canGive&&o.active)?'<input id="gv_'+escH(o.id)+'" type="number" min="1" value="1" title="Quantity (pieces)" style="width:52px;margin:0;padding:5px"/> <button data-o="'+escH(o.id)+'" style="width:auto;padding:5px 8px;font-size:11px" class="green" onclick="admGive(this.dataset.o)">✅ Give</button> ':'')+(((canGive||canDoc)&&o.active)?'<button data-o="'+escH(o.id)+'" style="width:auto;padding:5px 8px;font-size:11px" class="orange" onclick="admPotOpen(this.dataset.o)">🔁 Potency</button> ':'')+((canDoc&&o.active)?'<button data-o="'+escH(o.id)+'" style="width:auto;padding:5px 8px;font-size:11px" class="red" onclick="admStopOrder(this.dataset.o)">⏹️ Stop</button>':'')+'</td></tr>').join('')+'</table>':'<div class="msg">Doctor ne abhi koi order nahi likha</div>');
  let notes=(a.notes||[]).slice().sort((x,y)=>String(y.at).localeCompare(String(x.at)));
  nb.innerHTML=notes.length?'<table><tr><th>Time</th><th>Note</th><th>By</th></tr>'+notes.map(n=>'<tr><td>'+escH(admFmt(n.at))+'</td><td style="white-space:pre-wrap">'+escH(n.text)+'</td><td>'+escH(admWho(n.by))+'</td></tr>').join('')+'</table>':'<div class="msg">Koi note nahi</div>';
 }
@@ -3969,7 +4007,7 @@ function admSendWard(){
  let a=admCurRec(); if(!a||a.status!=='admitted') return;
  if(!(a.orders||[]).length&&!(a.notes||[]).length){ alert('Pehle koi order ya note likhein'); return; }
  let a2=admUpdRec(r=>{ r.stage='ward'; r.sentWardBy=currentUser.id; r.sentWardAt=admNow(); });
- alert('Mareez ward (nurse / dispenser) ko bhej diya gaya'); gE('admChartHead').innerHTML=admHeadHTML(a2); admRenderOrd(a2);
+ alert('Mareez ward (nurse) ko bhej diya gaya'); gE('admChartHead').innerHTML=admHeadHTML(a2); admRenderOrd(a2);
 }
 function admAdviseDischarge(){
  if(!admOK('doctor')) return;
@@ -3983,6 +4021,39 @@ function admWithdrawAdvice(){
  if(!admOK('doctor')) return;
  let a2=admUpdRec(r=>{ delete r.dischargeAdvised; }); if(a2){ gE('admChartHead').innerHTML=admHeadHTML(a2); admRenderOrd(a2); admRenderDisPane(a2); }
 }
+function admAckAlert(aid){
+ if(!admOK('doctor')) return;
+ let a2=admUpdRec(r=>{ let x=(r.alerts||[]).find(y=>y.id===aid); if(x){ x.ack=true; x.ackBy=currentUser.id; x.ackAt=admNow(); } });
+ if(a2){ gE('admChartHead').innerHTML=admHeadHTML(a2); admRenderOrd(a2); }
+}
+/* ---------- potency change ---------- */
+function admPotOpen(oid){
+ let a=admCurRec(); if(!a) return;
+ let o=(a.orders||[]).find(x=>x.id===oid); if(!o) return;
+ gE('pot_oid').value=oid; gE('pot_cur').value=o.medicine+(o.dose?' | '+o.dose:'');
+ gE('pot_new').value=o.medicine; gE('pot_dose').value=o.dose||''; gE('pot_reason').value='';
+ gE('admPotBox').classList.remove('hidden'); gE('admPotBox').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function admPotSave(){
+ let isDoc=admCan('doctor'), isNurse=admCan('give');
+ if(!isDoc&&!isNurse){ alert('Ye kaam aap ke role ke liye nahi hai'); return; }
+ let a=admCurRec(); if(!a||a.status!=='admitted') return;
+ let oid=gE('pot_oid').value, o=(a.orders||[]).find(x=>x.id===oid); if(!o){ alert('Order nahi mila'); return; }
+ let nm=gE('pot_new').value.trim(), nd=gE('pot_dose').value.trim(), reason=gE('pot_reason').value.trim();
+ if(!nm){ alert('Nayi medicine / potency likhein'); return; }
+ if(nm===o.medicine&&nd===(o.dose||'')){ alert('Koi tabdeeli nahi hui'); return; }
+ if(!isDoc&&!reason){ alert('Potency badalne ki wajah likhein'); return; }
+ let from=o.medicine+(o.dose?' '+o.dose:''), to=nm+(nd?' '+nd:'');
+ let a2=admUpdRec(r=>{
+  let x=(r.orders||[]).find(y=>y.id===oid); if(!x) return;
+  x.history=(x.history||[]).concat([{at:admNow(),by:currentUser.id,from:from,to:to,reason:reason,role:isDoc?'doctor':'nurse'}]);
+  x.medicine=nm; x.dose=nd;
+  if(!isDoc){ r.alerts=r.alerts||[]; r.alerts.push({id:'AL-'+Date.now()+'-'+Math.floor(Math.random()*1000),type:'potency',at:admNow(),by:currentUser.id,text:from+' ➜ '+to+(reason?' ('+reason+')':''),ack:false}); }
+ });
+ gE('admPotBox').classList.add('hidden');
+ alert(isDoc?'Potency badal di gayi':'Potency badal di gayi - doctor ko alert chala gaya');
+ gE('admChartHead').innerHTML=admHeadHTML(a2); admRenderOrd(a2);
+}
 function admDeduct(a,name,qty){
  let av=dispAvail(name), need=qty, tx=medTx();
  av.batches.forEach(b=>{ if(need<=0) return; let take=Math.min(b.bal,need); need-=take; tx.push({id:'TX-'+Date.now()+'-'+Math.floor(Math.random()*100000)+'-'+b.id,batchId:b.id,type:'OUT',qty:take,date:medToday(),time:new Date().toLocaleTimeString(),reason:'Dispensed / Used',note:'IPD '+a.no+' Bed '+(a.bed||'-')+' - '+a.name,by:currentUser.id}); });
@@ -3992,22 +4063,129 @@ function admOtherLog(a,name,qty){
  let o=smOtherAll(); o.push({date:medToday(),time:new Date().toLocaleTimeString(),opd:a.no,patient:a.name,name:name,qty:qty,by:currentUser.id});
  try{ localStorage.setItem('huma_med_other',JSON.stringify(o)); }catch(e){}
 }
-function admGive(oid){
- if(!admOK('ward')) return;
- let a=admCurRec(); if(!a||a.status!=='admitted'){ alert('Patient admitted nahi hai'); return; }
- let o=(a.orders||[]).find(x=>x.id===oid); if(!o||!o.active){ alert('Ye order active nahi'); return; }
- let q=parseInt((gE('gv_'+oid)||{}).value)||1; if(q<1) q=1;
- let rs=dispResolve(o.medicine), sn=rs.name, msg='';
+function admOrderFreq(o){
+ let t=((o.freq||'')+' '+(o.medicine||'')).toLowerCase().replace(/\./g,'');
+ let keys=Object.keys(DISP_FREQ).filter(k=>k!=='on'&&k!=='om');
+ let m=t.match(new RegExp('\\b('+keys.join('|')+')\\b'));
+ return m?m[1]:'';
+}
+function admGapCheck(a,o){
+ let last=(a.meds||[]).filter(m=>m.orderId===o.id).sort((x,y)=>String(y.at).localeCompare(String(x.at)))[0];
+ if(!last) return {block:false};
+ let tok=admOrderFreq(o);
+ if(tok==='stat') return {block:true,msg:'Ye STAT (ek hi dafa) dawai '+admFmt(last.at)+' par di ja chuki hai'};
+ let gap=tok?Math.round(24*60/(DISP_FREQ[tok]||1)*0.75):60;
+ let el=(Date.now()-admMs(last.at))/60000;
+ if(el<gap) return {block:true,msg:'Ye dawai '+admFmt(last.at)+' par di ja chuki hai - agli dose ka waqt abhi nahi hua'};
+ return {block:false};
+}
+function admRepeatApproval(msg){
+ let pw=prompt('⚠️ '+msg+'.\n\nDobara dene ke liye Doctor / Admin ka password likhein:');
+ if(pw===null) return '';
+ let ap=localStorage.getItem('huma_admin_pass')||'humaclinic';
+ if(pw===ap) return 'admin';
+ let us=[]; try{ us=JSON.parse(localStorage.getItem('huma_users')||'[]'); }catch(e){}
+ let u=us.find(x=>(x.role==='doctor'||x.role==='user')&&x.pass===pw);
+ if(u) return u.id;
+ alert('Password galat hai - entry nahi hui'); return '';
+}
+function admGiveCore(id,sp){
+ let list=admAll(); let i=list.findIndex(x=>x.id===id); if(i<0) return false; let a=list[i];
+ let q=sp.qty||1; let rs=dispAnalyzeLine(sp.medicine+(sp.freq?' '+sp.freq:'')), sn=rs.name, msg='';
  if(sn&&dispAvail(sn).avail>=q){ admDeduct(a,sn,q); msg='Stock se '+q+' minus ('+sn+')'; }
  else {
   let why=!sn?((rs.choices&&rs.choices.length)?'potency match nahi hui':'stock mein ye medicine nahi mili'):'stock kam hai';
-  if(!confirm('Stock se auto-minus nahi ho saka ('+why+').\nOK = sirf chart mein likhein (Other - stock cut nahi)\nCancel = ruk jayein')) return;
-  admOtherLog(a,o.medicine,q); msg='Other (stock cut nahi)';
+  if(!confirm('Stock se auto-minus nahi ho saka ('+why+').\nOK = sirf chart mein likhein (Other - stock cut nahi)\nCancel = ruk jayein')) return false;
+  admOtherLog(a,sp.medicine,q); msg='Other (stock cut nahi)';
  }
- let a2=admUpdRec(r=>{ r.meds=r.meds||[]; r.meds.push({id:'E-'+Date.now()+'-'+Math.floor(Math.random()*1000),at:admNow(),medicine:o.medicine,dose:o.dose,route:o.route,freq:o.freq,person:'',note:'As per doctor order'+(q>1?' | Qty '+q:'')+' | '+msg,orderId:o.id,by:currentUser.id,addedAt:new Date().toISOString()}); });
- admRenderList('med',a2); admRenderOrd(a2);
- alert('✅ Di gayi: '+o.medicine+' - '+msg);
+ a.meds=a.meds||[];
+ a.meds.push({id:'E-'+Date.now()+'-'+Math.floor(Math.random()*1000),at:admNow(),medicine:sp.medicine,dose:sp.dose||'',route:sp.route||'',freq:sp.freq||'',person:'',note:sp.note+(q>1?' | Qty '+q:'')+' | '+msg,orderId:sp.orderId||'',emergency:!!sp.emergency,by:currentUser.id,addedAt:new Date().toISOString()});
+ if(sp.emergency){ a.alerts=a.alerts||[]; a.alerts.push({id:'AL-'+Date.now()+'-'+Math.floor(Math.random()*1000),type:'emergency',at:admNow(),by:currentUser.id,text:sp.medicine+(sp.dose?' '+sp.dose:'')+' - '+(sp.reason||''),ack:false}); }
+ admSaveAll(list);
+ let a2=list[i]; admRenderList('med',a2); admRenderOrd(a2); gE('admChartHead').innerHTML=admHeadHTML(a2);
+ alert('✅ Di gayi: '+sp.medicine+' - '+msg);
+ return true;
 }
+function admGive(oid){
+ if(!admOK('give')) return;
+ let a=admCurRec(); if(!a||a.status!=='admitted'){ alert('Patient admitted nahi hai'); return; }
+ let o=(a.orders||[]).find(x=>x.id===oid); if(!o||!o.active){ alert('Ye order active nahi'); return; }
+ let q=parseInt((gE('gv_'+oid)||{}).value)||1; if(q<1) q=1;
+ let note='As per doctor order', gap=admGapCheck(a,o);
+ if(gap.block){ let ap=admRepeatApproval(gap.msg); if(!ap) return; note+=' | DOBARA di gayi - approved by '+admWho(ap); }
+ admGiveCore(a.id,{medicine:o.medicine,dose:o.dose,route:o.route,freq:o.freq,orderId:o.id,qty:q,note:note,emergency:false});
+}
+function admEmergency(){
+ if(!admOK('give')) return;
+ let a=admCurRec(); if(!a||a.status!=='admitted'){ alert('Patient admitted nahi hai'); return; }
+ let med=gE('em_med').value.trim(), note=gE('em_note').value.trim(), q=parseInt(gE('em_qty').value)||1;
+ if(!med){ alert('Medicine likhein'); return; }
+ if(!note){ alert('Note zaroor likhein (doctor kyun nahi tha / emergency kya thi)'); return; }
+ let ok=admGiveCore(a.id,{medicine:med,dose:gE('em_dose').value.trim(),route:gE('em_route').value,freq:'',orderId:'',qty:q<1?1:q,note:'🚨 EMERGENCY - doctor maujood nahi tha: '+note,emergency:true,reason:note});
+ if(ok){ ['em_med','em_dose','em_note'].forEach(id=>{ gE(id).value=''; }); gE('em_qty').value='1'; }
+}
+function admIncomingList(){ return flowAll().filter(p=>p.admitAdvised&&!p.admitDone); }
+function admIncomingHTML(){
+ let l=admIncomingList(); if(!l.length) return '';
+ return '<div class="flow-box" style="background:#e0f7fa;border-color:#0e7490"><h4 style="margin:0 0 6px 0;color:#0e7490">📥 Doctor ki OPD medicines - admission pending ('+l.length+')</h4>'
+  +l.map(p=>'<div style="border:1px solid #9fe0ea;border-radius:8px;padding:6px 8px;margin-bottom:6px;background:#fff;font-size:12px"><b>'+escH(p.name)+'</b> <span class="small">'+escH(p.age||'')+' | OPD '+escH(p.opd)+'</span><br>Doctor: <b>'+escH((p.admitAdvised&&p.admitAdvised.label)||p.doctorSpec||'')+'</b>'+(p.sentToNurse?' <span style="color:#198754">✅ OPD slip print ho chuki</span>':'')+(p.complaint?'<br>Disease: '+escH(p.complaint):'')+'<br>Medicines:<div style="white-space:pre-wrap;background:#fffde7;border:1px dashed #bbb;padding:4px;border-radius:6px">'+escH(p.treatment||'-')+'</div>'+(p.advice?'Advice: '+escH(p.advice):'')+'<div class="small">Admit hote hi ye medicines aap ke orders mein khud aa jayengi.</div></div>').join('')+'</div>';
+}
+/* ---------- dispenser: admission cases ---------- */
+function dispAdmitMode(p){ return !!(p&&p.admitAdvised&&!featPerm('dispWard')); }
+function dispApplyAdmitMode(p){
+ let r=dispAdmitMode(p);
+ let sb=gE('dispStockBox'); if(sb) sb.style.display=r?'none':'';
+ ['dispPrintTreat','dispDone'].forEach(id=>{ let e=gE(id); if(e&&e.closest){ let po=e.closest('.print-opt'); if(po) po.style.display=r?'none':''; } });
+ let ab=gE('dispAdmitBox'); if(ab) ab.classList.toggle('hidden',!r);
+ if(r) gE('dispSaveBtn').style.display='none';
+}
+function dispAdmitPrint(){
+ let list=flowAll(); let i=list.findIndex(x=>x.opd===dispCur&&x.status==='dispense'); if(i<0){ alert('Ye patient pehle hi process ho chuka hai'); return; }
+ printSlip(list[i],true);
+ list[i].status='done'; list[i].sentToNurse=true; list[i].slipPrintedBy=currentUser.id; list[i].slipPrintedAt=new Date().toISOString();
+ flowSave(list); dispCur=null;
+ alert('OPD slip print ho gayi. Medicine ka data Nurse ko bhej diya gaya (sirf Nurse dispense karegi).');
+ renderDispenser();
+}
+/* ---------- live refresh (no page refresh needed) ---------- */
+let liveSig={};
+function liveTyping(){ let ae=document.activeElement; return !!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)); }
+function liveKeys(ks){ return ks.map(k=>localStorage.getItem(k)||'').join('|'); }
+function liveRefresh(){
+ if(!currentUser) return;
+ let vis=id=>{ let e=gE('tab-'+id); return e&&!e.classList.contains('hidden'); };
+ let ae=document.activeElement; let inTab=id=>{ let t=gE('tab-'+id); return !!(ae&&t&&t.contains(ae)); };
+ try{
+  if(vis('home')){ updateHomeCounts(); applyAdmCards(currentUser.role); }
+  if(vis('admission')){
+   let a=admCurRec();
+   if(admPane==='chart'&&a){
+    let sg=JSON.stringify(a);
+    if(liveSig.chart!==sg){
+     liveSig.chart=sg; gE('admChartHead').innerHTML=admHeadHTML(a);
+     Object.keys(ADM_SPEC).forEach(k=>admRenderList(k,a)); admRenderSum(a);
+     if(!(ae&&ae.id&&ae.id.indexOf('gv_')===0)) admRenderOrd(a);
+     if(!inTab('admission')) admRenderDisPane(a);
+    }
+   } else if(['list','dis','doc','ward'].indexOf(admPane)>-1){
+    let sg=liveKeys(['huma_admissions','huma_opd','huma_beds']);
+    if(liveSig.lists!==sg){ liveSig.lists=sg; admRenderLists(); }
+   }
+   admRenderSummary();
+  }
+  if(vis('dashboard')&&!inTab('dashboard')){ let sg=liveKeys(['huma_admissions','huma_opd','huma_beds'])+dbPane; if(liveSig.db!==sg){ liveSig.db=sg; dbShow(dbPane); } }
+  if(vis('fees')&&feePane==='rep'&&!inTab('fees')){ let sg=liveKeys(['huma_fees','huma_admissions']); if(liveSig.fee!==sg){ liveSig.fee=sg; feeRender(); } }
+  if(vis('medinv')&&!inTab('medinv')){ let sg=liveKeys(['huma_med_inv','huma_med_tx']); if(liveSig.med!==sg){ liveSig.med=sg; medAfterChange(); } }
+  if(vis('attendance')&&attPane==='board'&&!inTab('attendance')){ let sg=liveKeys(['huma_attendance']); if(liveSig.att!==sg){ liveSig.att=sg; attRenderBoard(); } }
+ }catch(e){}
+}
+window.addEventListener('storage',function(e){
+ if(!e.key||!/^(huma_|adr_)/.test(e.key)) return;
+ try{ patients=JSON.parse(localStorage.getItem('huma_opd')||'[]'); users=JSON.parse(localStorage.getItem('huma_users')||'null'); expenses=JSON.parse(localStorage.getItem('huma_expenses')||'[]'); wasteLogs=JSON.parse(localStorage.getItem('huma_daily_log_v2')||'[]'); }catch(x){}
+ liveRefresh();
+ if(currentUser){ let vis=id=>{ let t=gE('tab-'+id); return t&&!t.classList.contains('hidden'); }; if(vis('dtreat')) renderDoctor(); if(vis('dispense')) renderDispenser(); }
+});
+
 /* ---------- intake / output summary ---------- */
 function admDayMap(a){
  let days={};
@@ -4061,6 +4239,7 @@ function admRenderDisPane(a){
  if(!admCan('front')){ box.innerHTML='<div class="msg">Discharge ki entry Receptionist / General User karta hai</div>'; return; }
  box.innerHTML='<div class="flow-box" style="background:#fff;border-color:#fd7e14"><h4 style="margin:0 0 4px 0;color:#fd7e14">🚪 Discharge Patient</h4>'
   +(a.dischargeAdvised?'<div class="sm-banner flat" style="background:#f3e8ff;border-color:#6f42c1;color:#432874">🩺 Doctor ne discharge advise kiya: '+escH(a.dischargeAdvised.label||'')+(a.dischargeAdvised.note?' - '+escH(a.dischargeAdvised.note):'')+'</div>':'')
+  +(a.dischargeAdvised?'':'<div class="sm-banner down">⚠️ Doctor ne abhi discharge ka hukam nahi diya. Discharge sirf doctor ke hukam ke baad hoga.</div>')
   +'<div class="small" style="margin-bottom:6px"><b>Discharge ka tareeqa:</b> 1) Doctor ka discharge order 2) Final diagnosis aur condition likhein 3) Medicines / advice aur follow-up batayein 4) Chart mukammal check karein 5) Attendant ko summary dein.</div>'
   +'<div class="idc-form"><div><label>Discharge Date & Time *</label><input id="cd_at" type="datetime-local"/></div>'
   +'<div><label>Discharging Doctor *</label><select id="cd_doc" onchange="admDocChange(\'cd_doc\',\'cd_docOther\')"></select><input id="cd_docOther" placeholder="Doctor ka naam likhein" style="display:none"/></div>'
@@ -4080,6 +4259,10 @@ function admRenderDisPane(a){
 function admDischarge(){
  if(!admOK('front')) return;
  let a=admCurRec(); if(!a||a.status!=='admitted'){ alert('Ye patient admitted nahi hai'); return; }
+ if(!a.dischargeAdvised){
+  if(currentUser.role==='admin'){ if(!confirm('Doctor ne discharge ka hukam nahi diya. Admin ke taur par phir bhi discharge karein?')) return; }
+  else { alert('Discharge sirf doctor ke hukam par ho sakta hai. Pehle doctor "Advise Discharge" karein.'); return; }
+ }
  let at=gE('cd_at').value, doc=admDocVal('cd_doc','cd_docOther'), cond=gE('cd_cond').value, diag=gE('cd_diag').value.trim();
  if(!at){ alert('Discharge date / time likhein'); return; }
  if(admMs(at)<admMs(a.admitAt)){ alert('Discharge ka waqt admission se pehle nahi ho sakta'); return; }
@@ -4128,7 +4311,7 @@ function applyAdmCards(r){
  let show=(id,c)=>{ let e=gE(id); if(e) e.style.display=c?'':'none'; };
  show('homeAdmCard',adm&&(r==='receptionist'||r==='user'||r==='admin'));
  show('homeIpdCard',adm&&(r==='doctor'||r==='user'));
- show('homeWardCard',adm&&(r==='dispenser'||r==='nurse'||r==='user'));
+ show('homeWardCard',adm&&((r==='dispenser'&&featPerm('dispWard'))||r==='nurse'||r==='user'));
  show('homeFeesCard',fees&&(r==='user'||r==='admin'));
  show('homeDashCard',r==='admin');
 }
@@ -4138,14 +4321,15 @@ function admHomeCounts(){
  let set=(id,t)=>{ let e=gE(id); if(e) e.innerText=t; };
  set('homeAdmCount',a.length+' admitted'+(sug?' | '+sug+' to admit':''));
  let mine=a.filter(admDoctorMatches);
- set('homeIpdCount',mine.length+' inpatients | '+mine.filter(x=>x.stage==='doctor').length+' awaiting orders');
- set('homeWardCount',a.length+' admitted | '+a.filter(x=>x.stage!=='doctor').length+' with orders');
+ let al=mine.reduce((t,x)=>t+(x.alerts||[]).filter(y=>!y.ack).length,0);
+ set('homeIpdCount',mine.length+' inpatients | '+mine.filter(x=>x.stage==='doctor').length+' awaiting orders'+(al?' | 🔔 '+al+' alerts':''));
+ set('homeWardCount',a.length+' admitted | '+a.filter(x=>x.stage!=='doctor').length+' with orders'+(sug?' | 📥 '+sug+' incoming':''));
 }
-function ftFill(){ let a=gE('ft_adm'), f=gE('ft_fees'); if(a) a.checked=featOn('admission'); if(f) f.checked=featOn('fees'); }
+function ftFill(){ let a=gE('ft_adm'), f=gE('ft_fees'), d=gE('ft_dw'); if(a) a.checked=featOn('admission'); if(f) f.checked=featOn('fees'); if(d) d.checked=featPerm('dispWard'); }
 function ftSave(){
  if(!adminOnly()) return;
- localStorage.setItem('huma_features',JSON.stringify({admission:gE('ft_adm').checked,fees:gE('ft_fees').checked}));
- alert('Save ho gaya. Buttons ab '+(gE('ft_adm').checked?'dikhenge':'chhup jayenge')+' (Admission) / '+(gE('ft_fees').checked?'dikhenge':'chhup jayenge')+' (Fees).');
+ localStorage.setItem('huma_features',JSON.stringify({admission:gE('ft_adm').checked,fees:gE('ft_fees').checked,dispWard:gE('ft_dw').checked}));
+ alert('Save ho gaya.\nAdmission buttons: '+(gE('ft_adm').checked?'dikhenge':'chhup jayenge')+'\nFees button: '+(gE('ft_fees').checked?'dikhega':'chhup jayega')+'\nDispenser ko admit mareez ki ijazat: '+(gE('ft_dw').checked?'HAAN':'NAHI'));
 }
 /* ---------- Extra Fees ---------- */
 let feePane='add';
@@ -4238,13 +4422,13 @@ function docSaveAdmit(rec){
 /* ================= Cloud Sync (Netlify) ================= */
 const SYNC_EXCLUDE=/^(huma_sync_cfg|huma_sync_meta|huma_sync_del|huma_pending_opd_)/;
 function syncKeyOK(k){ k=String(k); return /^(huma_|adr_)/.test(k)&&!SYNC_EXCLUDE.test(k); }
-let syncApplying=false, syncBusy=false, syncLastNet=0, syncDirtyFlag=false, syncSeen={}, syncDel={}, syncState={st:'off',msg:'',at:''};
+let syncKick=null, syncApplying=false, syncBusy=false, syncLastNet=0, syncDirtyFlag=false, syncSeen={}, syncDel={}, syncState={st:'off',msg:'',at:''};
 try{ syncDel=JSON.parse(localStorage.getItem('huma_sync_del')||'{}')||{}; }catch(e){ syncDel={}; }
 (function(){
  const _set=Storage.prototype.setItem, _rem=Storage.prototype.removeItem;
  Storage.prototype.setItem=function(k,v){
   _set.call(this,k,v);
-  if(this===window.localStorage&&!syncApplying&&syncKeyOK(k)){ syncDirtyFlag=true; if(syncDel[k]){ delete syncDel[k]; _set.call(this,'huma_sync_del',JSON.stringify(syncDel)); } }
+  if(this===window.localStorage&&!syncApplying&&syncKeyOK(k)){ syncDirtyFlag=true; clearTimeout(syncKick); syncKick=setTimeout(function(){ try{ syncTick(); }catch(e){} },400); if(syncDel[k]){ delete syncDel[k]; _set.call(this,'huma_sync_del',JSON.stringify(syncDel)); } }
  };
  Storage.prototype.removeItem=function(k){
   _rem.call(this,k);
@@ -4285,7 +4469,7 @@ function syncInfoK(k,str){
 }
 function syncResolve(k,l,r,first,b){
  if(k==='huma_admissions'&&l&&r&&typeof l==='object'&&typeof r==='object'){
-  const arrs=['meds','food','inf','out','orders','notes'];
+  const arrs=['meds','food','inf','out','orders','notes','alerts'];
   let o={}, keys={};
   Object.keys(l).concat(Object.keys(r)).forEach(f=>{ keys[f]=1; });
   Object.keys(keys).forEach(f=>{
@@ -4451,15 +4635,16 @@ function syncAfterApply(ch){
   if(vis('attendance')&&attPane==='board') attRenderBoard();
   if(vis('waste')) loadLogs();
  }catch(e){}
+ liveSig={}; liveRefresh();
 }
 function syncTick(){
  let cfg=syncCfg(); if(!cfg||!cfg.key||!cfg.url||syncBusy) return;
  let idle=document.hidden;
  let dirty=syncDirtyFlag||syncDetectDirty();
- let interval=idle?60000:12000;
+ let interval=idle?60000:5000;
  if(dirty||Date.now()-syncLastNet>=interval){ syncDirtyFlag=false; syncCycle(); }
 }
-setInterval(syncTick,3000);
+setInterval(syncTick,1500);
 document.addEventListener('visibilitychange',function(){ if(!document.hidden){ let cfg=syncCfg(); if(cfg&&cfg.key) syncCycle(); } });
 function syncToggleLogin(){
  let b=gE('loginSyncBox'); b.classList.toggle('hidden');
